@@ -20,7 +20,7 @@
           }
         ],
         "styles": [
-          "apps/admin/src/styles.css",
+          "apps/admin/src/styles.scss",
           "apps/admin/src/login.css",
           "apps/admin/src/rtl.css"
         ]
