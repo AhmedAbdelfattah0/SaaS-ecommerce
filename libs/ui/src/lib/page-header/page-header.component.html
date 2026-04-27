@@ -1,0 +1,16 @@
+<header class="sc-page-header">
+  <div class="sc-page-header-text">
+    <h1 class="sc-page-header-title">
+      {{ title() }}
+      @if (count() !== undefined) {
+        <span class="sc-page-header-count">{{ count() }}</span>
+      }
+    </h1>
+    @if (subtitle()) {
+      <p class="sc-page-header-sub">{{ subtitle() }}</p>
+    }
+  </div>
+  <div class="sc-page-header-actions">
+    <ng-content />
+  </div>
+</header>

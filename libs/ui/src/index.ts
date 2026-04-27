@@ -3,3 +3,4 @@ export * from './lib/input/input.component';
 export * from './lib/card/card.component';
 export * from './lib/badge/badge.component';
 export * from './lib/loading-spinner/loading-spinner.component';
+export * from './lib/page-header/page-header.component';
