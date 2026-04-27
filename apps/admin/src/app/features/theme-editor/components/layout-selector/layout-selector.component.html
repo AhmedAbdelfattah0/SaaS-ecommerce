@@ -1,0 +1,57 @@
+<div class="field">
+  <label>Layout Style</label>
+  <div class="layout-grid" role="radiogroup" aria-label="Layout style">
+    @for (layout of layouts; track layout.value) {
+      <button
+        type="button"
+        role="radio"
+        [attr.aria-checked]="isSelected(layout)"
+        class="layout-card"
+        [class.on]="isSelected(layout)"
+        (click)="select(layout)"
+      >
+        <!-- Illustration -->
+        @if (layout.value === 'classic') {
+          <div class="layout-illus">
+            <div class="li-h"></div>
+            <div class="li-row">
+              <div class="li-block" style="max-width: 28%;"></div>
+              <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+                <div class="li-block"></div>
+                <div class="li-block"></div>
+              </div>
+            </div>
+          </div>
+        }
+        @if (layout.value === 'boutique') {
+          <div class="layout-illus" style="flex-direction: row; gap: 4px; padding: 8px;">
+            <div class="li-block" style="flex: 1; border-radius: 2px;"></div>
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+              <div class="li-h"></div>
+              <div class="li-block" style="flex: 1;"></div>
+              <div class="li-h" style="width: 60%;"></div>
+            </div>
+          </div>
+        }
+        @if (layout.value === 'catalog') {
+          <div class="layout-illus">
+            <div class="li-h"></div>
+            <div class="li-row">
+              <div class="li-block"></div>
+              <div class="li-block"></div>
+              <div class="li-block"></div>
+            </div>
+          </div>
+        }
+
+        <div class="layout-info">
+          <span class="layout-name">{{ layout.label }}</span>
+          @if (isSelected(layout)) {
+            <span class="badge badge-blue" style="font-size: 10px; padding: 2px 6px;">Active</span>
+          }
+        </div>
+        <p class="layout-desc">{{ layout.description }}</p>
+      </button>
+    }
+  </div>
+</div>

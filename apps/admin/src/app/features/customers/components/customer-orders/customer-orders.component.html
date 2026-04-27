@@ -1,0 +1,58 @@
+<div class="card">
+  <div class="card-head">
+    <h3>
+      <admin-icon name="cart" [size]="16" />
+      Order History
+      <span class="muted">{{ orders().length }} orders</span>
+    </h3>
+  </div>
+
+  @if (orders().length === 0) {
+    <div class="card-pad" style="text-align: center; padding: var(--sp-10) var(--sp-5);">
+      <admin-icon name="cart" [size]="32" style="color: var(--color-text-subtle);" />
+      <div style="margin-top: var(--sp-3); color: var(--color-text-muted); font-size: 14px;">No orders yet</div>
+      <div style="color: var(--color-text-subtle); font-size: 12px; margin-top: var(--sp-2);">Orders placed by this customer will appear here.</div>
+    </div>
+  } @else {
+    <div style="overflow-x: auto;">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (order of orders(); track order.id) {
+            <tr (click)="navigateToOrder(order.id)">
+              <td>
+                <span class="mono">#{{ order.id.slice(0, 8).toUpperCase() }}</span>
+              </td>
+              <td class="muted">{{ fmtDate(order.createdAt) }}</td>
+              <td class="muted num">{{ order.items.length }}</td>
+              <td class="num" style="font-weight: 600;">{{ fmtMoney(order.total) }}</td>
+              <td>
+                <span [class]="statusBadge(order.status).cls">{{ statusBadge(order.status).label }}</span>
+              </td>
+              <td>
+                <div class="row-actions">
+                  <button
+                    class="icon-btn"
+                    title="View order"
+                    (click)="navigateToOrder(order.id); $event.stopPropagation()"
+                  >
+                    <admin-icon name="eye" [size]="13" />
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

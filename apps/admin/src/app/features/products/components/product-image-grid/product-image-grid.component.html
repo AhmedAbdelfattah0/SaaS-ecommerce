@@ -1,0 +1,47 @@
+<div class="image-grid-wrap">
+  <div class="image-grid">
+    @for (img of images(); track img; let i = $index) {
+      <div class="image-cell">
+        <img [src]="img" [alt]="'Product image ' + (i + 1)" class="image-thumb" />
+        @if (!readonly()) {
+          <button
+            type="button"
+            class="image-remove icon-btn danger"
+            (click)="onRemove(i)"
+            title="Remove image"
+          >
+            <admin-icon name="x" [size]="12" />
+          </button>
+        }
+      </div>
+    }
+
+    @if (!readonly()) {
+      <div class="image-add-cell">
+        <div class="upload" style="padding: var(--sp-4); font-size: 12px;">
+          <admin-icon name="upload" [size]="20" />
+          <p style="margin: var(--sp-2) 0 var(--sp-3);">Add image URL</p>
+          <div style="display: flex; gap: var(--sp-2);">
+            <input
+              #urlInput
+              type="url"
+              class="input"
+              placeholder="https://example.com/image.jpg"
+              style="flex: 1; font-size: 12px;"
+              (keyup.enter)="onAddUrl(urlInput)"
+            />
+            <button type="button" class="btn btn-secondary btn-sm" (click)="onAddUrl(urlInput)">
+              Add
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  @if (images().length === 0 && readonly()) {
+    <div style="color: var(--color-text-muted); font-size: 13px; padding: var(--sp-4);">
+      No images added.
+    </div>
+  }
+</div>

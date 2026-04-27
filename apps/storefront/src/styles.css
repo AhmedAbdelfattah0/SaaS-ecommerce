@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+/* ============================================================
+   StoreCraft CSS Custom Properties (theme variables)
+   Set by ThemeService via APP_INITIALIZER from /api/theme
+   ============================================================ */
+:root {
+  --color-primary: #000000;
+  --color-secondary: #ffffff;
+  --color-bg: #ffffff;
+  --color-text: #000000;
+  --color-text-on-primary: #ffffff;
+  --color-text-on-secondary: #000000;
+  --font-family: Inter, sans-serif;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}

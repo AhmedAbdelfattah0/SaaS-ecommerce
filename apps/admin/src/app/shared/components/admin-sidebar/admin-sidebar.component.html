@@ -1,0 +1,57 @@
+<aside class="sidebar">
+  <div class="sb-top">
+    <div class="sb-store">
+      <div class="sb-logo">S</div>
+      <div class="sb-store-info">
+        <div class="sb-store-name truncate">{{ storeName() }}</div>
+        <div class="sb-store-sub">
+          <span class="live-dot"></span>
+          <span>{{ t('common.online', 'Online') }}</span>
+          <span style="color: #475569">·</span>
+          <span class="ltr-input" dir="ltr">{{ storeDomain() }}</span>
+        </div>
+      </div>
+      <admin-icon name="chevrondown" [size]="14" />
+    </div>
+  </div>
+
+  <nav class="sb-nav" aria-label="Primary">
+    @for (group of navGroups; track group.labelKey) {
+      <div class="sb-section-label">{{ t(group.labelKey, group.fallback) }}</div>
+      @for (item of group.items; track item.id) {
+        <a
+          class="sb-item"
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: false }"
+        >
+          <admin-icon class="sb-icon" [name]="item.icon" [size]="18" />
+          <span>{{ t(item.labelKey, item.fallback) }}</span>
+          @if (item.badge) {
+            <span class="sb-item-badge">{{ item.badge }}</span>
+          }
+        </a>
+      }
+    }
+  </nav>
+
+  <div class="sb-bottom">
+    <div class="sb-plan">
+      <div>
+        <div class="sb-plan-label">Pro Plan</div>
+        <div style="font-size: 10.5px; color: #94A3B8; margin-top: 2px">
+          Renews May 18
+        </div>
+      </div>
+      <span class="sb-plan-cta">Upgrade →</span>
+    </div>
+    <div class="sb-user">
+      <div class="sb-avatar">{{ userInitials() }}</div>
+      <div class="sb-user-info">
+        <div class="sb-user-name">{{ user()?.fullName || user()?.email || 'Admin' }}</div>
+        <div class="sb-user-sub">{{ t('common.viewStore', 'View store') }} ↗</div>
+      </div>
+      <admin-icon name="chevrondown" [size]="14" />
+    </div>
+  </div>
+</aside>

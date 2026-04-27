@@ -1,0 +1,30 @@
+<div class="kpi">
+  <div class="kpi-head">
+    <span class="kpi-label">{{ label() }}</span>
+    <span
+      class="kpi-icon"
+      [style.background]="bg()"
+      [style.color]="color()"
+    >
+      <admin-icon [name]="icon()" [size]="18" />
+    </span>
+  </div>
+
+  <div class="kpi-value" [style.color]="color()">{{ value() }}</div>
+
+  <div class="kpi-bottom">
+    <span
+      class="badge-delta"
+      [class.up]="up()"
+      [class.down]="!up()"
+    >
+      <admin-icon [name]="up() ? 'arrowup' : 'arrowdown'" [size]="11" />
+      {{ delta() }}
+    </span>
+    @if (spark().length > 1) {
+      <div class="kpi-spark">
+        <admin-sparkline [data]="spark()" [color]="color()" />
+      </div>
+    }
+  </div>
+</div>

@@ -2,5 +2,36 @@
   "extends": "./tsconfig.base.json",
   "compileOnSave": false,
   "files": [],
-  "references": []
+  "references": [
+    {
+      "path": "./apps/storefront-e2e"
+    },
+    {
+      "path": "./apps/admin-e2e"
+    },
+    {
+      "path": "./apps/superadmin-e2e"
+    },
+    {
+      "path": "./libs/models"
+    },
+    {
+      "path": "./libs/utils"
+    },
+    {
+      "path": "./apps/storefront"
+    },
+    {
+      "path": "./apps/superadmin"
+    },
+    {
+      "path": "./apps/admin"
+    },
+    {
+      "path": "./apps/api"
+    },
+    {
+      "path": "./libs/ui"
+    }
+  ]
 }

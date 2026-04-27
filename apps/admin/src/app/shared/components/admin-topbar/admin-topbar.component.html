@@ -1,0 +1,68 @@
+<header class="topbar">
+  <div class="tb-titleblock">
+    <div class="tb-title">{{ translatedTitle() }}</div>
+    <div class="tb-crumb">
+      @for (part of meta().crumb; track part; let last = $last) {
+        <span [style.color]="last ? 'var(--color-text-muted)' : 'var(--color-text-subtle)'">
+          {{ part }}
+        </span>
+        @if (!last) {
+          <span class="sep">/</span>
+        }
+      }
+    </div>
+  </div>
+
+  <div class="tb-search">
+    <admin-icon class="icon" name="search" [size]="16" />
+    <input type="search" [placeholder]="t('tb.search')" aria-label="Search" />
+    <span class="kbd">⌘ K</span>
+  </div>
+
+  <div class="tb-right">
+    <div class="tb-live" aria-label="Live status">
+      <span class="dot"></span>
+      <span>{{ t('tb.live') }}</span>
+    </div>
+
+    <button
+      type="button"
+      class="tb-lang"
+      (click)="toggleLang()"
+      [attr.aria-label]="'Switch language'"
+      title="Switch language"
+    >
+      <span [class.on]="currentLang() === 'en'">EN</span>
+      <span class="sep">|</span>
+      <span [class.on]="currentLang() === 'ar'" style="font-family: 'Cairo', sans-serif">ع</span>
+    </button>
+
+    <button type="button" class="tb-store-switch">
+      <div class="sw-logo">S</div>
+      <span class="truncate" style="max-width: 110px">{{ storeName() }}</span>
+      <admin-icon name="chevrondown" [size]="13" />
+    </button>
+
+    <div class="tb-notif-wrap">
+      <button
+        type="button"
+        class="tb-iconbtn"
+        [class.active]="notifOpen()"
+        (click)="toggleNotifications()"
+        aria-label="Notifications"
+      >
+        <admin-icon name="bell" [size]="17" />
+        @if (unread() > 0) {
+          <span class="badge">{{ unread() }}</span>
+        }
+      </button>
+      @if (notifOpen()) {
+        <admin-notifications-panel (close)="closeNotifications()" />
+      }
+    </div>
+
+    <button type="button" class="tb-avatar-btn" (click)="signOut()" title="Sign out">
+      {{ userInitials() }}
+    </button>
+  </div>
+</header>

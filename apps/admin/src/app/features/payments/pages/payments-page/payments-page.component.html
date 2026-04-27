@@ -1,0 +1,294 @@
+<div class="page">
+
+  <!-- Page header -->
+  <div class="page-head">
+    <div>
+      <h1 class="page-title">
+        <admin-icon name="dollar" [size]="22" />
+        {{ i18n.t('nav.payments', 'Payments') }}
+      </h1>
+      <p class="page-sub">Configure payment gateways available to your customers at checkout.</p>
+    </div>
+    <button class="btn btn-primary">
+      <admin-icon name="check" [size]="15" />
+      Save Changes
+    </button>
+  </div>
+
+  <!-- Info banner -->
+  <div class="banner info" style="margin-bottom: var(--sp-6)">
+    <admin-icon name="info" [size]="16" />
+    <div>
+      <strong>Sandbox mode active.</strong> All transactions go to the test environment. Switch to
+      production keys when you're ready to go live.
+    </div>
+  </div>
+
+  <div class="payments-layout">
+
+    <!-- Left: provider cards -->
+    <div class="stack">
+
+      <!-- Paymob -->
+      <div class="card">
+        <div class="card-head">
+          <h3>
+            <div class="provider-logo" style="background:#1E293B;color:white">PM</div>
+            Paymob
+          </h3>
+          <div class="hstack" style="gap:var(--sp-3)">
+            @if (svc.config().paymob.enabled) {
+              <span class="badge badge-green"><span class="badge-dot"></span>Active</span>
+            } @else {
+              <span class="badge badge-gray">Inactive</span>
+            }
+            <button
+              class="toggle"
+              [class.on]="svc.config().paymob.enabled"
+              (click)="toggle('paymob')"
+              aria-label="Toggle Paymob"
+            ></button>
+          </div>
+        </div>
+
+        @if (svc.config().paymob.enabled) {
+          <div class="card-pad stack">
+            <div class="field">
+              <label>API Key</label>
+              <input class="input" type="password" [value]="svc.config().paymob.apiKey" readonly />
+            </div>
+
+            <p class="subsection-label">Payment Methods</p>
+
+            <div class="method-row">
+              <div class="method-icon" style="background:var(--color-primary-light);color:var(--color-primary)">
+                <admin-icon name="dollar" [size]="16" />
+              </div>
+              <div style="flex:1">
+                <div class="method-name">Card Payments</div>
+                <div class="method-hint">Visa, Mastercard, Meeza</div>
+              </div>
+              <div class="field" style="width:140px;margin:0">
+                <input class="input" type="text" [value]="svc.config().paymob.integrationIdCard" readonly placeholder="Integration ID" />
+              </div>
+            </div>
+
+            <div class="method-row">
+              <div class="method-icon" style="background:#FEF3C7;color:#D97706">
+                <admin-icon name="bolt" [size]="16" />
+              </div>
+              <div style="flex:1">
+                <div class="method-name">Fawry (via Paymob)</div>
+                <div class="method-hint">Pay at Fawry outlets</div>
+              </div>
+              <div class="field" style="width:140px;margin:0">
+                <input class="input" type="text" [value]="svc.config().paymob.integrationIdFawry" readonly placeholder="Integration ID" />
+              </div>
+            </div>
+
+            <div class="method-row">
+              <div class="method-icon" style="background:var(--color-success-light);color:var(--color-success)">
+                <admin-icon name="phone" [size]="16" />
+              </div>
+              <div style="flex:1">
+                <div class="method-name">Mobile Wallets</div>
+                <div class="method-hint">Vodafone Cash, Orange Money, Etisalat</div>
+              </div>
+              <div class="field" style="width:140px;margin:0">
+                <input class="input" type="text" [value]="svc.config().paymob.integrationIdWallet" readonly placeholder="Integration ID" />
+              </div>
+            </div>
+
+            <div class="method-row">
+              <div class="method-icon" style="background:var(--color-purple-light);color:var(--color-purple)">
+                <admin-icon name="calendar" [size]="16" />
+              </div>
+              <div style="flex:1">
+                <div class="method-name">Installments</div>
+                <div class="method-hint">Pay over 3, 6, 12 months</div>
+              </div>
+              <div class="field" style="width:140px;margin:0">
+                <input class="input" type="text" [value]="svc.config().paymob.integrationIdInstallments" readonly placeholder="Integration ID" />
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="field">
+              <label>iFrame ID</label>
+              <input class="input" type="text" [value]="svc.config().paymob.iframeId" readonly />
+              <span class="hint">Used to render the hosted payment form.</span>
+            </div>
+
+          </div>
+        }
+      </div>
+
+      <!-- Fawry standalone -->
+      <div class="card">
+        <div class="card-head">
+          <h3>
+            <div class="provider-logo" style="background:#F59E0B;color:white">FW</div>
+            Fawry
+          </h3>
+          <div class="hstack" style="gap:var(--sp-3)">
+            @if (svc.config().fawry.enabled) {
+              <span class="badge badge-green"><span class="badge-dot"></span>Active</span>
+            } @else {
+              <span class="badge badge-gray">Inactive</span>
+            }
+            <button
+              class="toggle"
+              [class.on]="svc.config().fawry.enabled"
+              (click)="toggle('fawry')"
+              aria-label="Toggle Fawry"
+            ></button>
+          </div>
+        </div>
+
+        @if (svc.config().fawry.enabled) {
+          <div class="card-pad stack">
+            <div class="row">
+              <div class="field">
+                <label>Merchant Code</label>
+                <input class="input" type="text" [value]="svc.config().fawry.merchantCode" readonly placeholder="FW_MERCHANT_CODE" />
+              </div>
+              <div class="field">
+                <label>Security Key</label>
+                <input class="input" type="password" [value]="svc.config().fawry.securityKey" readonly />
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Valu -->
+      <div class="card">
+        <div class="card-head">
+          <h3>
+            <div class="provider-logo" style="background:#7C3AED;color:white">VL</div>
+            ValU — BNPL
+          </h3>
+          <div class="hstack" style="gap:var(--sp-3)">
+            @if (svc.config().valu.enabled) {
+              <span class="badge badge-green"><span class="badge-dot"></span>Active</span>
+            } @else {
+              <span class="badge badge-gray">Inactive</span>
+            }
+            <button
+              class="toggle"
+              [class.on]="svc.config().valu.enabled"
+              (click)="toggle('valu')"
+              aria-label="Toggle ValU"
+            ></button>
+          </div>
+        </div>
+
+        @if (svc.config().valu.enabled) {
+          <div class="card-pad">
+            <div class="field">
+              <label>Merchant ID</label>
+              <input class="input" type="text" [value]="svc.config().valu.merchantId" readonly placeholder="VALU_MERCHANT_ID" />
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- COD -->
+      <div class="card">
+        <div class="card-head">
+          <h3>
+            <div class="provider-logo" style="background:#16A34A;color:white">COD</div>
+            Cash on Delivery
+          </h3>
+          <div class="hstack" style="gap:var(--sp-3)">
+            @if (svc.config().cod.enabled) {
+              <span class="badge badge-green"><span class="badge-dot"></span>Active</span>
+            } @else {
+              <span class="badge badge-gray">Inactive</span>
+            }
+            <button
+              class="toggle"
+              [class.on]="svc.config().cod.enabled"
+              (click)="toggle('cod')"
+              aria-label="Toggle COD"
+            ></button>
+          </div>
+        </div>
+
+        @if (svc.config().cod.enabled) {
+          <div class="card-pad">
+            <div class="row">
+              <div class="field">
+                <label>COD Fee</label>
+                <input class="input" type="number" [value]="svc.config().cod.fee" readonly min="0" />
+              </div>
+              <div class="field">
+                <label>Fee Type</label>
+                <select class="select" [value]="svc.config().cod.feeType">
+                  <option value="fixed">Fixed (EGP)</option>
+                  <option value="percent">Percent (%)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+    </div>
+
+    <!-- Right: checkout preview panel -->
+    <div>
+      <div class="card">
+        <div class="card-head">
+          <h3>Checkout Preview</h3>
+          <span class="badge badge-blue">Mock</span>
+        </div>
+        <div class="card-pad">
+          <div class="browser">
+            <div class="browser-bar">
+              <div class="d"></div><div class="d"></div><div class="d"></div>
+              <div class="url">storecraft.io/checkout</div>
+            </div>
+            <div class="preview-body">
+              <p class="preview-label">Select payment method</p>
+              @if (svc.config().paymob.enabled) {
+                <div class="preview-method active">
+                  <admin-icon name="dollar" [size]="15" />
+                  <span>Card / Wallet / Fawry</span>
+                  <span class="spacer"></span>
+                  <span class="badge badge-blue badge-sm">Paymob</span>
+                </div>
+              }
+              @if (svc.config().valu.enabled) {
+                <div class="preview-method">
+                  <admin-icon name="calendar" [size]="15" />
+                  <span>Pay in installments — ValU</span>
+                </div>
+              }
+              @if (svc.config().fawry.enabled) {
+                <div class="preview-method">
+                  <admin-icon name="bolt" [size]="15" />
+                  <span>Pay at Fawry</span>
+                </div>
+              }
+              @if (svc.config().cod.enabled) {
+                <div class="preview-method">
+                  <admin-icon name="truck" [size]="15" />
+                  <span>Cash on Delivery</span>
+                  <span class="spacer"></span>
+                  <span class="muted" style="font-size:12px">+{{ svc.config().cod.fee }} EGP</span>
+                </div>
+              }
+              @if (!svc.config().paymob.enabled && !svc.config().fawry.enabled && !svc.config().valu.enabled && !svc.config().cod.enabled) {
+                <p class="muted" style="text-align:center;padding:var(--sp-6) 0;font-size:13px">No payment methods active.</p>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

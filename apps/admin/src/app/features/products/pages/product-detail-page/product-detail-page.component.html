@@ -1,0 +1,186 @@
+<div class="detail-page">
+
+  <!-- Sticky Header -->
+  <div class="detail-header card">
+    <div class="detail-header-left">
+      <button type="button" class="btn btn-ghost btn-sm" (click)="onBack()">
+        <admin-icon name="chevronleft" [size]="16" />
+        Products
+      </button>
+      <div class="divider-v"></div>
+      <h2 class="detail-title">{{ pageTitle() }}</h2>
+      @if (!isNew() && detailService.product()) {
+        <admin-product-status-badge [status]="detailService.product()!.status" />
+      }
+    </div>
+    <div class="detail-header-right">
+      @if (!isNew() && detailService.product()) {
+        <button
+          type="button"
+          class="btn btn-danger-outline btn-sm"
+          [disabled]="detailService.isDeleting()"
+          (click)="onDelete()"
+        >
+          <admin-icon name="trash" [size]="14" />
+          Delete
+        </button>
+      }
+      <button
+        type="button"
+        class="btn btn-secondary btn-sm"
+        (click)="onCancel()"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary btn-sm"
+        [disabled]="detailService.isSaving()"
+        (click)="triggerSave()"
+      >
+        @if (detailService.isSaving()) {
+          <admin-icon name="refresh" [size]="14" />
+          Saving...
+        } @else {
+          <admin-icon name="check" [size]="14" />
+          {{ isNew() ? 'Create Product' : 'Save Changes' }}
+        }
+      </button>
+    </div>
+  </div>
+
+  <!-- Error Banner -->
+  @if (detailService.error()) {
+    <div class="banner warn" style="margin-bottom: var(--sp-4);">
+      <admin-icon name="warning" [size]="16" />
+      <span>{{ detailService.error() }}</span>
+    </div>
+  }
+
+  <!-- Loading Skeleton -->
+  @if (detailService.isLoading()) {
+    <div class="detail-body">
+      <div class="detail-main">
+        <div class="card card-pad">
+          <div class="skeleton" style="height: 24px; width: 40%; margin-bottom: var(--sp-4);"></div>
+          <div class="skeleton" style="height: 38px; margin-bottom: var(--sp-3);"></div>
+          <div class="skeleton" style="height: 38px; margin-bottom: var(--sp-3);"></div>
+          <div class="skeleton" style="height: 100px;"></div>
+        </div>
+      </div>
+      <div class="detail-aside">
+        <div class="card card-pad">
+          <div class="skeleton" style="height: 20px; width: 60%; margin-bottom: var(--sp-4);"></div>
+          <div class="skeleton" style="height: 38px; margin-bottom: var(--sp-3);"></div>
+          <div class="skeleton" style="height: 38px;"></div>
+        </div>
+      </div>
+    </div>
+  } @else {
+
+    <!-- Two-column layout -->
+    <div class="detail-body">
+
+      <!-- Left: Main Form -->
+      <div class="detail-main">
+        <admin-product-form
+          #productFormRef
+          [product]="detailService.product()"
+          [categories]="productsService.categories()"
+          [isSaving]="detailService.isSaving()"
+          (saved)="onSave($event)"
+          (cancelled)="onCancel()"
+        />
+      </div>
+
+      <!-- Right: Aside -->
+      <aside class="detail-aside">
+
+        <!-- Status -->
+        <div class="card" style="margin-bottom: var(--sp-4);">
+          <div class="card-head">
+            <h3>Status</h3>
+          </div>
+          <div class="card-pad stack">
+            <div class="field">
+              <label for="pd-status">Visibility</label>
+              @if (detailService.product()) {
+                <select
+                  id="pd-status"
+                  class="select"
+                  [value]="detailService.product()!.status"
+                  (change)="onStatusChange($event)"
+                >
+                  <option value="active">Active</option>
+                  <option value="draft">Draft</option>
+                  <option value="deleted">Deleted</option>
+                </select>
+              } @else {
+                <select id="pd-status" class="select" value="draft">
+                  <option value="active">Active</option>
+                  <option value="draft">Draft</option>
+                  <option value="deleted">Deleted</option>
+                </select>
+              }
+              <span class="hint">
+                Active products are visible in the storefront.
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category -->
+        <div class="card" style="margin-bottom: var(--sp-4);">
+          <div class="card-head">
+            <h3>Organization</h3>
+          </div>
+          <div class="card-pad">
+            <div class="field">
+              <label>Category</label>
+              <select class="select" disabled>
+                <option value="">Uncategorized</option>
+                @for (cat of productsService.categories(); track cat.id) {
+                  <option [value]="cat.id" [selected]="detailService.product()?.categoryId === cat.id">
+                    {{ cat.name }}
+                  </option>
+                }
+              </select>
+              <span class="hint">Use the form on the left to change the category.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Stats (edit mode only) -->
+        @if (!isNew() && detailService.product()) {
+          <div class="card">
+            <div class="card-head">
+              <h3>Details</h3>
+            </div>
+            <div class="card-pad stack">
+              <div class="detail-meta-row">
+                <span class="muted">Created</span>
+                <span>{{ detailService.product()!.createdAt | date: 'mediumDate' }}</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="muted">Updated</span>
+                <span>{{ detailService.product()!.updatedAt | date: 'mediumDate' }}</span>
+              </div>
+              <div class="detail-meta-row">
+                <span class="muted">ID</span>
+                <span class="mono">{{ detailService.product()!.id }}</span>
+              </div>
+              @if (detailService.product()!.variants.length) {
+                <div class="detail-meta-row">
+                  <span class="muted">Variants</span>
+                  <span>{{ detailService.product()!.variants.length }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+      </aside>
+    </div>
+  }
+
+</div>

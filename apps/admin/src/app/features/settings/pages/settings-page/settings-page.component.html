@@ -1,0 +1,251 @@
+<div class="page">
+
+  <!-- Page header -->
+  <div class="page-head">
+    <div>
+      <h1 class="page-title">
+        <admin-icon name="settings" [size]="22" />
+        {{ i18n.t('nav.settings', 'Settings') }}
+      </h1>
+      <p class="page-sub">Manage your store's general configuration, branding, and preferences.</p>
+    </div>
+    <button class="btn btn-primary">
+      <admin-icon name="check" [size]="15" />
+      {{ i18n.t('common.save', 'Save Changes') }}
+    </button>
+  </div>
+
+  <div class="settings-layout">
+    <div class="stack">
+
+      <!-- General -->
+      <div class="card">
+        <div class="card-head">
+          <h3>
+            <admin-icon name="info" [size]="16" />
+            General
+          </h3>
+        </div>
+        <div class="card-pad stack">
+          <div class="row">
+            <div class="field">
+              <label>Store Name</label>
+              <input class="input" type="text" [value]="svc.settings().storeName" />
+            </div>
+            <div class="field">
+              <label>Store Email</label>
+              <input class="input" type="email" [value]="svc.settings().storeEmail" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label>Phone Number</label>
+              <input class="input" type="tel" [value]="svc.settings().storePhone" />
+            </div>
+            <div class="field">
+              <label>Currency</label>
+              <select class="select">
+                <option value="EGP" selected>EGP — Egyptian Pound</option>
+                <option value="USD">USD — US Dollar</option>
+                <option value="SAR">SAR — Saudi Riyal</option>
+                <option value="AED">AED — UAE Dirham</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label>Timezone</label>
+              <select class="select">
+                <option value="Africa/Cairo" selected>Africa/Cairo (GMT+3)</option>
+                <option value="Asia/Riyadh">Asia/Riyadh (GMT+3)</option>
+                <option value="Asia/Dubai">Asia/Dubai (GMT+4)</option>
+                <option value="Europe/London">Europe/London (GMT+1)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Language</label>
+              <select class="select">
+                <option value="en" selected>English</option>
+                <option value="ar">العربية</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Branding -->
+      <div class="card">
+        <div class="card-head">
+          <h3>
+            <admin-icon name="palette" [size]="16" />
+            Branding
+          </h3>
+        </div>
+        <div class="card-pad stack">
+          <div class="row">
+            <div class="field">
+              <label>Store Logo</label>
+              <div class="upload">
+                <admin-icon name="upload" [size]="20" style="margin:0 auto var(--sp-2);display:block;color:var(--color-text-muted)" />
+                <div>Drop PNG / SVG here or <a>browse</a></div>
+                <div style="font-size:12px;margin-top:4px">Max 2 MB</div>
+              </div>
+            </div>
+            <div class="field">
+              <label>Favicon</label>
+              <div class="upload">
+                <admin-icon name="upload" [size]="20" style="margin:0 auto var(--sp-2);display:block;color:var(--color-text-muted)" />
+                <div>Drop ICO / PNG here or <a>browse</a></div>
+                <div style="font-size:12px;margin-top:4px">32×32 px recommended</div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Primary Colour</label>
+            <div class="colorpick">
+              <input type="color" [value]="svc.settings().primaryColor" />
+              <input class="input" type="text" [value]="svc.settings().primaryColor" style="width:130px" />
+              <span class="hint" style="margin:0">Brand accent used across buttons and highlights.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Domain -->
+      <div class="card">
+        <div class="card-head">
+          <h3>
+            <admin-icon name="link" [size]="16" />
+            Domain
+          </h3>
+        </div>
+        <div class="card-pad stack">
+          <div class="field">
+            <label>Subdomain</label>
+            <div class="domain-row">
+              <input class="input" type="text" [value]="svc.settings().subdomain" style="flex:1" />
+              <span class="domain-suffix">.storecraft.io</span>
+            </div>
+            <span class="hint">Your free StoreCraft URL.</span>
+          </div>
+          <div class="divider"></div>
+          <div class="field">
+            <label>Custom Domain</label>
+            <input class="input" type="text" [value]="svc.settings().customDomain" placeholder="shop.mybrand.com" />
+            <span class="hint">Point a CNAME record to <span class="mono">cname.storecraft.io</span> before saving.</span>
+          </div>
+          <button class="btn btn-secondary" style="align-self:flex-start">
+            <admin-icon name="refresh" [size]="14" />
+            Verify DNS
+          </button>
+        </div>
+      </div>
+
+      <!-- Notifications -->
+      <div class="card">
+        <div class="card-head">
+          <h3>
+            <admin-icon name="bell" [size]="16" />
+            Notifications
+          </h3>
+        </div>
+        <div class="card-pad stack">
+
+          <div class="notif-row">
+            <div>
+              <div class="notif-row__label">New order notifications</div>
+              <div class="notif-row__hint">Receive an email when a new order is placed.</div>
+            </div>
+            <button
+              class="toggle"
+              [class.on]="svc.settings().orderNotifications"
+              (click)="toggleNotification('orderNotifications')"
+              aria-label="Toggle order notifications"
+            ></button>
+          </div>
+
+          <div class="divider" style="margin:0"></div>
+
+          <div class="notif-row">
+            <div>
+              <div class="notif-row__label">Low stock alerts</div>
+              <div class="notif-row__hint">Get notified when a product variant falls below the threshold.</div>
+            </div>
+            <button
+              class="toggle"
+              [class.on]="svc.settings().lowStockAlerts"
+              (click)="toggleNotification('lowStockAlerts')"
+              aria-label="Toggle low stock alerts"
+            ></button>
+          </div>
+
+          <div class="divider" style="margin:0"></div>
+
+          <div class="notif-row">
+            <div>
+              <div class="notif-row__label">Weekly summary report</div>
+              <div class="notif-row__hint">A digest of sales, traffic, and top products every Monday.</div>
+            </div>
+            <button
+              class="toggle"
+              [class.on]="svc.settings().weeklyReport"
+              (click)="toggleNotification('weeklyReport')"
+              aria-label="Toggle weekly report"
+            ></button>
+          </div>
+
+          <div class="divider" style="margin:0"></div>
+
+          <div class="notif-row">
+            <div>
+              <div class="notif-row__label">Marketing & product updates</div>
+              <div class="notif-row__hint">News about new StoreCraft features and tips.</div>
+            </div>
+            <button
+              class="toggle"
+              [class.on]="svc.settings().marketingEmails"
+              (click)="toggleNotification('marketingEmails')"
+              aria-label="Toggle marketing emails"
+            ></button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Danger zone -->
+      <div class="danger-box">
+        <div class="hstack" style="gap:var(--sp-3);margin-bottom:var(--sp-4)">
+          <admin-icon name="warning" [size]="18" style="color:var(--color-danger)" />
+          <h3 style="margin:0;font-size:15px;font-weight:700;color:var(--color-danger)">Danger Zone</h3>
+        </div>
+
+        <div class="danger-row">
+          <div>
+            <div style="font-weight:600">Pause store</div>
+            <div class="muted" style="font-size:12.5px;margin-top:2px">
+              Your storefront goes into maintenance mode. Orders cannot be placed.
+            </div>
+          </div>
+          <button class="btn btn-danger-outline btn-sm">Pause Store</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="danger-row">
+          <div>
+            <div style="font-weight:600">Delete store</div>
+            <div class="muted" style="font-size:12.5px;margin-top:2px">
+              Permanently delete the store and all its data. This action cannot be undone.
+            </div>
+          </div>
+          <button class="btn btn-danger btn-sm">
+            <admin-icon name="trash" [size]="13" />
+            Delete Store
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

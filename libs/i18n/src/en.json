@@ -1,0 +1,73 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "confirm": "Confirm"
+  },
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "cart": "Cart",
+    "orders": "Orders",
+    "customers": "Customers",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "loginButton": "Sign In"
+  },
+  "products": {
+    "title": "Products",
+    "addProduct": "Add Product",
+    "editProduct": "Edit Product",
+    "name": "Product Name",
+    "price": "Price",
+    "stock": "Stock",
+    "category": "Category",
+    "status": "Status",
+    "active": "Active",
+    "draft": "Draft"
+  },
+  "orders": {
+    "title": "Orders",
+    "orderId": "Order ID",
+    "customer": "Customer",
+    "date": "Date",
+    "total": "Total",
+    "status": "Status",
+    "pending": "Pending",
+    "processing": "Processing",
+    "shipped": "Shipped",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled"
+  },
+  "theme": {
+    "title": "Theme Editor",
+    "primaryColor": "Primary Color",
+    "secondaryColor": "Secondary Color",
+    "backgroundColor": "Background Color",
+    "textColor": "Text Color",
+    "fontFamily": "Font Family",
+    "storeName": "Store Name",
+    "layout": "Layout Style",
+    "classic": "Classic",
+    "boutique": "Boutique",
+    "catalog": "Catalog"
+  }
+}

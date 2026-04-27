@@ -1,0 +1,21 @@
+<form [formGroup]="form" class="filters-bar">
+  <div class="search-wrap">
+    <admin-icon name="search" [size]="15" class="search-icon" />
+    <input
+      class="input search-input"
+      type="text"
+      formControlName="search"
+      placeholder="Search by name, email, or phone…"
+    />
+  </div>
+
+  <div class="sort-wrap">
+    <admin-icon name="filter" [size]="14" class="sort-icon" />
+    <select class="select" formControlName="sortBy">
+      <option value="recent">Most Recent</option>
+      <option value="name_asc">Name A–Z</option>
+      <option value="orders_desc">Most Orders</option>
+      <option value="spent_desc">Highest Spend</option>
+    </select>
+  </div>
+</form>

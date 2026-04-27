@@ -1,0 +1,178 @@
+import {
+  Injectable,
+  PLATFORM_ID,
+  computed,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Router } from '@angular/router';
+import { createClient, type Session, type SupabaseClient } from '@supabase/supabase-js';
+import { environment } from '../../../environments/environment';
+
+export interface AdminProfile {
+  id: string;
+  email: string;
+  fullName: string;
+  role: 'owner' | 'admin' | 'staff';
+  tenantId: string;
+}
+
+export type AuthErrorKind = 'invalid_credentials' | 'mfa_required' | 'unknown';
+
+export interface AuthError {
+  kind: AuthErrorKind;
+  message: string;
+}
+
+const SESSION_STORAGE_KEY = 'sc_admin_session';
+
+/**
+ * Auth ViewModel — wraps Supabase Auth client.
+ *
+ * Components inject this and bind to its signals; never call Supabase directly.
+ * AuthInterceptor reads `accessToken()` to attach the JWT to /api/* requests.
+ */
+@Injectable({ providedIn: 'root' })
+export class AuthService {
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly router = inject(Router);
+
+  private readonly _user = signal<AdminProfile | null>(null);
+  private readonly _accessToken = signal<string | null>(null);
+  private readonly _isInitializing = signal<boolean>(true);
+  private readonly _isAuthenticating = signal<boolean>(false);
+  private readonly _error = signal<AuthError | null>(null);
+
+  readonly user = this._user.asReadonly();
+  readonly accessToken = this._accessToken.asReadonly();
+  readonly isInitializing = this._isInitializing.asReadonly();
+  readonly isAuthenticating = this._isAuthenticating.asReadonly();
+  readonly error = this._error.asReadonly();
+  readonly isAuthenticated = computed(() => this._user() !== null);
+
+  private readonly supabase: SupabaseClient | null;
+
+  constructor() {
+    this.supabase = isPlatformBrowser(this.platformId)
+      ? createClient(environment.supabaseUrl, environment.supabaseAnonKey, {
+          auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            storageKey: SESSION_STORAGE_KEY,
+          },
+        })
+      : null;
+
+    void this.bootstrap();
+
+    effect(() => {
+      const session = this._accessToken();
+      if (isPlatformBrowser(this.platformId) && session) {
+        // Token signal watched by interceptor — no further action needed.
+      }
+    });
+  }
+
+  async login(email: string, password: string): Promise<void> {
+    if (!this.supabase) return;
+    this._error.set(null);
+    this._isAuthenticating.set(true);
+    try {
+      const { data, error } = await this.supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        this._error.set({
+          kind: this.classifyError(error.message),
+          message: error.message,
+        });
+        return;
+      }
+      if (!data.session) {
+        this._error.set({ kind: 'unknown', message: 'Login succeeded but no session returned.' });
+        return;
+      }
+      await this.applySession(data.session);
+      await this.router.navigate(['/dashboard']);
+    } catch (err) {
+      this._error.set({
+        kind: 'unknown',
+        message: err instanceof Error ? err.message : 'Unknown sign-in error',
+      });
+    } finally {
+      this._isAuthenticating.set(false);
+    }
+  }
+
+  async logout(): Promise<void> {
+    if (this.supabase) {
+      await this.supabase.auth.signOut();
+    }
+    this.clearSession();
+    await this.router.navigate(['/login']);
+  }
+
+  /** Called by interceptor on 401 — clear session and redirect. */
+  async forceSignOut(): Promise<void> {
+    this.clearSession();
+    if (this.supabase) {
+      await this.supabase.auth.signOut().catch(() => undefined);
+    }
+    await this.router.navigate(['/login']);
+  }
+
+  clearError(): void {
+    this._error.set(null);
+  }
+
+  private async bootstrap(): Promise<void> {
+    if (!this.supabase) {
+      this._isInitializing.set(false);
+      return;
+    }
+    try {
+      const { data } = await this.supabase.auth.getSession();
+      if (data.session) {
+        await this.applySession(data.session);
+      }
+      this.supabase.auth.onAuthStateChange((_event, session) => {
+        if (session) {
+          void this.applySession(session);
+        } else {
+          this.clearSession();
+        }
+      });
+    } finally {
+      this._isInitializing.set(false);
+    }
+  }
+
+  private async applySession(session: Session): Promise<void> {
+    this._accessToken.set(session.access_token);
+    const meta = (session.user.user_metadata ?? {}) as {
+      full_name?: string;
+      role?: AdminProfile['role'];
+      tenant_id?: string;
+    };
+    const profile: AdminProfile = {
+      id: session.user.id,
+      email: session.user.email ?? '',
+      fullName: meta.full_name ?? session.user.email ?? '',
+      role: meta.role ?? 'admin',
+      tenantId: meta.tenant_id ?? '',
+    };
+    this._user.set(profile);
+  }
+
+  private clearSession(): void {
+    this._user.set(null);
+    this._accessToken.set(null);
+  }
+
+  private classifyError(message: string): AuthErrorKind {
+    const lower = message.toLowerCase();
+    if (lower.includes('invalid') || lower.includes('credentials')) return 'invalid_credentials';
+    if (lower.includes('mfa')) return 'mfa_required';
+    return 'unknown';
+  }
+}

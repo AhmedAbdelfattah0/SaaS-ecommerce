@@ -1,0 +1,30 @@
+<div class="field">
+  <label>{{ label() }}</label>
+  <div class="colorpick">
+    <input
+      type="color"
+      [value]="value()"
+      (input)="onColorInput($event)"
+      [attr.aria-label]="label() + ' color picker'"
+    />
+    <input
+      type="text"
+      class="input"
+      style="flex: 1;"
+      [formControl]="hexControl"
+      maxlength="7"
+      placeholder="#000000"
+      (input)="onHexInput($event)"
+      [attr.aria-label]="label() + ' hex value'"
+      [style.border-color]="isValidHex() ? '' : 'var(--color-danger)'"
+    />
+    <span
+      class="swatch"
+      [style.background]="value()"
+      [attr.aria-hidden]="true"
+    ></span>
+  </div>
+  @if (!isValidHex()) {
+    <span class="hint" style="color: var(--color-danger);">Enter a valid hex color (e.g. #2563EB)</span>
+  }
+</div>

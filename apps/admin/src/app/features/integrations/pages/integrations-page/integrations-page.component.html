@@ -1,0 +1,158 @@
+<div class="page">
+
+  <!-- Page header -->
+  <div class="page-head">
+    <div>
+      <h1 class="page-title">
+        <admin-icon name="bolt" [size]="22" />
+        {{ i18n.t('nav.integrations', 'Integrations') }}
+      </h1>
+      <p class="page-sub">Connect third-party services to extend your store's capabilities.</p>
+    </div>
+  </div>
+
+  <!-- Analytics section -->
+  <p class="section-label">Analytics &amp; Tracking</p>
+  <div class="int-grid">
+    @for (item of svc.integrations(); track item.id) {
+      @if (item.category === 'analytics') {
+        <div class="int-card" [class.enabled]="item.connected">
+          <div class="int-head">
+            <div class="int-logo" [style.background]="item.iconBg">{{ item.iconLabel }}</div>
+            <div style="flex:1;min-width:0">
+              <div class="int-name">{{ item.name }}</div>
+              <div class="int-desc">{{ item.description }}</div>
+            </div>
+            @if (item.connected) {
+              <span class="badge badge-green"><span class="badge-dot"></span>Connected</span>
+            }
+          </div>
+          <div class="int-foot">
+            <button
+              class="btn btn-sm"
+              [class.btn-danger-outline]="item.connected"
+              [class.btn-primary]="!item.connected"
+              (click)="toggle(item)"
+            >
+              @if (item.connected) { Disconnect } @else { Connect }
+            </button>
+            @if (item.connected) {
+              <button class="btn btn-sm btn-ghost">
+                <admin-icon name="settings" [size]="13" /> Configure
+              </button>
+            }
+          </div>
+        </div>
+      }
+    }
+  </div>
+
+  <!-- Marketing section -->
+  <p class="section-label" style="margin-top: var(--sp-8)">Email &amp; Marketing</p>
+  <div class="int-grid">
+    @for (item of svc.integrations(); track item.id) {
+      @if (item.category === 'marketing') {
+        <div class="int-card" [class.enabled]="item.connected">
+          <div class="int-head">
+            <div class="int-logo" [style.background]="item.iconBg">{{ item.iconLabel }}</div>
+            <div style="flex:1;min-width:0">
+              <div class="int-name">{{ item.name }}</div>
+              <div class="int-desc">{{ item.description }}</div>
+            </div>
+            @if (item.connected) {
+              <span class="badge badge-green"><span class="badge-dot"></span>Connected</span>
+            }
+          </div>
+          <div class="int-foot">
+            <button
+              class="btn btn-sm"
+              [class.btn-danger-outline]="item.connected"
+              [class.btn-primary]="!item.connected"
+              (click)="toggle(item)"
+            >
+              @if (item.connected) { Disconnect } @else { Connect }
+            </button>
+            @if (item.connected) {
+              <button class="btn btn-sm btn-ghost">
+                <admin-icon name="settings" [size]="13" /> Configure
+              </button>
+            }
+          </div>
+        </div>
+      }
+    }
+  </div>
+
+  <!-- Messaging section -->
+  <p class="section-label" style="margin-top: var(--sp-8)">Messaging</p>
+  <div class="int-grid">
+    @for (item of svc.integrations(); track item.id) {
+      @if (item.category === 'messaging') {
+        <div class="int-card" [class.enabled]="item.connected">
+          <div class="int-head">
+            <div class="int-logo" [style.background]="item.iconBg">{{ item.iconLabel }}</div>
+            <div style="flex:1;min-width:0">
+              <div class="int-name">{{ item.name }}</div>
+              <div class="int-desc">{{ item.description }}</div>
+            </div>
+            @if (item.connected) {
+              <span class="badge badge-green"><span class="badge-dot"></span>Connected</span>
+            }
+          </div>
+          <div class="int-foot">
+            <button
+              class="btn btn-sm"
+              [class.btn-danger-outline]="item.connected"
+              [class.btn-primary]="!item.connected"
+              (click)="toggle(item)"
+            >
+              @if (item.connected) { Disconnect } @else { Connect }
+            </button>
+            @if (item.connected) {
+              <button class="btn btn-sm btn-ghost">
+                <admin-icon name="settings" [size]="13" /> Configure
+              </button>
+            }
+          </div>
+        </div>
+      }
+    }
+  </div>
+
+  <!-- Automation section -->
+  <p class="section-label" style="margin-top: var(--sp-8)">Automation</p>
+  <div class="int-grid">
+    @for (item of svc.integrations(); track item.id) {
+      @if (item.category === 'automation') {
+        <div class="int-card" [class.enabled]="item.connected">
+          <div class="int-head">
+            <div class="int-logo" [style.background]="item.iconBg">{{ item.iconLabel }}</div>
+            <div style="flex:1;min-width:0">
+              <div class="int-name">{{ item.name }}</div>
+              <div class="int-desc">{{ item.description }}</div>
+            </div>
+            @if (item.connected) {
+              <span class="badge badge-green"><span class="badge-dot"></span>Connected</span>
+            }
+          </div>
+          <div class="int-foot">
+            <button
+              class="btn btn-sm"
+              [class.btn-danger-outline]="item.connected"
+              [class.btn-primary]="!item.connected"
+              (click)="toggle(item)"
+            >
+              @if (item.connected) { Disconnect } @else { Connect }
+            </button>
+            @if (item.connected) {
+              <button class="btn btn-sm btn-ghost">
+                <admin-icon name="settings" [size]="13" /> Configure
+              </button>
+            }
+          </div>
+        </div>
+      }
+    }
+  </div>
+
+</div>

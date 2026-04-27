@@ -1,0 +1,168 @@
+/* ============================================
+   Payments page — specific styles
+   ============================================ */
+
+/* keep API keys / monospace identifiers LTR even in RTL */
+.ltr-input,
+input.ltr-input,
+input.mono {
+  direction: ltr;
+  text-align: left;
+  unicode-bidi: isolate;
+}
+
+/* Language toggle pill in topbar */
+.tb-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, border-color 0.15s;
+}
+.tb-lang:hover { background: white; border-color: var(--color-border-strong); }
+.tb-lang .sep { color: var(--color-border-strong); font-weight: 400; }
+.tb-lang .on { color: var(--color-primary); }
+
+/* ============================================
+   RTL overrides — applied globally when dir=rtl
+   ============================================ */
+
+[dir="rtl"] body,
+[dir="rtl"] .page,
+[dir="rtl"] .sidebar,
+[dir="rtl"] .topbar {
+  font-family: 'Cairo', 'Inter', system-ui, sans-serif;
+}
+
+/* mirror app grid: sidebar moves to the RIGHT
+   Trick: force the grid container itself to LTR flow so column 1 is always
+   physical-left and column 2 is always physical-right. Then put sidebar in
+   column 2 (right) and main in column 1 (left). Restore RTL direction on
+   the children so their text/flex flow is still right-to-left. */
+[dir="rtl"] .app {
+  direction: ltr;
+  grid-template-columns: 1fr var(--sidebar-w);
+}
+[dir="rtl"] .sidebar {
+  direction: rtl;
+  grid-column: 2;
+  grid-row: 1;
+  border-left: none;
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
+[dir="rtl"] .main-col {
+  direction: rtl;
+  grid-column: 1;
+  grid-row: 1;
+}
+
+/* sidebar nav items: active-state left border becomes right border */
+[dir="rtl"] .sb-item {
+  border-left: 2px solid transparent;
+  border-right: 2px solid transparent;
+  padding: 8px 14px 8px 10px;
+  margin-left: 0;
+  margin-right: -2px;
+}
+[dir="rtl"] .sb-item.active {
+  border-left-color: transparent;
+  border-right-color: var(--color-sidebar-active);
+}
+
+/* topbar right-side cluster becomes left-side */
+[dir="rtl"] .tb-right { margin-left: 0; margin-right: auto; }
+
+/* flex rows that matter visually */
+[dir="rtl"] .tb-titleblock { text-align: right; }
+
+/* search bar icon + kbd swap sides */
+[dir="rtl"] .tb-search .icon { left: auto; right: 14px; }
+[dir="rtl"] .tb-search input { padding-left: 14px; padding-right: 40px; text-align: right; }
+[dir="rtl"] .tb-search .kbd { left: 10px; right: auto; }
+
+/* mirror directional arrows / chevrons inside buttons and links */
+[dir="rtl"] .sb-user-sub,
+[dir="rtl"] .sb-plan-cta,
+[dir="rtl"] .notif-link {
+  /* arrow chars auto-flip via unicode-bidi; no change needed */
+}
+[dir="rtl"] svg.rotate-rtl { transform: scaleX(-1); }
+
+/* notification dropdown opens from the OPPOSITE corner */
+[dir="rtl"] .notif-panel {
+  right: auto;
+  left: 0;
+}
+
+/* notification items content align right */
+[dir="rtl"] .notif-body { text-align: right; }
+
+/* badges with dot — push dot to right side visually by reversing */
+[dir="rtl"] .badge { flex-direction: row-reverse; }
+
+/* sb-item-badge: was margin-left:auto; flip to margin-right */
+[dir="rtl"] .sb-item-badge { margin-left: 0; margin-right: auto; }
+
+/* tables: header + cells align right; actions column sticks to left */
+[dir="rtl"] table th,
+[dir="rtl"] table td { text-align: right; }
+[dir="rtl"] table th.num,
+[dir="rtl"] table td.num { text-align: left; }
+
+/* page headers and section titles align right naturally; fix gap-based layouts */
+[dir="rtl"] .page-head,
+[dir="rtl"] .kpi-grid,
+[dir="rtl"] .panel-head,
+[dir="rtl"] .tl-step,
+[dir="rtl"] .int-head { /* flex gap works mirrored */ }
+
+/* forms: labels right-align */
+[dir="rtl"] .field label { text-align: right; }
+[dir="rtl"] .field .hint { text-align: right; }
+
+/* inputs default RTL; but .ltr-input + .mono force LTR (api keys, domains, etc.) */
+[dir="rtl"] .input,
+[dir="rtl"] .select,
+[dir="rtl"] .textarea { text-align: right; }
+
+/* numbers stay Western — we're not using Arabic-Indic numerals, but ensure number spans isolate */
+[dir="rtl"] .num,
+[dir="rtl"] .mono-num { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+
+/* tweaks panel: move from right to left */
+[dir="rtl"] .tweaks-float { right: auto; left: 24px; }
+
+/* dropdowns / menus anchored top-right flip to top-left */
+[dir="rtl"] .dropdown-right { right: auto; left: 0; }
+
+/* status dots, checkbox cells (first column) — flip order with row-reverse if needed */
+[dir="rtl"] .order-row,
+[dir="rtl"] .product-row { /* default grid mirrors automatically */ }
+
+/* Kbd shortcut hint */
+[dir="rtl"] .kbd { direction: ltr; }
+
+/* Ensure breadcrumbs display comfortably RTL */
+[dir="rtl"] .tb-crumb { flex-direction: row-reverse; justify-content: flex-end; }
+[dir="rtl"] .tb-crumb .sep { transform: scaleX(-1); }
+
+/* Checkout phone preview stays LTR for price formatting aesthetics but labels are translated */
+[dir="rtl"] .preview-phone { direction: rtl; text-align: right; }
+
+/* sidebar chevron on store switcher */
+[dir="rtl"] .sb-store { text-align: right; }
+
+/* Tabs that use left/right borders */
+[dir="rtl"] .tabs .tab.active { border-bottom-color: var(--color-primary); }
+
+/* Rotate 180° for explicit navigation arrows */
+[dir="rtl"] .arrow-next { transform: rotate(180deg); }
+[dir="rtl"] .arrow-prev { transform: rotate(180deg); }

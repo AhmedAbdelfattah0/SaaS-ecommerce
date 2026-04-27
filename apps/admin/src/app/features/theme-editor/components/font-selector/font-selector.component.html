@@ -1,0 +1,20 @@
+<div class="field">
+  <label>Font Family</label>
+  <div class="font-options" role="radiogroup" aria-label="Font family">
+    @for (font of fonts; track font.value) {
+      <button
+        type="button"
+        role="radio"
+        [attr.aria-checked]="isSelected(font)"
+        class="font-option"
+        [class.font-option--selected]="isSelected(font)"
+        [style.font-family]="font.stack"
+        (click)="select(font)"
+      >
+        <span class="font-option__radio"></span>
+        <span class="font-option__label">{{ font.label }}</span>
+        <span class="font-option__sample" [style.font-family]="font.stack">Aa</span>
+      </button>
+    }
+  </div>
+</div>

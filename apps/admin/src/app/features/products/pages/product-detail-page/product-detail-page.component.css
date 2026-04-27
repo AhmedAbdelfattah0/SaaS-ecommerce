@@ -1,0 +1,127 @@
+/* Product Detail Page */
+
+.detail-page {
+  padding: var(--sp-6) var(--sp-8) var(--sp-16);
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-3) var(--sp-5);
+  margin-bottom: var(--sp-6);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--color-surface);
+}
+
+.detail-header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.detail-header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.detail-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.divider-v {
+  width: 1px;
+  height: 20px;
+  background: var(--color-border);
+}
+
+.detail-body {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: var(--sp-6);
+  align-items: start;
+}
+
+.detail-main {
+  min-width: 0;
+}
+
+.detail-aside {
+  min-width: 0;
+  position: sticky;
+  top: 80px;
+}
+
+.detail-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+}
+
+.input-error {
+  border-color: var(--color-danger) !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12) !important;
+}
+
+.image-grid-wrap {
+  min-height: 60px;
+}
+
+.image-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+.image-cell {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.image-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--r-md);
+  border: 1px solid var(--color-border);
+}
+
+.image-remove {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-danger);
+  color: white;
+  display: grid;
+  place-items: center;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.image-add-cell {
+  flex: 1;
+  min-width: 200px;
+}
+
+@media (max-width: 900px) {
+  .detail-body {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-aside {
+    position: static;
+  }
+}

@@ -16,6 +16,13 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["@org/source"]
+    "customConditions": ["@org/source"],
+    "paths": {
+      "@storecraft/ui": ["libs/ui/src/index.ts"],
+      "@storecraft/models": ["libs/models/src/index.ts"],
+      "@storecraft/utils": ["libs/utils/src/index.ts"],
+      "@storecraft/i18n/en": ["libs/i18n/src/en.json"],
+      "@storecraft/i18n/ar": ["libs/i18n/src/ar.json"]
+    }
   }
 }

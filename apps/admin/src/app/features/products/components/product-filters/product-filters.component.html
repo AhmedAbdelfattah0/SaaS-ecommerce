@@ -1,0 +1,47 @@
+<div class="filters-wrap">
+  <!-- Search -->
+  <form [formGroup]="searchForm" (ngSubmit)="onSearchSubmit()" class="filters-search">
+    <div style="position: relative;">
+      <span class="filters-search-icon">
+        <admin-icon name="search" [size]="16" />
+      </span>
+      <input
+        formControlName="search"
+        type="text"
+        class="input"
+        placeholder="Search products..."
+        style="padding-left: 36px;"
+        (keyup)="onSearchKeyup($event)"
+        (keyup.enter)="onSearchSubmit()"
+      />
+    </div>
+  </form>
+
+  <!-- Category filter -->
+  <select class="select" style="width: 180px;" (change)="onCategoryChange($event)" [value]="currentCategory()">
+    <option value="">All Categories</option>
+    @for (cat of categories(); track cat.id) {
+      <option [value]="cat.id">{{ cat.name }}</option>
+    }
+  </select>
+
+  <!-- Status tabs -->
+  <div class="tabs-pill">
+    @for (option of statusOptions; track option.value) {
+      <button
+        type="button"
+        [class.active]="currentStatus() === option.value"
+        (click)="onStatusChange(option.value)"
+      >
+        {{ option.label }}
+      </button>
+    }
+  </div>
+
+  <!-- Sort -->
+  <select class="select" style="width: 160px;" (change)="onSortChange($event)" [value]="currentSort()">
+    @for (option of sortOptions; track option.value) {
+      <option [value]="option.value">{{ option.label }}</option>
+    }
+  </select>
+</div>

@@ -1,0 +1,134 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <!-- Basic Info -->
+  <div class="card" style="margin-bottom: var(--sp-4);">
+    <div class="card-head">
+      <h3><admin-icon name="package" [size]="16" /> Basic Information</h3>
+    </div>
+    <div class="card-pad stack">
+
+      <div class="field">
+        <label for="pf-name">Product Name *</label>
+        <input
+          id="pf-name"
+          formControlName="name"
+          type="text"
+          class="input"
+          [class.input-error]="hasError('name')"
+          placeholder="e.g. Premium T-Shirt"
+        />
+        @if (hasError('name')) {
+          <span class="hint" style="color: var(--color-danger);">Name is required (min 2 chars)</span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="pf-slug">Slug *</label>
+        <input
+          id="pf-slug"
+          formControlName="slug"
+          type="text"
+          class="input"
+          [class.input-error]="hasError('slug')"
+          placeholder="premium-t-shirt"
+        />
+        <span class="hint">Used in product URLs. Auto-generated from name.</span>
+        @if (hasError('slug')) {
+          <span class="hint" style="color: var(--color-danger);">Slug is required</span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="pf-desc">Description</label>
+        <textarea
+          id="pf-desc"
+          formControlName="description"
+          class="textarea"
+          placeholder="Describe your product..."
+        ></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Pricing -->
+  <div class="card" style="margin-bottom: var(--sp-4);">
+    <div class="card-head">
+      <h3><admin-icon name="dollar" [size]="16" /> Pricing</h3>
+    </div>
+    <div class="card-pad">
+      <div class="row gap-4">
+        <div class="field">
+          <label for="pf-price">Price *</label>
+          <input
+            id="pf-price"
+            formControlName="price"
+            type="number"
+            class="input"
+            [class.input-error]="hasError('price')"
+            placeholder="0.00"
+            min="0"
+            step="0.01"
+          />
+          @if (hasError('price')) {
+            <span class="hint" style="color: var(--color-danger);">Price must be 0 or more</span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="pf-compare">Compare at Price</label>
+          <input
+            id="pf-compare"
+            formControlName="comparePrice"
+            type="number"
+            class="input"
+            placeholder="0.00"
+            min="0"
+            step="0.01"
+          />
+          <span class="hint">Original price shown as strikethrough</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inventory -->
+  <div class="card" style="margin-bottom: var(--sp-4);">
+    <div class="card-head">
+      <h3><admin-icon name="list" [size]="16" /> Inventory</h3>
+    </div>
+    <div class="card-pad">
+      <div class="field" style="max-width: 200px;">
+        <label for="pf-stock">Stock Quantity *</label>
+        <input
+          id="pf-stock"
+          formControlName="stock"
+          type="number"
+          class="input"
+          [class.input-error]="hasError('stock')"
+          placeholder="0"
+          min="0"
+        />
+        @if (hasError('stock')) {
+          <span class="hint" style="color: var(--color-danger);">Stock must be 0 or more</span>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Images -->
+  <div class="card" style="margin-bottom: var(--sp-4);">
+    <div class="card-head">
+      <h3><admin-icon name="upload" [size]="16" /> Images</h3>
+    </div>
+    <div class="card-pad">
+      <admin-product-image-grid
+        [images]="images()"
+        [readonly]="false"
+        (addImage)="onAddImage($event)"
+        (removeImage)="onRemoveImage($event)"
+      />
+    </div>
+  </div>
+
+</form>

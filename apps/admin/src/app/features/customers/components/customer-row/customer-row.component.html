@@ -1,0 +1,44 @@
+<tr (click)="navigateToDetail()">
+  <!-- Avatar + Name -->
+  <td>
+    <div class="hstack" style="gap: var(--sp-3);">
+      <div
+        class="avatar"
+        [style.background]="avatarBg()"
+        [attr.aria-label]="customer().name"
+      >{{ initials_() }}</div>
+      <div>
+        <div style="font-weight: 600; color: var(--color-text);">{{ customer().name }}</div>
+      </div>
+    </div>
+  </td>
+
+  <!-- Email -->
+  <td class="muted">{{ customer().email }}</td>
+
+  <!-- Phone -->
+  <td class="muted">{{ customer().phone ?? '—' }}</td>
+
+  <!-- Joined -->
+  <td class="muted num">{{ joinedDate() }}</td>
+
+  <!-- Actions -->
+  <td>
+    <div class="row-actions">
+      <button
+        class="icon-btn"
+        title="View customer"
+        (click)="navigateToDetail(); $event.stopPropagation()"
+      >
+        <admin-icon name="eye" [size]="14" />
+      </button>
+      <button
+        class="icon-btn"
+        title="Email customer"
+        (click)="$event.stopPropagation()"
+      >
+        <admin-icon name="mail" [size]="14" />
+      </button>
+    </div>
+  </td>
+</tr>

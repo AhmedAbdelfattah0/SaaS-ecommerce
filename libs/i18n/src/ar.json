@@ -1,0 +1,73 @@
+{
+  "common": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "add": "إضافة",
+    "search": "بحث",
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ",
+    "success": "تم بنجاح",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق",
+    "close": "إغلاق",
+    "confirm": "تأكيد"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "products": "المنتجات",
+    "cart": "السلة",
+    "orders": "الطلبات",
+    "customers": "العملاء",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج"
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "loginButton": "دخول"
+  },
+  "products": {
+    "title": "المنتجات",
+    "addProduct": "إضافة منتج",
+    "editProduct": "تعديل المنتج",
+    "name": "اسم المنتج",
+    "price": "السعر",
+    "stock": "المخزون",
+    "category": "التصنيف",
+    "status": "الحالة",
+    "active": "نشط",
+    "draft": "مسودة"
+  },
+  "orders": {
+    "title": "الطلبات",
+    "orderId": "رقم الطلب",
+    "customer": "العميل",
+    "date": "التاريخ",
+    "total": "الإجمالي",
+    "status": "الحالة",
+    "pending": "قيد الانتظار",
+    "processing": "جاري المعالجة",
+    "shipped": "تم الشحن",
+    "delivered": "تم التسليم",
+    "cancelled": "ملغي"
+  },
+  "theme": {
+    "title": "محرر الثيم",
+    "primaryColor": "اللون الأساسي",
+    "secondaryColor": "اللون الثانوي",
+    "backgroundColor": "لون الخلفية",
+    "textColor": "لون النص",
+    "fontFamily": "الخط",
+    "storeName": "اسم المتجر",
+    "layout": "نمط التصميم",
+    "classic": "كلاسيك",
+    "boutique": "بوتيك",
+    "catalog": "كتالوج"
+  }
+}

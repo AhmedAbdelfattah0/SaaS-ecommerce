@@ -1,0 +1,159 @@
+<div class="page">
+
+  <!-- Page Header -->
+  <div class="page-head">
+    <div>
+      <h1 class="page-title">
+        Products
+        <span class="page-count">{{ service.total() }}</span>
+      </h1>
+      <p class="page-sub">Manage your store's product catalog</p>
+    </div>
+    <div class="hstack" style="gap: var(--sp-3);">
+      <button type="button" class="btn btn-secondary">
+        <admin-icon name="download" [size]="15" />
+        Export
+      </button>
+      <button type="button" class="btn btn-primary" (click)="onAddProduct()">
+        <admin-icon name="plus" [size]="15" />
+        Add Product
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <admin-product-filters
+    [categories]="service.categories()"
+    [currentStatus]="service.statusFilter()"
+    [currentSort]="service.sortBy()"
+    [currentCategory]="service.categoryFilter()"
+    [currentSearch]="service.search()"
+    (searchChanged)="onSearch($event)"
+    (statusChanged)="onStatusChange($event)"
+    (categoryChanged)="onCategoryChange($event)"
+    (sortChanged)="onSortChange($event)"
+  />
+
+  <!-- Bulk Action Bar -->
+  @if (service.hasSelection()) {
+    <admin-product-bulk-actions
+      [selectedCount]="service.selectedCount()"
+      (deleteRequested)="onBulkDelete()"
+      (setStatusRequested)="onBulkSetStatus($event)"
+      (clearRequested)="onClearSelection()"
+    />
+  }
+
+  <!-- Table -->
+  <div class="card" style="margin-top: var(--sp-4); overflow: hidden;">
+
+    @if (service.error()) {
+      <div class="banner warn" style="margin: var(--sp-4);">
+        <admin-icon name="warning" [size]="16" />
+        <span>{{ service.error() }}</span>
+      </div>
+    }
+
+    @if (service.isLoading()) {
+      <div style="padding: var(--sp-8); display: flex; justify-content: center; align-items: center; gap: var(--sp-3); color: var(--color-text-muted);">
+        <admin-icon name="refresh" [size]="18" />
+        Loading products...
+      </div>
+    } @else if (service.items().length === 0) {
+      <!-- Empty State -->
+      <div class="empty-state">
+        <admin-icon name="package" [size]="40" />
+        <h3>No products found</h3>
+        <p>Try adjusting your filters or add a new product.</p>
+        <button type="button" class="btn btn-primary" (click)="onAddProduct()">
+          <admin-icon name="plus" [size]="15" />
+          Add Product
+        </button>
+      </div>
+    } @else {
+      <table class="table">
+        <thead>
+          <tr>
+            <th style="width: 44px;">
+              <div
+                class="checkbox"
+                [class.on]="service.allSelected()"
+                (click)="onSelectAll()"
+                role="checkbox"
+                [attr.aria-checked]="service.allSelected()"
+              >
+                @if (service.allSelected()) {
+                  <svg viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11">
+                    <polyline points="1,5.5 4,8.5 10,2.5" />
+                  </svg>
+                }
+              </div>
+            </th>
+            <th style="width: 56px;"></th>
+            <th>Product</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Status</th>
+            <th style="width: 80px;"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (product of service.items(); track product.id) {
+            <tr
+              admin-product-row
+              [product]="product"
+              [isSelected]="service.selectedIds().has(product.id)"
+              [categoryName]="getCategoryName(product.categoryId)"
+              (toggleSelect)="onToggleSelect($event)"
+              (deleteProduct)="onDeleteProduct($event)"
+            ></tr>
+          }
+        </tbody>
+      </table>
+
+      <!-- Pagination -->
+      @if (service.totalPages() > 1) {
+        <div class="pagination-footer">
+          <span class="pagination-info">
+            Page {{ service.page() }} of {{ service.totalPages() }} &mdash;
+            {{ service.total() }} products
+          </span>
+          <div class="pagination-pages">
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              [disabled]="service.page() === 1"
+              (click)="onPageChange(service.page() - 1)"
+            >
+              <admin-icon name="chevronleft" [size]="14" />
+            </button>
+
+            @for (p of getPaginationPages(); track p) {
+              <button
+                type="button"
+                class="btn btn-sm"
+                [class.btn-primary]="p === service.page()"
+                [class.btn-secondary]="p !== service.page()"
+                (click)="onPageChange(p)"
+              >
+                {{ p }}
+              </button>
+            }
+
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              [disabled]="service.page() === service.totalPages()"
+              (click)="onPageChange(service.page() + 1)"
+            >
+              <admin-icon name="chevronright" [size]="14" />
+            </button>
+          </div>
+        </div>
+      }
+    }
+
+  </div>
+
+</div>

@@ -1,0 +1,36 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noPropertyAccessFromIndexSignature": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "bundler",
+    "module": "preserve",
+    "emitDeclarationOnly": false,
+    "composite": false,
+    "baseUrl": ".",
+    "lib": ["es2022", "dom", "dom.iterable"],
+    "paths": {
+      "@storecraft/ui": ["../../libs/ui/src/index.ts"],
+      "@storecraft/models": ["../../libs/models/src/index.ts"],
+      "@storecraft/utils": ["../../libs/utils/src/index.ts"],
+      "@storecraft/i18n/en": ["../../libs/i18n/src/en.json"],
+      "@storecraft/i18n/ar": ["../../libs/i18n/src/ar.json"]
+    }
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  },
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}

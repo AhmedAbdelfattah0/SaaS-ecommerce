@@ -1,0 +1,12 @@
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+a.sb-item {
+  text-decoration: none;
+}
+a.sb-item:hover {
+  text-decoration: none;
+}

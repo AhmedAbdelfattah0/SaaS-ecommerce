@@ -1,0 +1,32 @@
+<div class="bulk-bar">
+  <span style="font-size: 13px; font-weight: 600;">
+    {{ selectedCount() }} selected
+  </span>
+
+  <button type="button" class="btn btn-sm" (click)="onSetStatus('active')">
+    <admin-icon name="check" [size]="13" />
+    Set Active
+  </button>
+
+  <button type="button" class="btn btn-sm" (click)="onSetStatus('draft')">
+    <admin-icon name="eyeoff" [size]="13" />
+    Set Draft
+  </button>
+
+  <button
+    type="button"
+    class="btn btn-sm"
+    style="background: rgba(220,38,38,0.2); color: #FCA5A5;"
+    (click)="onDelete()"
+  >
+    <admin-icon name="trash" [size]="13" />
+    Delete
+  </button>
+
+  <span class="spacer"></span>
+
+  <button type="button" class="btn btn-sm btn-ghost" style="color: rgba(255,255,255,0.6);" (click)="onClear()">
+    <admin-icon name="x" [size]="13" />
+    Clear
+  </button>
+</div>

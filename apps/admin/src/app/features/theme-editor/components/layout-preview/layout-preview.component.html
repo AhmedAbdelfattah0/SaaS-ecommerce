@@ -1,0 +1,95 @@
+<div class="preview-shell">
+  <!-- Browser chrome -->
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="d"></div>
+      <div class="d"></div>
+      <div class="d"></div>
+      <div class="url">mystore.storecraft.io</div>
+    </div>
+
+    <!-- Storefront mockup -->
+    <div class="sf-mock" [ngStyle]="bodyStyle()">
+
+      <!-- Nav bar -->
+      <div class="sf-nav" [ngStyle]="headerStyle()">
+        @if (theme().logoUrl) {
+          <img [src]="theme().logoUrl" class="sf-logo-img" alt="logo" />
+        } @else {
+          <div class="sf-logo-text">{{ theme().storeName || 'My Store' }}</div>
+        }
+        <div class="sf-nav-links">
+          <span class="sf-nav-link">Shop</span>
+          <span class="sf-nav-link">About</span>
+          <span class="sf-nav-link">Cart</span>
+        </div>
+      </div>
+
+      <!-- Hero -->
+      <div class="sf-hero" [ngStyle]="{ 'background': theme().primaryColor + '18' }">
+        <div class="sf-hero-text">
+          <div class="sf-hero-title" [ngStyle]="{ color: theme().textColor, 'font-family': theme().fontFamily }">
+            Welcome to {{ theme().storeName || 'My Store' }}
+          </div>
+          <div class="sf-hero-sub" [ngStyle]="{ color: theme().textColor, opacity: '0.6' }">
+            Discover our curated collection
+          </div>
+          <div class="sf-hero-btn" [ngStyle]="buttonStyle()">Shop Now</div>
+        </div>
+      </div>
+
+      <!-- Product grid -->
+      @if (isClassic()) {
+        <div class="sf-classic-body">
+          <div class="sf-sidebar">
+            <div class="sf-sidebar-item" [ngStyle]="{ 'border-left-color': theme().primaryColor }">All</div>
+            <div class="sf-sidebar-item">New</div>
+            <div class="sf-sidebar-item">Sale</div>
+          </div>
+          <div class="sf-product-grid sf-product-grid--2">
+            @for (p of [1, 2, 3, 4]; track p) {
+              <div class="sf-product-card">
+                <div class="sf-product-img" [ngStyle]="accentStyle()"></div>
+                <div class="sf-product-name" [ngStyle]="{ color: theme().textColor }">Product {{ p }}</div>
+                <div class="sf-product-price" [ngStyle]="{ color: theme().primaryColor }">$29.99</div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      @if (isBoutique()) {
+        <div class="sf-boutique-body">
+          @for (p of [1, 2, 3]; track p) {
+            <div class="sf-boutique-card">
+              <div class="sf-boutique-img" [ngStyle]="accentStyle()"></div>
+              <div class="sf-product-name" [ngStyle]="{ color: theme().textColor }">Item {{ p }}</div>
+            </div>
+          }
+        </div>
+      }
+
+      @if (isCatalog()) {
+        <div class="sf-product-grid sf-product-grid--3" style="padding: 12px;">
+          @for (p of [1, 2, 3, 4, 5, 6]; track p) {
+            <div class="sf-product-card">
+              <div class="sf-product-img" [ngStyle]="accentStyle()"></div>
+              <div class="sf-product-name sf-product-name--sm" [ngStyle]="{ color: theme().textColor }">Product</div>
+            </div>
+          }
+        </div>
+      }
+
+    </div>
+  </div>
+
+  <!-- Legend strip -->
+  <div class="preview-legend">
+    <span class="preview-swatch" [style.background]="theme().primaryColor" title="Primary"></span>
+    <span class="preview-swatch" [style.background]="theme().secondaryColor" title="Secondary"></span>
+    <span class="preview-swatch" [style.background]="theme().backgroundColor" title="Background" style="border: 1px solid var(--color-border);"></span>
+    <span class="preview-swatch" [style.background]="theme().textColor" title="Text"></span>
+    <span class="preview-layout-tag">{{ theme().layoutType }}</span>
+    <span class="preview-font-tag">{{ theme().fontFamily }}</span>
+  </div>
+</div>

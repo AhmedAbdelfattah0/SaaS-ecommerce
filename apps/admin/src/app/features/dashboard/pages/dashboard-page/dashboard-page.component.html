@@ -1,0 +1,323 @@
+<div class="page">
+
+  <!-- ── Page header ──────────────────────────────────────────── -->
+  <div class="page-head">
+    <div>
+      <h1 class="page-title">{{ i18n.t('nav.dashboard', 'Dashboard') }}</h1>
+      <p class="page-sub">Here&#x2019;s what&#x2019;s happening with {{ storeName }} today</p>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:var(--sp-3)">
+      <!-- Range segmented control -->
+      <div class="seg" role="group" aria-label="Date range">
+        @for (r of ranges; track r) {
+          <button
+            [class.active]="svc.range() === r"
+            (click)="setRange(r)"
+            [attr.aria-pressed]="svc.range() === r"
+          >
+            {{ rangeLabels[r] }}
+          </button>
+        }
+      </div>
+
+      <!-- Date button -->
+      <button class="btn btn-secondary btn-sm" style="gap:var(--sp-2)">
+        <admin-icon name="calendar" [size]="14" />
+        Apr 26, 2026
+      </button>
+    </div>
+  </div>
+
+  <!-- ── KPI grid ──────────────────────────────────────────────── -->
+  @if (svc.isLoading()) {
+    <div class="kpi-grid">
+      @for (_ of [1,2,3,4]; track $index) {
+        <div class="kpi">
+          <div class="skeleton" style="height:20px;width:60%;border-radius:var(--r-sm)"></div>
+          <div class="skeleton" style="height:32px;width:80%;border-radius:var(--r-sm);margin-top:var(--sp-3)"></div>
+          <div class="skeleton" style="height:16px;width:40%;border-radius:var(--r-sm);margin-top:var(--sp-3)"></div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="kpi-grid">
+      @for (kpi of svc.kpis(); track kpi.id) {
+        <admin-kpi-card
+          [label]="kpi.label"
+          [value]="kpi.value"
+          [delta]="kpi.delta"
+          [up]="kpi.up"
+          [color]="kpi.color"
+          [bg]="kpi.bg"
+          [icon]="kpi.icon"
+          [spark]="kpi.spark"
+        />
+      }
+    </div>
+  }
+
+  <!-- ── Row 1: Revenue chart + Donut ─────────────────────────── -->
+  <div class="row" style="margin-bottom:var(--sp-6)">
+
+    <!-- Revenue chart -->
+    <div class="card" style="flex:1.6;min-width:0">
+      <div class="card-head">
+        <h3>
+          <admin-icon name="trendingup" [size]="16" />
+          Revenue Overview
+          <span class="muted" style="font-size:11.5px;margin-inline-start:var(--sp-2)">EGP</span>
+        </h3>
+        <span class="badge badge-blue">This week</span>
+      </div>
+      <div class="card-pad" style="padding-top:var(--sp-4)">
+        <admin-revenue-chart [series]="svc.revenuePoints()" />
+      </div>
+    </div>
+
+    <!-- Donut chart -->
+    <div class="card" style="flex:1;min-width:0">
+      <div class="card-head">
+        <h3>
+          <admin-icon name="cart" [size]="16" />
+          Orders by Status
+        </h3>
+      </div>
+      <div class="card-pad" style="display:flex;flex-direction:column;align-items:center;gap:var(--sp-4)">
+        <admin-donut-chart
+          [segments]="svc.donutSegments()"
+          [total]="svc.totalOrders()"
+          label="Orders"
+        />
+
+        <div class="legend" style="width:100%">
+          @for (seg of svc.donutSegments(); track seg.label) {
+            <div class="legend-row">
+              <span class="legend-dot" [style.background]="seg.color"></span>
+              <span class="legend-name">{{ seg.label }}</span>
+              <span class="legend-val">{{ seg.value }} &middot; {{ seg.pct }}%</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Row 2: Recent orders + Top products ───────────────────── -->
+  <div class="row" style="margin-bottom:var(--sp-6)">
+
+    <!-- Recent orders -->
+    <div class="card" style="flex:1.4;min-width:0">
+      <div class="card-head">
+        <h3>
+          <admin-icon name="cart" [size]="16" />
+          Recent Orders
+        </h3>
+        <a href="/orders" class="muted" style="font-size:12.5px;font-weight:600">
+          {{ i18n.t('common.viewAll', 'View all') }}
+        </a>
+      </div>
+
+      @if (svc.isLoading()) {
+        <div class="card-pad">
+          <div class="muted" style="text-align:center;padding:var(--sp-8) 0">
+            {{ i18n.t('common.loading', 'Loading...') }}
+          </div>
+        </div>
+      } @else if (svc.recentOrders().length === 0) {
+        <div class="card-pad">
+          <div class="muted" style="text-align:center;padding:var(--sp-8) 0">
+            {{ i18n.t('common.empty', 'No results') }}
+          </div>
+        </div>
+      } @else {
+        <div style="overflow-x:auto">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Order</th>
+                <th>Customer</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (order of svc.recentOrders(); track order.id) {
+                <tr class="live-row">
+                  <td class="nowrap">
+                    <span class="num" style="font-weight:600">#{{ order.id }}</span>
+                    <div class="muted" style="font-size:11px;margin-top:2px">{{ order.itemCount }} items</div>
+                  </td>
+                  <td>
+                    <span class="truncate" style="max-width:140px;display:block">{{ order.customerName }}</span>
+                  </td>
+                  <td>
+                    <admin-status-badge [status]="order.status" />
+                  </td>
+                  <td class="num nowrap">{{ order.total }}</td>
+                  <td class="muted nowrap">{{ order.createdAt }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+
+      <div class="card-foot">
+        <a href="/orders">{{ i18n.t('common.viewAll', 'View all') }} orders</a>
+      </div>
+    </div>
+
+    <!-- Top products -->
+    <div class="card" style="flex:1;min-width:0">
+      <div class="card-head">
+        <h3>
+          <admin-icon name="package" [size]="16" />
+          Top Products
+        </h3>
+        <a href="/products" class="muted" style="font-size:12.5px;font-weight:600">
+          {{ i18n.t('common.viewAll', 'View all') }}
+        </a>
+      </div>
+
+      <div class="card-pad stack">
+        @for (prod of svc.topProducts(); track prod.id) {
+          <div style="display:flex;flex-direction:column;gap:var(--sp-2)">
+            <div style="display:flex;align-items:center;gap:var(--sp-3)">
+              <admin-product-swatch [color]="prod.color" [size]="32" />
+              <div style="flex:1;min-width:0">
+                <div class="truncate" style="font-size:13px;font-weight:500">{{ prod.name }}</div>
+                <div class="muted" style="font-size:11px">{{ prod.category }}</div>
+              </div>
+              <div style="text-align:end">
+                <div class="num nowrap" style="font-size:13px;font-weight:600">{{ prod.revenue }}</div>
+                <div class="muted" style="font-size:11px">{{ prod.units }} units</div>
+              </div>
+            </div>
+            <div class="pbar">
+              <div class="pbar-fill" [style.width.%]="prod.pct" [style.background]="prod.color"></div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="card-foot">
+        <a href="/products">{{ i18n.t('common.viewAll', 'View all') }} products</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Row 3: Low stock + Recent customers ───────────────────── -->
+  <div class="row">
+
+    <!-- Low stock -->
+    <div class="card" style="flex:1;min-width:0">
+      <div class="card-head">
+        <h3>
+          <admin-icon name="warning" [size]="16" style="color:var(--color-warning)" />
+          Low Stock Alerts
+          <span class="page-count" style="font-size:11px">{{ svc.lowStock().length }}</span>
+        </h3>
+      </div>
+
+      <div class="card-pad stack">
+        @for (item of svc.lowStock(); track item.id) {
+          <div style="display:flex;flex-direction:column;gap:var(--sp-2)">
+            <div style="display:flex;align-items:center;gap:var(--sp-3)">
+              <admin-product-swatch [color]="item.color" [size]="28" />
+              <div style="flex:1;min-width:0">
+                <div class="truncate" style="font-size:13px;font-weight:500">{{ item.name }}</div>
+                <div style="display:flex;align-items:center;gap:var(--sp-2);margin-top:2px">
+                  @if (item.stock <= 5) {
+                    <span class="badge badge-red" style="font-size:10.5px;padding:2px 7px">
+                      <span class="badge-dot"></span>Critical
+                    </span>
+                  } @else {
+                    <span class="badge badge-amber" style="font-size:10.5px;padding:2px 7px">
+                      <span class="badge-dot"></span>Low
+                    </span>
+                  }
+                  <span class="muted" style="font-size:11.5px">{{ item.stock }} / {{ item.threshold }}</span>
+                </div>
+              </div>
+              <div class="num" style="font-weight:700;font-size:18px;color:var(--color-warning)">{{ item.stock }}</div>
+            </div>
+            <div class="pbar">
+              <div
+                class="pbar-fill"
+                [style.width.%]="(item.stock / item.threshold) * 100"
+                [style.background]="item.stock <= 5 ? 'var(--color-danger)' : 'var(--color-warning)'"
+              ></div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="card-foot">
+        <a href="/products">Manage inventory</a>
+      </div>
+    </div>
+
+    <!-- Recent customers -->
+    <div class="card" style="flex:1;min-width:0">
+      <div class="card-head">
+        <h3>
+          <admin-icon name="users" [size]="16" />
+          Recent Customers
+        </h3>
+        <a href="/customers" class="muted" style="font-size:12.5px;font-weight:600">
+          {{ i18n.t('common.viewAll', 'View all') }}
+        </a>
+      </div>
+
+      @if (svc.isLoading()) {
+        <div class="card-pad">
+          <div class="muted" style="text-align:center;padding:var(--sp-8) 0">
+            {{ i18n.t('common.loading', 'Loading...') }}
+          </div>
+        </div>
+      } @else if (svc.recentCustomers().length === 0) {
+        <div class="card-pad">
+          <div class="muted" style="text-align:center;padding:var(--sp-8) 0">
+            {{ i18n.t('common.empty', 'No results') }}
+          </div>
+        </div>
+      } @else {
+        <div class="card-pad stack gap-3">
+          @for (cust of svc.recentCustomers(); track cust.id) {
+            <div style="display:flex;align-items:center;gap:var(--sp-3)">
+              <div
+                class="avatar"
+                [style.background]="cust.avatarColor"
+              >{{ cust.initials }}</div>
+              <div style="flex:1;min-width:0">
+                <div class="truncate" style="font-size:13px;font-weight:500">{{ cust.name }}</div>
+                <div class="muted truncate" style="font-size:11.5px">{{ cust.email }}</div>
+              </div>
+              <div style="text-align:end">
+                <div class="muted" style="font-size:11px;white-space:nowrap">{{ cust.joinedAt }}</div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+      <div class="card-foot">
+        <a href="/customers">{{ i18n.t('common.viewAll', 'View all') }} customers</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Error banner ──────────────────────────────────────────── -->
+  @if (svc.error()) {
+    <div class="banner warn" style="margin-top:var(--sp-6)">
+      <admin-icon name="warning" [size]="16" />
+      <div>
+        <strong>Could not load live data.</strong>
+        {{ svc.error() }} — Dashboard is showing mock data.
+      </div>
+    </div>
+  }
+
+</div>

@@ -1,0 +1,106 @@
+<div class="page">
+
+  <!-- Page header -->
+  <div class="page-head">
+    <div>
+      <h1 class="page-title">
+        <admin-icon name="users" [size]="22" />
+        {{ i18n.t('nav.team', 'Team & Roles') }}
+        <span class="page-count">{{ svc.members().length }}</span>
+      </h1>
+      <p class="page-sub">Manage team members and control what each person can access.</p>
+    </div>
+    <button class="btn btn-primary">
+      <admin-icon name="userplus" [size]="15" />
+      Invite Member
+    </button>
+  </div>
+
+  <!-- Team members table -->
+  <div class="card" style="margin-bottom: var(--sp-6)">
+    <div class="card-head">
+      <h3>Members</h3>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Member</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Joined</th>
+          <th>Last active</th>
+          <th style="text-align:right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (member of svc.members(); track member.id) {
+          <tr>
+            <td>
+              <div class="hstack" style="gap:var(--sp-3)">
+                <div class="avatar" [style.background]="member.avatarBg">{{ member.initials }}</div>
+                <div>
+                  <div style="font-weight:600">{{ member.fullName }}</div>
+                  <div class="muted" style="font-size:12px">{{ member.email }}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="role-badge role-badge--{{ member.role }}">{{ member.role }}</span>
+            </td>
+            <td>
+              @switch (member.status) {
+                @case ('active') {
+                  <span class="badge badge-green"><span class="badge-dot"></span>Active</span>
+                }
+                @case ('invited') {
+                  <span class="badge badge-amber"><span class="badge-dot"></span>Invited</span>
+                }
+                @case ('suspended') {
+                  <span class="badge badge-red"><span class="badge-dot"></span>Suspended</span>
+                }
+              }
+            </td>
+            <td class="muted">{{ member.joinedAt }}</td>
+            <td class="muted">{{ member.lastActiveAt }}</td>
+            <td>
+              <div class="row-actions">
+                <button class="icon-btn" title="Edit role">
+                  <admin-icon name="edit" [size]="14" />
+                </button>
+                @if (member.role !== 'owner') {
+                  <button class="icon-btn danger" title="Remove member" (click)="remove(member.id)">
+                    <admin-icon name="trash" [size]="14" />
+                  </button>
+                }
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Roles reference -->
+  <div>
+    <h2 class="section-title">Role Definitions</h2>
+    <div class="roles-grid">
+      @for (role of svc.roles(); track role.id) {
+        <div class="card card-pad role-card">
+          <div class="hstack" style="gap:var(--sp-3);margin-bottom:var(--sp-3)">
+            <span class="role-badge role-badge--{{ role.id }} role-badge--lg">{{ role.name }}</span>
+          </div>
+          <p class="muted" style="font-size:13px;margin:0 0 var(--sp-3)">{{ role.description }}</p>
+          <ul class="perm-list">
+            @for (perm of role.permissions; track perm) {
+              <li>
+                <admin-icon name="check" [size]="12" style="color:var(--color-success)" />
+                {{ perm }}
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+  </div>
+
+</div>

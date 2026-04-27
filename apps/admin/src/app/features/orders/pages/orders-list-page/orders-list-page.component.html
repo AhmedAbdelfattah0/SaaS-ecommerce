@@ -1,0 +1,155 @@
+<div class="page">
+
+  <!-- Page Header -->
+  <div class="page-head">
+    <div>
+      <h1 class="page-title">
+        Orders
+        <span class="page-count">{{ svc.total() }}</span>
+      </h1>
+      <p class="page-sub">Manage and track all customer orders</p>
+    </div>
+    <div class="hstack gap-3">
+      <button class="btn btn-secondary" (click)="onRefresh()">
+        <admin-icon name="refresh" [size]="15" />
+        Refresh
+      </button>
+      <button class="btn btn-secondary">
+        <admin-icon name="download" [size]="15" />
+        Export
+      </button>
+    </div>
+  </div>
+
+  <!-- Live Banner: new pending orders -->
+  @if (svc.newPendingCount() > 0 && !svc.isLoading()) {
+    <div class="banner info">
+      <admin-icon name="bolt" [size]="16" />
+      <span>
+        <strong>{{ svc.newPendingCount() }} pending order{{ svc.newPendingCount() !== 1 ? 's' : '' }}</strong>
+        awaiting processing.
+      </span>
+      <button class="btn btn-sm btn-secondary" style="margin-left: auto" (click)="onStatusTabChange('pending')">
+        View Pending
+      </button>
+    </div>
+  }
+
+  <!-- Status Tabs -->
+  <div class="tabs-pill" style="margin-bottom: var(--sp-5)">
+    @for (tab of statusTabs; track tab.key) {
+      <button
+        [class.active]="svc.statusFilter() === tab.key"
+        (click)="onStatusTabChange(tab.key)"
+      >
+        {{ tab.label }}
+        <span class="count">{{ getTabCount(tab.key) }}</span>
+      </button>
+    }
+  </div>
+
+  <!-- Filters Row -->
+  <div style="margin-bottom: var(--sp-5)">
+    <admin-order-filters (filtersChange)="onFiltersChange($event)" />
+  </div>
+
+  <!-- Error State -->
+  @if (svc.error()) {
+    <div class="banner warn" style="margin-bottom: var(--sp-4)">
+      <admin-icon name="warning" [size]="16" />
+      <span>{{ svc.error() }}</span>
+      <button class="btn btn-sm btn-secondary" style="margin-left: auto" (click)="onRefresh()">
+        Retry
+      </button>
+    </div>
+  }
+
+  <!-- Table Card -->
+  <div class="card">
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (svc.isLoading()) {
+            @for (i of [1,2,3,4,5,6,7,8]; track i) {
+              <tr class="skeleton-row">
+                <td><div class="skeleton" style="width:80px;height:16px;border-radius:4px"></div></td>
+                <td>
+                  <div class="hstack gap-3">
+                    <div class="skeleton" style="width:32px;height:32px;border-radius:50%"></div>
+                    <div class="skeleton" style="width:120px;height:16px;border-radius:4px"></div>
+                  </div>
+                </td>
+                <td><div class="skeleton" style="width:50px;height:16px;border-radius:4px"></div></td>
+                <td><div class="skeleton" style="width:80px;height:16px;border-radius:4px"></div></td>
+                <td><div class="skeleton" style="width:80px;height:22px;border-radius:999px"></div></td>
+                <td><div class="skeleton" style="width:60px;height:16px;border-radius:4px"></div></td>
+                <td></td>
+              </tr>
+            }
+          } @else if (svc.items().length === 0) {
+            <tr>
+              <td colspan="7">
+                <div class="empty-state">
+                  <admin-icon name="cart" [size]="40" />
+                  <div class="empty-title">No orders found</div>
+                  <div class="empty-sub">Try adjusting your filters or search query.</div>
+                </div>
+              </td>
+            </tr>
+          } @else {
+            @for (order of svc.items(); track order.id; let i = $index) {
+              <admin-order-row
+                [order]="order"
+                [index]="i"
+                (rowClick)="navigateToOrder($event)"
+              />
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    @if (!svc.isLoading() && svc.totalPages() > 1) {
+      <div class="pagination">
+        <button
+          class="btn btn-secondary btn-sm"
+          [disabled]="svc.page() <= 1"
+          (click)="onPageChange(svc.page() - 1)"
+        >
+          <admin-icon name="chevronleft" [size]="14" />
+          Previous
+        </button>
+        <div class="page-pills">
+          @for (p of pages; track p) {
+            <button
+              class="page-pill"
+              [class.active]="p === svc.page()"
+              (click)="onPageChange(p)"
+            >{{ p }}</button>
+          }
+        </div>
+        <button
+          class="btn btn-secondary btn-sm"
+          [disabled]="svc.page() >= svc.totalPages()"
+          (click)="onPageChange(svc.page() + 1)"
+        >
+          Next
+          <admin-icon name="chevronright" [size]="14" />
+        </button>
+      </div>
+    }
+  </div>
+
+</div>

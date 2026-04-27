@@ -1,0 +1,79 @@
+<div class="detail-page">
+
+  <!-- Sticky Header -->
+  <div class="detail-header">
+    <div class="hstack gap-3">
+      <button class="icon-btn" (click)="goBack()" title="Back to customers">
+        <admin-icon name="chevronleft" [size]="18" />
+      </button>
+      @if (service.customer(); as c) {
+        <div
+          class="avatar"
+          [style.background]="avatarColor(c.name)"
+        >{{ initials(c.name) }}</div>
+        <div>
+          <div style="font-weight: 700; font-size: 15px;">{{ c.name }}</div>
+          <div style="font-size: 12px; color: var(--color-text-muted);">{{ c.email }}</div>
+        </div>
+      } @else if (service.isLoading()) {
+        <div class="skeleton" style="width: 140px; height: 18px; border-radius: var(--r-sm);"></div>
+      }
+    </div>
+
+    @if (service.customer(); as c) {
+      <div class="hstack gap-3">
+        <a
+          class="btn btn-secondary btn-sm"
+          [href]="'mailto:' + c.email"
+        >
+          <admin-icon name="mail" [size]="13" />
+          Email Customer
+        </a>
+        <button class="btn btn-primary btn-sm">
+          <admin-icon name="edit" [size]="13" />
+          Edit
+        </button>
+      </div>
+    }
+  </div>
+
+  <!-- Body -->
+  @if (service.isLoading()) {
+    <div class="page" style="text-align: center; padding: var(--sp-16);">
+      <div class="skeleton" style="width: 48px; height: 48px; border-radius: 50%; margin: 0 auto;"></div>
+      <div style="color: var(--color-text-muted); margin-top: var(--sp-4); font-size: 14px;">Loading customer…</div>
+    </div>
+  } @else if (service.error()) {
+    <div class="page" style="text-align: center; padding: var(--sp-16);">
+      <admin-icon name="warning" [size]="32" style="color: var(--color-danger);" />
+      <div style="color: var(--color-danger); margin-top: var(--sp-3); font-size: 14px;">{{ service.error() }}</div>
+      <button class="btn btn-secondary btn-sm" style="margin-top: var(--sp-4);" (click)="service.clearError()">
+        <admin-icon name="refresh" [size]="13" />
+        Retry
+      </button>
+    </div>
+  } @else if (service.customer(); as customer) {
+    <div class="page">
+      <div class="detail-body">
+
+        <!-- Left column: profile card -->
+        <div class="detail-left">
+          <admin-customer-card [customer]="customer" />
+        </div>
+
+        <!-- Right column: stats + order history -->
+        <div class="detail-right">
+          <admin-customer-stats
+            [ordersCount]="service.stats().ordersCount"
+            [totalSpentFormatted]="service.stats().totalSpentFormatted"
+            [avgOrderValueFormatted]="service.stats().avgOrderValueFormatted"
+            [lastOrderDate]="service.stats().lastOrderDate"
+          />
+          <admin-customer-orders [orders]="service.recentOrders()" />
+        </div>
+
+      </div>
+    </div>
+  }
+
+</div>

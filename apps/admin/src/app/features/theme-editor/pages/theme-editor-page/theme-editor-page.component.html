@@ -1,0 +1,180 @@
+<div class="page">
+
+  <!-- Page header -->
+  <div class="page-head">
+    <div>
+      <h1 class="page-title">
+        <admin-icon name="palette" [size]="24" />
+        {{ i18n.t('nav.theme', 'Theme Editor') }}
+      </h1>
+      <p class="page-sub">Customize your storefront appearance. Changes are previewed instantly.</p>
+    </div>
+
+    <div class="hstack" style="gap: var(--sp-3); align-items: center;">
+      @if (svc.saveError()) {
+        <span class="theme-error-msg">
+          <admin-icon name="warning" [size]="14" />
+          {{ svc.saveError() }}
+        </span>
+      }
+
+      <button
+        type="button"
+        class="btn btn-secondary"
+        [disabled]="!svc.isDirty() || svc.isSaving()"
+        (click)="discard()"
+      >
+        <admin-icon name="x" [size]="15" />
+        Discard
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        [disabled]="!svc.isDirty() || svc.isSaving()"
+        (click)="save()"
+      >
+        @if (svc.isSaving()) {
+          <admin-icon name="refresh" [size]="15" />
+          Saving...
+        } @else {
+          <admin-icon name="check" [size]="15" />
+          {{ i18n.t('common.save', 'Save Changes') }}
+        }
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  @if (svc.isLoading()) {
+    <div class="theme-loading">
+      <admin-icon name="refresh" [size]="24" />
+      <span>Loading theme...</span>
+    </div>
+  }
+
+  <!-- Main two-column layout -->
+  @if (!svc.isLoading() && svc.theme()) {
+    <div class="theme-layout">
+
+      <!-- Left column: controls -->
+      <div class="theme-controls stack">
+
+        <!-- Brand Identity card -->
+        <div class="card">
+          <div class="card-head">
+            <h3>
+              <admin-icon name="bold" [size]="16" />
+              Brand Identity
+            </h3>
+          </div>
+          <div class="card-pad stack">
+            <admin-logo-upload
+              [currentUrl]="svc.theme()!.logoUrl"
+              (change)="onLogoChange($event)"
+            />
+
+            <div class="field">
+              <label for="store-name">Store Name</label>
+              <input
+                id="store-name"
+                type="text"
+                class="input"
+                [value]="svc.theme()!.storeName"
+                placeholder="My Store"
+                (input)="onStoreNameInput($event)"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Colors card -->
+        <div class="card">
+          <div class="card-head">
+            <h3>
+              <admin-icon name="palette" [size]="16" />
+              Colors
+            </h3>
+          </div>
+          <div class="card-pad stack">
+            <admin-color-picker
+              label="Primary Color"
+              [value]="svc.theme()!.primaryColor"
+              (valueChange)="onColorChange('primaryColor', $event)"
+            />
+            <admin-color-picker
+              label="Secondary Color"
+              [value]="svc.theme()!.secondaryColor"
+              (valueChange)="onColorChange('secondaryColor', $event)"
+            />
+            <admin-color-picker
+              label="Background Color"
+              [value]="svc.theme()!.backgroundColor"
+              (valueChange)="onColorChange('backgroundColor', $event)"
+            />
+            <admin-color-picker
+              label="Text Color"
+              [value]="svc.theme()!.textColor"
+              (valueChange)="onColorChange('textColor', $event)"
+            />
+          </div>
+        </div>
+
+        <!-- Typography card -->
+        <div class="card">
+          <div class="card-head">
+            <h3>
+              <admin-icon name="italic" [size]="16" />
+              Typography
+            </h3>
+          </div>
+          <div class="card-pad">
+            <admin-font-selector
+              [value]="svc.theme()!.fontFamily"
+              (valueChange)="onFontChange($event)"
+            />
+          </div>
+        </div>
+
+        <!-- Layout card -->
+        <div class="card">
+          <div class="card-head">
+            <h3>
+              <admin-icon name="list" [size]="16" />
+              Layout
+            </h3>
+          </div>
+          <div class="card-pad">
+            <admin-layout-selector
+              [value]="svc.theme()!.layoutType"
+              (valueChange)="onLayoutChange($event)"
+            />
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right column: live preview -->
+      <div class="theme-preview-col">
+        <div class="card theme-preview-sticky">
+          <div class="card-head">
+            <h3>
+              <admin-icon name="eye" [size]="16" />
+              Live Preview
+            </h3>
+            @if (svc.isDirty()) {
+              <span class="badge badge-amber">Unsaved changes</span>
+            } @else {
+              <span class="badge badge-green">Saved</span>
+            }
+          </div>
+          <div class="card-pad">
+            <admin-layout-preview [theme]="svc.theme()!" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+  }
+
+</div>
