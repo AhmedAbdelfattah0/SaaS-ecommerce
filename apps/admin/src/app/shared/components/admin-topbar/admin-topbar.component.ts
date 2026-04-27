@@ -31,7 +31,7 @@ const PAGE_TITLES: Record<string, PageMeta> = {
   imports: [AdminIconComponent, AdminNotificationsPanelComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './admin-topbar.component.html',
-  styleUrl: './admin-topbar.component.css',
+  styleUrl: './admin-topbar.component.scss',
 })
 export class AdminTopbarComponent {
   private readonly router = inject(Router);

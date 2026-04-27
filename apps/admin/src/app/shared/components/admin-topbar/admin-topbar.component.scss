@@ -1,0 +1,261 @@
+// =========================================================
+// Admin Topbar
+// =========================================================
+
+// Local truncate helper (scoped to topbar via ViewEncapsulation.Emulated)
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Notifications wrapper: positions the dropdown panel absolutely
+.tb-notif-wrap {
+  position: relative;
+}
+
+// Remove the default WebKit search-cancel button
+input[type='search']::-webkit-search-cancel-button {
+  display: none;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-6);
+  padding: 0 var(--sp-8);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  height: var(--topbar-h);
+  z-index: 10;
+}
+
+// ---- Title + breadcrumb block ----
+.tb-titleblock {
+  min-width: 0;
+}
+
+.tb-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+.tb-crumb {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  .sep {
+    color: var(--color-border-strong);
+  }
+}
+
+// ---- Search bar ----
+.tb-search {
+  flex: 1;
+  max-width: 520px;
+  position: relative;
+
+  input {
+    width: 100%;
+    height: 38px;
+    padding: 0 var(--sp-3) 0 38px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--r-md);
+    font-size: 13px;
+    transition: border-color 0.15s, background 0.15s;
+    outline: none;
+
+    &:focus {
+      border-color: var(--color-primary);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+  }
+
+  .icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-subtle);
+    width: 16px;
+    height: 16px;
+  }
+
+  .kbd {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--r-sm);
+    padding: 2px 6px;
+  }
+}
+
+// ---- Right cluster ----
+.tb-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+// Live status pill
+.tb-live {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: var(--color-success-light);
+  border-radius: var(--r-pill);
+  font-size: 11.5px;
+  color: #15803D;
+  font-weight: 600;
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #16A34A;
+    animation: pulse-g 1.8s infinite;
+  }
+}
+
+@keyframes pulse-g {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+// Icon button (notifications, etc.)
+.tb-iconbtn {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r-md);
+  display: grid;
+  place-items: center;
+  color: var(--color-text-muted);
+  transition: background 0.15s, color 0.15s;
+  border: 1px solid transparent;
+
+  &:hover {
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  &.active {
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+
+  .badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: var(--r-pill);
+    background: var(--color-danger);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+    border: 2px solid white;
+  }
+}
+
+// Store switcher
+.tb-store-switch {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 6px 10px 6px 6px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--color-border);
+  background: white;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--color-text);
+  transition: border-color 0.15s;
+
+  &:hover {
+    border-color: var(--color-border-strong);
+  }
+
+  .sw-logo {
+    width: 22px;
+    height: 22px;
+    border-radius: 5px;
+    background: linear-gradient(135deg, #2563EB, #7C3AED);
+    display: grid;
+    place-items: center;
+    color: white;
+    font-weight: 700;
+    font-size: 10px;
+  }
+}
+
+// Language toggle pill
+.tb-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, border-color 0.15s;
+
+  &:hover {
+    background: white;
+    border-color: var(--color-border-strong);
+  }
+
+  .sep {
+    color: var(--color-border-strong);
+    font-weight: 400;
+  }
+
+  .on {
+    color: var(--color-primary);
+  }
+}
+
+// Avatar button (sign-out trigger)
+.tb-avatar-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #F59E0B, #DC2626);
+  display: grid;
+  place-items: center;
+  color: white;
+  font-weight: 600;
+  font-size: 13px;
+  border: 2px solid white;
+  outline: 1px solid var(--color-border);
+  transition: outline-color 0.15s;
+
+  &:hover {
+    outline-color: var(--color-primary);
+  }
+}

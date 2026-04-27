@@ -133,3 +133,53 @@ a {
     text-decoration: underline;
   }
 }
+
+/* =========================================================
+   Page wrapper utilities
+   Used inside routed page templates rendered through
+   <router-outlet>. They live here (not in admin-shell's
+   .scss) because emulated view encapsulation does not
+   extend the shell's _ngcontent attribute across the
+   outlet boundary. Layout chrome only — themeable values
+   still come from var(--token).
+   ========================================================= */
+
+.page {
+  padding: var(--sp-8) var(--sp-8) var(--sp-16);
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-6);
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.page-count {
+  font-size: 13px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  font-weight: 500;
+}
+
+.page-sub {
+  color: var(--color-text-muted);
+  font-size: 13.5px;
+  margin-top: 4px;
+}

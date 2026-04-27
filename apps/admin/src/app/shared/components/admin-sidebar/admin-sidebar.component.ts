@@ -116,7 +116,7 @@ const NAV_GROUPS: NavGroup[] = [
   imports: [RouterLink, RouterLinkActive, AdminIconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './admin-sidebar.component.html',
-  styleUrl: './admin-sidebar.component.css',
+  styleUrl: './admin-sidebar.component.scss',
 })
 export class AdminSidebarComponent {
   private readonly i18n = inject(AdminI18nService);

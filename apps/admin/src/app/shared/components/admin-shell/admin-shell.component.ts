@@ -8,6 +8,7 @@ import { AdminTopbarComponent } from '../admin-topbar/admin-topbar.component';
   standalone: true,
   imports: [RouterOutlet, AdminSidebarComponent, AdminTopbarComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './admin-shell.component.scss',
   template: `
     <div class="app">
       <admin-sidebar />

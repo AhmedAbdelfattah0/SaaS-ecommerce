@@ -89,6 +89,7 @@ const SAMPLE: NotificationItem[] = [
   standalone: true,
   imports: [AdminIconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './admin-notifications-panel.component.scss',
   template: `
     <div class="notif-backdrop" (click)="close.emit()"></div>
     <div class="notif-panel" role="dialog" aria-label="Notifications">
@@ -132,35 +133,6 @@ const SAMPLE: NotificationItem[] = [
       </div>
     </div>
   `,
-  styles: [
-    `
-      .notif-backdrop {
-        position: fixed;
-        inset: 0;
-        z-index: 49;
-      }
-      .notif-link {
-        background: none;
-        border: 0;
-        color: var(--color-primary);
-        font-weight: 600;
-        font-size: 11.5px;
-        cursor: pointer;
-        padding: 0;
-      }
-      .notif-link:hover {
-        text-decoration: underline;
-      }
-      .notif-mark {
-        background: none;
-        border: 0;
-        color: var(--color-primary);
-        cursor: pointer;
-        font-size: 12px;
-        padding: 0;
-      }
-    `,
-  ],
 })
 export class AdminNotificationsPanelComponent {
   readonly close = output<void>();
