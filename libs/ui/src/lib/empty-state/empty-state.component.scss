@@ -1,0 +1,65 @@
+// =========================================================
+// sc-empty-state
+// Centred empty placeholder for lists, tables, search results,
+// and detail pages. Themeable via var(--token) only.
+// =========================================================
+
+:host {
+  display: block;
+}
+
+.sc-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--sp-12) var(--sp-6);
+  gap: var(--sp-2);
+}
+
+.sc-empty-state-icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--r-pill);
+  background: var(--color-bg);
+  color: var(--color-text-subtle);
+  margin-bottom: var(--sp-2);
+
+  // Collapse when no icon projected — preserves centred balance
+  // for icon-less variants (no awkward 56px gap above the title).
+  &:empty {
+    display: none;
+  }
+}
+
+.sc-empty-state-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+.sc-empty-state-description {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin: 0;
+  max-width: 360px;
+  line-height: 1.5;
+}
+
+.sc-empty-state-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  margin-top: var(--sp-4);
+
+  &:empty {
+    display: none;
+  }
+}

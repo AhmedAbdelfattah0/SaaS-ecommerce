@@ -1,0 +1,12 @@
+<div class="sc-empty-state">
+  <div class="sc-empty-state-icon">
+    <ng-content select="[icon]" />
+  </div>
+  <h3 class="sc-empty-state-title">{{ title() }}</h3>
+  @if (description()) {
+    <p class="sc-empty-state-description">{{ description() }}</p>
+  }
+  <div class="sc-empty-state-actions">
+    <ng-content />
+  </div>
+</div>
