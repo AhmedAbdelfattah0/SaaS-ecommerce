@@ -1,0 +1,191 @@
+// =========================================================
+// sc-data-table
+// Semantic <table> with display:grid + display:contents on
+// the row groups so columns flex via grid-template-columns
+// while screen readers still see proper table semantics.
+// RTL via CSS logical values (start/end, padding-inline-*).
+// =========================================================
+
+:host {
+  display: block;
+}
+
+.sc-data-table {
+  width: 100%;
+  display: grid;
+  // grid-template-columns is set inline via [style.grid-template-columns]
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  font-size: 13.5px;
+  color: var(--color-text);
+}
+
+// display:contents on row groups so cells participate in the parent grid
+.sc-data-table thead,
+.sc-data-table tbody,
+.sc-data-table tr {
+  display: contents;
+}
+
+// =========================================================
+// Header cells
+// =========================================================
+.sc-data-table th {
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  padding-block: var(--sp-3);
+  padding-inline: var(--sp-4);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  user-select: none;
+  text-align: start;
+
+  &[data-align='center'] {
+    justify-content: center;
+    text-align: center;
+  }
+  &[data-align='end'] {
+    justify-content: flex-end;
+    text-align: end;
+  }
+}
+
+.sc-data-table-th-sortable {
+  cursor: pointer;
+  transition: color 0.12s;
+
+  &:hover {
+    color: var(--color-text);
+  }
+}
+
+.sc-data-table-th-sort {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-primary);
+  margin-inline-start: var(--sp-1);
+}
+
+// Sticky header opt-in
+.sc-data-table-sticky thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+// =========================================================
+// Body cells
+// =========================================================
+.sc-data-table td {
+  padding-block: var(--sp-3);
+  padding-inline: var(--sp-4);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  text-align: start;
+  min-width: 0; // allow truncation inside grid cells
+
+  &[data-align='center'] {
+    justify-content: center;
+    text-align: center;
+  }
+  &[data-align='end'] {
+    justify-content: flex-end;
+    text-align: end;
+  }
+}
+
+.sc-data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.sc-data-table-cell-nowrap {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  // The flex layout above can defeat ellipsis; force single-line content
+  > * {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+// =========================================================
+// Row interaction
+// =========================================================
+.sc-data-table-row {
+  cursor: pointer;
+  transition: background 0.12s;
+
+  &:hover td {
+    background: var(--color-bg);
+  }
+
+  &.sc-data-table-row-selected td {
+    background: var(--color-primary-light);
+  }
+}
+
+// =========================================================
+// Selection checkbox
+// =========================================================
+.sc-data-table-checkbox-header,
+.sc-data-table-checkbox-cell {
+  justify-content: center;
+  cursor: default;
+}
+
+.sc-data-table-checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--color-primary);
+}
+
+// =========================================================
+// Skeleton loading state
+// =========================================================
+.sc-data-table-skeleton-row td {
+  padding-block: var(--sp-4);
+}
+
+.sc-data-table-skeleton {
+  display: block;
+  height: 14px;
+  width: 80%;
+  background: linear-gradient(
+    90deg,
+    var(--color-border) 25%,
+    var(--color-bg) 50%,
+    var(--color-border) 75%
+  );
+  background-size: 200% 100%;
+  border-radius: var(--r-sm);
+  animation: sc-data-table-skeleton-shimmer 1.4s linear infinite;
+}
+
+.sc-data-table-skeleton-checkbox {
+  width: 16px;
+  height: 16px;
+  border-radius: var(--r-sm);
+}
+
+@keyframes sc-data-table-skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

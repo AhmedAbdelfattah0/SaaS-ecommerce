@@ -1,0 +1,100 @@
+<table
+  class="sc-data-table"
+  [class.sc-data-table-sticky]="stickyHeader()"
+  [style.grid-template-columns]="gridTemplateColumns()"
+>
+  <thead>
+    <tr>
+      @if (selectable()) {
+        <th class="sc-data-table-checkbox-header">
+          <input
+            type="checkbox"
+            class="sc-data-table-checkbox"
+            [checked]="headerCheckboxState() === 'all'"
+            [indeterminate]="headerCheckboxState() === 'some'"
+            (change)="toggleAll()"
+            aria-label="Select all rows"
+          />
+        </th>
+      }
+      @for (col of columns(); track col.key()) {
+        <th
+          [class.sc-data-table-th-sortable]="col.sortable()"
+          [attr.data-align]="col.align()"
+          [attr.aria-sort]="ariaSortFor(col)"
+          (click)="onHeaderClick(col)"
+        >
+          <span class="sc-data-table-th-label">{{ col.label() }}</span>
+          @if (col.sortable() && sort()?.key === col.key()) {
+            <span class="sc-data-table-th-sort" aria-hidden="true">
+              @if (sort()?.direction === 'asc') {
+                <svg width="10" height="10" viewBox="0 0 10 10">
+                  <path d="M5 2 L8 6 L2 6 Z" fill="currentColor" />
+                </svg>
+              } @else {
+                <svg width="10" height="10" viewBox="0 0 10 10">
+                  <path d="M5 8 L8 4 L2 4 Z" fill="currentColor" />
+                </svg>
+              }
+            </span>
+          }
+        </th>
+      }
+    </tr>
+  </thead>
+
+  <tbody [attr.aria-busy]="loading() ? 'true' : null">
+    @if (loading() && data().length === 0) {
+      @for (skel of skeletonRows; track skel) {
+        <tr class="sc-data-table-skeleton-row">
+          @if (selectable()) {
+            <td class="sc-data-table-checkbox-cell">
+              <span class="sc-data-table-skeleton sc-data-table-skeleton-checkbox"></span>
+            </td>
+          }
+          @for (col of columns(); track col.key()) {
+            <td [attr.data-align]="col.align()">
+              <span class="sc-data-table-skeleton"></span>
+            </td>
+          }
+        </tr>
+      }
+    } @else {
+      @for (row of data(); track trackBy($index, row); let i = $index) {
+        <tr
+          class="sc-data-table-row"
+          [class.sc-data-table-row-selected]="selectable() && isRowSelected(row)"
+          (click)="onRowClick(row, $event)"
+        >
+          @if (selectable()) {
+            <td class="sc-data-table-checkbox-cell">
+              <input
+                type="checkbox"
+                class="sc-data-table-checkbox"
+                [checked]="isRowSelected(row)"
+                (change)="toggleRow(row, $event)"
+                (click)="$event.stopPropagation()"
+                [attr.aria-label]="'Select row ' + rowKey(row)"
+              />
+            </td>
+          }
+          @for (col of columns(); track col.key()) {
+            <td
+              [attr.data-align]="col.align()"
+              [class.sc-data-table-cell-nowrap]="col.nowrap()"
+            >
+              @if (col.cellTemplate(); as tpl) {
+                <ng-container
+                  [ngTemplateOutlet]="tpl"
+                  [ngTemplateOutletContext]="{ $implicit: row }"
+                />
+              } @else {
+                {{ cellValue(row, col.key()) }}
+              }
+            </td>
+          }
+        </tr>
+      }
+    }
+  </tbody>
+</table>
