@@ -1,0 +1,44 @@
+<dialog
+  #dialog
+  class="sc-modal-dialog"
+  [attr.data-size]="size()"
+  [attr.aria-labelledby]="title() ? titleId : null"
+  (click)="onBackdropClick($event)"
+  (cancel)="onCancel($event)"
+>
+  <header class="sc-modal-header">
+    <div class="sc-modal-header-main">
+      <ng-content select="[modal-header]">
+        @if (title()) {
+          <h2 [id]="titleId" class="sc-modal-title">{{ title() }}</h2>
+        }
+      </ng-content>
+    </div>
+    @if (dismissible()) {
+      <button
+        type="button"
+        class="sc-modal-close"
+        (click)="requestClose()"
+        aria-label="Close dialog"
+      >
+        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+          <path
+            d="M1 1 L13 13 M13 1 L1 13"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            fill="none"
+          />
+        </svg>
+      </button>
+    }
+  </header>
+
+  <div class="sc-modal-body">
+    <ng-content />
+  </div>
+
+  <footer class="sc-modal-footer">
+    <ng-content select="[modal-footer]" />
+  </footer>
+</dialog>

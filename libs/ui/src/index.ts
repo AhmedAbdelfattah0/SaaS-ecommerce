@@ -10,3 +10,4 @@ export * from './lib/data-table/data-column.component';
 export * from './lib/data-table/data-table.component';
 export * from './lib/tabs/tabs.types';
 export * from './lib/tabs/tabs.component';
+export * from './lib/modal/modal.component';
