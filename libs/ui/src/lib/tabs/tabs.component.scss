@@ -1,0 +1,134 @@
+// =========================================================
+// sc-tabs
+// Two visual variants: pill (default, filter selectors) and
+// underline (primary section navigation). RTL-safe via CSS
+// logical properties throughout.
+// =========================================================
+
+:host {
+  display: inline-flex;
+  max-width: 100%;
+}
+
+.sc-tabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+
+.sc-tabs-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: 0;
+  user-select: none;
+  transition: color 0.12s, background 0.12s, border-color 0.12s;
+  white-space: nowrap;
+
+  &:hover:not(.sc-tabs-tab-active):not(.sc-tabs-tab-disabled) {
+    color: var(--color-text);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  &.sc-tabs-tab-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.sc-tabs-tab-count {
+  font-size: 10.5px;
+  font-weight: 600;
+  padding-block: 1px;
+  padding-inline: 7px;
+  border-radius: var(--r-pill);
+  background: var(--color-border);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  // Numeric content stays LTR even inside RTL contexts
+  direction: ltr;
+}
+
+// =========================================================
+// Variant: pill
+// =========================================================
+.sc-tabs[data-variant='pill'] {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  padding: 3px;
+  border-radius: var(--r-md);
+  gap: 2px;
+
+  .sc-tabs-tab {
+    padding-block: 6px;
+    padding-inline: 12px;
+    font-size: 13px;
+    border-radius: 5px;
+
+    &.sc-tabs-tab-active {
+      background: var(--color-surface);
+      color: var(--color-text);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      font-weight: 600;
+    }
+
+    &.sc-tabs-tab-active .sc-tabs-tab-count {
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+    }
+  }
+}
+
+// =========================================================
+// Variant: underline
+// =========================================================
+.sc-tabs[data-variant='underline'] {
+  display: flex;
+  gap: var(--sp-6);
+  border-bottom: 1px solid var(--color-border);
+
+  .sc-tabs-tab {
+    padding-block: 10px;
+    padding-inline: 0;
+    font-size: 13.5px;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    border-radius: 0;
+
+    &.sc-tabs-tab-active {
+      color: var(--color-primary);
+      border-bottom-color: var(--color-primary);
+      font-weight: 600;
+    }
+
+    &.sc-tabs-tab-active .sc-tabs-tab-count {
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+    }
+  }
+}
+
+// =========================================================
+// Size: sm — applied within either variant
+// =========================================================
+.sc-tabs[data-size='sm'] {
+  .sc-tabs-tab {
+    font-size: 12px;
+    padding-block: 4px;
+    padding-inline: 10px;
+  }
+
+  &[data-variant='underline'] .sc-tabs-tab {
+    padding-block: 8px;
+    padding-inline: 0;
+  }
+}

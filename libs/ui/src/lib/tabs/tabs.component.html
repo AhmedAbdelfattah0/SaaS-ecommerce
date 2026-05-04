@@ -1,0 +1,30 @@
+<div
+  class="sc-tabs"
+  [attr.data-variant]="variant()"
+  [attr.data-size]="size()"
+  role="tablist"
+>
+  @for (tab of tabs(); track tab.key; let i = $index) {
+    <button
+      #tabButton
+      type="button"
+      class="sc-tabs-tab"
+      [class.sc-tabs-tab-active]="active() === tab.key"
+      [class.sc-tabs-tab-disabled]="tab.disabled"
+      [attr.id]="'tab-' + tab.key"
+      [attr.aria-controls]="'tabpanel-' + tab.key"
+      role="tab"
+      [attr.aria-selected]="active() === tab.key"
+      [attr.aria-disabled]="tab.disabled || null"
+      [tabindex]="active() === tab.key ? 0 : -1"
+      [disabled]="tab.disabled"
+      (click)="selectTab(tab)"
+      (keydown)="onKeyDown($event, i)"
+    >
+      <span class="sc-tabs-tab-label">{{ tab.label }}</span>
+      @if (tab.count !== undefined) {
+        <span class="sc-tabs-tab-count">{{ tab.count }}</span>
+      }
+    </button>
+  }
+</div>
