@@ -1,0 +1,68 @@
+<div
+  class="sc-banner"
+  [attr.data-variant]="variant()"
+  [attr.role]="ariaRole()"
+>
+  @if (icon()) {
+    <span class="sc-banner-icon" aria-hidden="true">
+      <ng-content select="[banner-icon]">
+        @switch (variant()) {
+          @case ('info') {
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="8" r="6.5" />
+              <line x1="8" y1="11" x2="8" y2="7.5" />
+              <line x1="8" y1="5" x2="8.01" y2="5" />
+            </svg>
+          }
+          @case ('success') {
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="8" r="6.5" />
+              <polyline points="5,8 7,10 11,6" />
+            </svg>
+          }
+          @case ('warning') {
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 1.5 L14.5 13.5 L1.5 13.5 Z" />
+              <line x1="8" y1="6" x2="8" y2="9" />
+              <line x1="8" y1="11.5" x2="8.01" y2="11.5" />
+            </svg>
+          }
+          @case ('error') {
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="8" r="6.5" />
+              <line x1="5.5" y1="5.5" x2="10.5" y2="10.5" />
+              <line x1="10.5" y1="5.5" x2="5.5" y2="10.5" />
+            </svg>
+          }
+        }
+      </ng-content>
+    </span>
+  }
+
+  <div class="sc-banner-body">
+    <ng-content />
+  </div>
+
+  <div class="sc-banner-actions">
+    <ng-content select="[banner-actions]" />
+  </div>
+
+  @if (dismissible()) {
+    <button
+      type="button"
+      class="sc-banner-dismiss"
+      (click)="dismiss.emit()"
+      aria-label="Dismiss"
+    >
+      <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+        <path
+          d="M1 1 L11 11 M11 1 L1 11"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          fill="none"
+        />
+      </svg>
+    </button>
+  }
+</div>

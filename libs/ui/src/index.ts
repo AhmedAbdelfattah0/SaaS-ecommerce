@@ -11,3 +11,4 @@ export * from './lib/data-table/data-table.component';
 export * from './lib/tabs/tabs.types';
 export * from './lib/tabs/tabs.component';
 export * from './lib/modal/modal.component';
+export * from './lib/banner/banner.component';

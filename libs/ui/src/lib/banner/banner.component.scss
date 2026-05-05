@@ -1,0 +1,135 @@
+// =========================================================
+// sc-banner
+// Page-level info/success/warning/error message. RTL-safe via
+// logical CSS properties throughout. Mobile wraps actions below.
+// =========================================================
+
+:host {
+  display: block;
+}
+
+.sc-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding-block: var(--sp-3);
+  padding-inline: var(--sp-4);
+  border-radius: var(--r-md);
+  border: 1px solid;
+  font-size: 13px;
+  line-height: 1.5;
+  flex-wrap: wrap;
+
+  // Variants — bg + border colour come from token pairs;
+  // body text uses --color-text for legibility, only the
+  // icon picks up the variant tint.
+  &[data-variant='info'] {
+    background: var(--color-primary-light);
+    border-color: var(--color-primary);
+
+    .sc-banner-icon {
+      color: var(--color-primary);
+    }
+  }
+
+  &[data-variant='success'] {
+    background: var(--color-success-light);
+    border-color: var(--color-success);
+
+    .sc-banner-icon {
+      color: var(--color-success);
+    }
+  }
+
+  &[data-variant='warning'] {
+    background: var(--color-warning-light);
+    border-color: var(--color-warning);
+
+    .sc-banner-icon {
+      color: var(--color-warning);
+    }
+  }
+
+  &[data-variant='error'] {
+    background: var(--color-danger-light);
+    border-color: var(--color-danger);
+
+    .sc-banner-icon {
+      color: var(--color-danger);
+    }
+  }
+}
+
+// =========================================================
+// Icon — start of the row, optical-aligned with first body line
+// =========================================================
+.sc-banner-icon {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-block-start: 1px;
+}
+
+// =========================================================
+// Body — flex grows; takes remaining space on row 1
+// =========================================================
+.sc-banner-body {
+  flex: 1 1 0;
+  min-width: 0;
+  color: var(--color-text);
+
+  strong {
+    font-weight: 600;
+  }
+}
+
+// =========================================================
+// Actions — trailing cluster on desktop; wraps below on mobile
+// =========================================================
+.sc-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-shrink: 0;
+
+  // Collapse when nothing projected
+  &:empty {
+    display: none;
+  }
+}
+
+// =========================================================
+// Dismiss X — always at trailing edge; flex order keeps it last
+// =========================================================
+.sc-banner-dismiss {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--r-sm);
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+  transition: background 0.12s, color 0.12s;
+
+  &:hover {
+    background: rgba(15, 23, 42, 0.06);
+    color: var(--color-text);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+// =========================================================
+// Mobile: ≤640px → actions wrap onto a new row below body.
+// Icon stays inline at start; dismiss X stays inline at end.
+// =========================================================
+@media (max-width: 640px) {
+  .sc-banner-actions {
+    order: 1; // pushes after order:0 items (icon, body, dismiss)
+    flex-basis: 100%;
+    justify-content: flex-end;
+  }
+}
