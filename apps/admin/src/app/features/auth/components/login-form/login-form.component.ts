@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { BannerComponent } from '@storecraft/ui';
 import { LoginFormService } from '../../services/login-form.service';
 import { AdminI18nService } from '../../../../shared/services/admin-i18n.service';
 import { AdminIconComponent } from '../../../../shared/components/admin-icon/admin-icon.component';
@@ -7,9 +8,10 @@ import { AdminIconComponent } from '../../../../shared/components/admin-icon/adm
 @Component({
   selector: 'admin-login-form',
   standalone: true,
-  imports: [ReactiveFormsModule, AdminIconComponent],
+  imports: [ReactiveFormsModule, AdminIconComponent, BannerComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './login-form.component.html',
+  styleUrl: './login-form.component.scss',
 })
 export class LoginFormComponent {
   private readonly vm = inject(LoginFormService);

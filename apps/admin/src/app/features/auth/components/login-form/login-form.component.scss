@@ -1,0 +1,337 @@
+// =========================================================
+// Login form — page-specific layout for the production login.
+// (Showcase grid classes from design/login.css were dropped —
+// only the single login card is shipped.)
+// All themeable values come from var(--token).
+// =========================================================
+
+:host {
+  display: block;
+}
+
+// =========================================================
+// Outer frame + card
+// =========================================================
+.login-frame {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 360px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-lg);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 8px 24px rgba(15, 23, 42, 0.06);
+  padding-block: 28px 20px;
+  padding-inline: 24px;
+}
+
+// =========================================================
+// Brand
+// =========================================================
+.login-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.login-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-md);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-purple));
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  font-family: var(--font-sans);
+  flex-shrink: 0;
+}
+
+.login-brand-text {
+  line-height: 1.15;
+}
+
+.login-wordmark {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+.login-admin-label {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+// =========================================================
+// Heading + sub
+// =========================================================
+.login-heading-wrap {
+  margin-block: 22px;
+}
+
+.login-heading {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.login-sub {
+  color: var(--color-text-muted);
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+// =========================================================
+// Error banner — small inline margin so the form spacing reads cleanly
+// =========================================================
+.login-error-banner {
+  display: block;
+  margin-block-end: var(--sp-4);
+}
+
+// =========================================================
+// Field — label + input wrap
+// =========================================================
+.login-field {
+  margin-block-end: 14px;
+}
+
+.login-field label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--color-text);
+  margin-block-end: 6px;
+  text-align: start;
+}
+
+// =========================================================
+// Inputs with leading icon + trailing eye
+// =========================================================
+.login-input-wrap {
+  position: relative;
+}
+
+.login-input-icon {
+  position: absolute;
+  inset-inline-start: 12px;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-subtle);
+  pointer-events: none;
+}
+
+// Base input styling — input is dir="ltr" forced, so its logical
+// properties don't follow parent dir. Use :host-context to flip
+// the padding when the host's ancestor is RTL.
+.login-input {
+  width: 100%;
+  height: 42px;
+  font-size: 14px;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-md);
+  outline: none;
+  padding-block: 0;
+  padding-inline-start: 38px;
+  padding-inline-end: 12px;
+  transition: border-color 0.12s, box-shadow 0.12s;
+
+  &:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  }
+
+  &::placeholder {
+    color: var(--color-text-subtle);
+  }
+
+  &:disabled {
+    background: var(--color-bg);
+    cursor: not-allowed;
+  }
+}
+
+.login-input-pw {
+  padding-inline-end: 40px;
+}
+
+:host-context([dir='rtl']) .login-input {
+  padding-inline-start: 12px;
+  padding-inline-end: 38px;
+}
+:host-context([dir='rtl']) .login-input-pw {
+  padding-inline-start: 40px;
+  padding-inline-end: 38px;
+}
+
+.login-eye {
+  position: absolute;
+  inset-inline-end: 8px;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  border: 0;
+  background: transparent;
+  border-radius: var(--r-sm);
+  display: grid;
+  place-items: center;
+  color: var(--color-text-muted);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-text);
+    background: var(--color-bg);
+  }
+}
+
+// =========================================================
+// Remember + forgot row
+// =========================================================
+.login-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-block: 4px 18px;
+}
+
+.login-remember {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: 12.5px;
+  color: var(--color-text);
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+
+  // Hidden native checkbox for form binding
+  input[type='checkbox'] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+  }
+}
+
+// Visual checkbox — replaces the deleted global .checkbox class
+.login-checkbox {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--r-sm);
+  display: grid;
+  place-items: center;
+  background: var(--color-surface);
+  color: transparent;
+  flex-shrink: 0;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+
+  &.on {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+  }
+}
+
+.login-forgot {
+  font-size: 12.5px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+}
+
+// =========================================================
+// Submit button — extends sc-button via the existing .btn class
+// during the migration window. Will swap to <sc-button> in a
+// later stage when login is rewired against shared components.
+// =========================================================
+.login-submit {
+  width: 100%;
+  height: 44px;
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--color-primary);
+  color: #fff;
+  border: 0;
+  border-radius: var(--r-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  cursor: pointer;
+  transition: background 0.12s, opacity 0.12s;
+
+  &:hover:not(:disabled) {
+    background: var(--color-primary-hover);
+  }
+
+  &:disabled,
+  &.loading {
+    opacity: 0.85;
+    cursor: not-allowed;
+  }
+}
+
+.login-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: login-spin 0.7s linear infinite;
+  display: inline-block;
+}
+
+@keyframes login-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// =========================================================
+// Divider + security note + footer
+// =========================================================
+.login-divider {
+  height: 1px;
+  background: var(--color-border);
+  margin-block: 22px 14px;
+}
+
+.login-secure {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-1);
+  font-size: 12px;
+  color: var(--color-text-muted);
+  font-weight: 500;
+
+  admin-icon {
+    color: var(--color-success);
+  }
+}
+
+.login-footer {
+  text-align: center;
+  font-size: 11px;
+  color: var(--color-text-subtle);
+  margin-top: 12px;
+}

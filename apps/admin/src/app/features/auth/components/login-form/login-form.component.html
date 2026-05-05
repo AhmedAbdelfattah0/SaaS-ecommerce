@@ -8,30 +8,25 @@
       </div>
     </div>
 
-    <div style="margin-top: 22px; margin-bottom: 22px">
-      <h1 style="font-size: 24px; font-weight: 600; margin: 0; letter-spacing: -0.01em">
-        {{ t('login.heading', 'Welcome back') }}
-      </h1>
-      <div class="muted" style="font-size: 13px; margin-top: 6px">
-        {{ t('login.sub', 'Sign in to manage your store') }}
-      </div>
+    <div class="login-heading-wrap">
+      <h1 class="login-heading">{{ t('login.heading', 'Welcome back') }}</h1>
+      <div class="login-sub">{{ t('login.sub', 'Sign in to manage your store') }}</div>
     </div>
 
     @if (hasError()) {
-      <div class="login-error" role="alert">
-        <admin-icon name="warning" [size]="15" />
-        <span>{{ t('login.invalid', 'Invalid email or password. Please try again.') }}</span>
-      </div>
+      <sc-banner variant="error" class="login-error-banner">
+        {{ t('login.invalid', 'Invalid email or password. Please try again.') }}
+      </sc-banner>
     }
 
-    <div class="field" style="margin-bottom: 14px">
+    <div class="login-field">
       <label for="login-email">{{ t('login.email', 'Email') }}</label>
       <div class="login-input-wrap">
         <admin-icon class="login-input-icon" name="mail" [size]="15" />
         <input
           id="login-email"
           type="email"
-          class="input login-input ltr-input"
+          class="login-input"
           formControlName="email"
           [placeholder]="t('login.emailPh', 'you@store.com')"
           [disabled]="isLoading()"
@@ -41,18 +36,19 @@
       </div>
     </div>
 
-    <div class="field" style="margin-bottom: 14px">
+    <div class="login-field">
       <label for="login-password">{{ t('login.password', 'Password') }}</label>
       <div class="login-input-wrap">
         <admin-icon class="login-input-icon" name="lock" [size]="15" />
         <input
           id="login-password"
           [type]="showPassword() ? 'text' : 'password'"
-          class="input login-input login-input-pw"
+          class="login-input login-input-pw"
           formControlName="password"
           [placeholder]="t('login.passwordPh', 'Enter your password')"
           [disabled]="isLoading()"
           autocomplete="current-password"
+          dir="ltr"
         />
         <button
           type="button"
@@ -68,12 +64,8 @@
 
     <div class="login-row">
       <label class="login-remember">
-        <input
-          type="checkbox"
-          formControlName="remember"
-          style="position: absolute; opacity: 0; pointer-events: none"
-        />
-        <span class="checkbox" [class.on]="form.controls.remember.value">
+        <input type="checkbox" formControlName="remember" />
+        <span class="login-checkbox" [class.on]="form.controls.remember.value">
           <admin-icon name="check" [size]="11" />
         </span>
         <span>{{ t('login.remember', 'Remember me') }}</span>
@@ -85,7 +77,7 @@
 
     <button
       type="submit"
-      class="btn btn-primary login-submit"
+      class="login-submit"
       [class.loading]="isLoading()"
       [disabled]="isLoading()"
     >
