@@ -10,6 +10,7 @@ import { STATUS_MAP } from '../../services/dashboard.service';
   selector: 'admin-status-badge',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './status-badge.component.scss',
   template: `
     <span [class]="badgeCls()">
       <span class="badge-dot"></span>

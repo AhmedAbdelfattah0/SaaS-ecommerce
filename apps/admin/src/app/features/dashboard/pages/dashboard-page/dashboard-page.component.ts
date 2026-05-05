@@ -2,8 +2,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
+  computed,
   inject,
 } from '@angular/core';
+import { PageHeaderComponent, TabsComponent, type Tab } from '@storecraft/ui';
 import { AdminI18nService } from '../../../../shared/services/admin-i18n.service';
 import { AdminIconComponent } from '../../../../shared/components/admin-icon/admin-icon.component';
 import { DashboardService } from '../../services/dashboard.service';
@@ -16,17 +18,19 @@ import type { DashboardRange } from '../../models/dashboard.model';
 
 const STORE_NAME = 'StoreCraft';
 
-const RANGE_LABELS: Record<DashboardRange, string> = {
-  '7d': '7D',
-  '30d': '30D',
-  '90d': '90D',
-};
+const RANGE_TABS: Tab[] = [
+  { key: '7d', label: '7D' },
+  { key: '30d', label: '30D' },
+  { key: '90d', label: '90D' },
+];
 
 @Component({
   selector: 'admin-dashboard-page',
   standalone: true,
   imports: [
     AdminIconComponent,
+    PageHeaderComponent,
+    TabsComponent,
     KpiCardComponent,
     StatusBadgeComponent,
     ProductSwatchComponent,
@@ -36,21 +40,24 @@ const RANGE_LABELS: Record<DashboardRange, string> = {
   providers: [DashboardService],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './dashboard-page.component.html',
-  styleUrl: './dashboard-page.component.css',
+  styleUrl: './dashboard-page.component.scss',
 })
 export class DashboardPageComponent implements OnInit {
-  protected readonly i18n   = inject(AdminI18nService);
-  protected readonly svc    = inject(DashboardService);
+  protected readonly i18n = inject(AdminI18nService);
+  protected readonly svc = inject(DashboardService);
 
-  readonly storeName   = STORE_NAME;
-  readonly rangeLabels = RANGE_LABELS;
-  readonly ranges: DashboardRange[] = ['7d', '30d', '90d'];
+  readonly storeName = STORE_NAME;
+  readonly rangeTabs = RANGE_TABS;
+
+  readonly subtitle = computed(
+    () => `Here’s what’s happening with ${this.storeName} today`,
+  );
 
   ngOnInit(): void {
     this.svc.load();
   }
 
-  setRange(r: DashboardRange): void {
-    this.svc.setRange(r);
+  setRange(key: string): void {
+    this.svc.setRange(key as DashboardRange);
   }
 }

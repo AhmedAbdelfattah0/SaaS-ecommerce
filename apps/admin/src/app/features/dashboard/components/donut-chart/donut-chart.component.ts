@@ -18,6 +18,7 @@ interface ArcSlice {
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './donut-chart.component.html',
+  styleUrl: './donut-chart.component.scss',
 })
 export class DonutChartComponent {
   readonly segments = input.required<DonutSegment[]>();

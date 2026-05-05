@@ -13,6 +13,7 @@ import { SparklineComponent } from '../sparkline/sparkline.component';
   imports: [AdminIconComponent, SparklineComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './kpi-card.component.html',
+  styleUrl: './kpi-card.component.scss',
 })
 export class KpiCardComponent {
   readonly label = input.required<string>();

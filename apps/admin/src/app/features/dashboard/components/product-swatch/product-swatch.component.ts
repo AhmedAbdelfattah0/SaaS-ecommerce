@@ -8,6 +8,7 @@ import {
   selector: 'admin-product-swatch',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './product-swatch.component.scss',
   template: `
     <span
       class="swatch"

@@ -1,0 +1,9 @@
+// =========================================================
+// Revenue chart — inline SVG. Wrapper styles only; the chart
+// itself uses var(--token) directly via SVG fill/stroke attrs.
+// =========================================================
+
+:host {
+  display: block;
+  width: 100%;
+}

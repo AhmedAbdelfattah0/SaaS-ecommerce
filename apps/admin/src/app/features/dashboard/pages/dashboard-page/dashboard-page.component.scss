@@ -1,0 +1,290 @@
+// =========================================================
+// Dashboard page — scoped layout for the routed page only.
+// Cross-cutting card / utility / page-wrapper rules live in
+// global apps/admin/src/styles.scss; tile-specific rules
+// live in each component's .scss next to it.
+// =========================================================
+
+:host {
+  display: block;
+}
+
+// =========================================================
+// Header actions row (range tabs + date button) projected
+// into <sc-page-header>'s default actions slot
+// =========================================================
+.dashboard-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+// =========================================================
+// KPI grid — 4 cols → 2 cols at ≤900px → 1 col at ≤600px
+// =========================================================
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-6);
+}
+
+@media (max-width: 900px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+// =========================================================
+// Two-column rows (chart + chart, table + list)
+// =========================================================
+.row {
+  display: flex;
+  gap: var(--sp-6);
+  align-items: stretch;
+}
+
+.row > * {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 600px) {
+  .row {
+    flex-direction: column;
+  }
+}
+
+// =========================================================
+// Inner stack helper — vertical spacing inside cards
+// =========================================================
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.gap-3 {
+  gap: var(--sp-3);
+}
+
+// =========================================================
+// Skeleton loading shimmer for the KPI placeholders
+// =========================================================
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-border) 25%,
+    var(--color-bg) 50%,
+    var(--color-border) 75%
+  );
+  background-size: 200% 100%;
+  animation: dashboard-shimmer 1.4s linear infinite;
+}
+
+@keyframes dashboard-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// =========================================================
+// Recent orders mini-table (kept inline for Stage 4;
+// will reuse <sc-data-table> when the dashboard gets the
+// cross-feature table refactor in Stage 9 cleanup)
+// =========================================================
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+
+  thead th {
+    text-align: start;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding-block: var(--sp-3);
+    padding-inline: var(--sp-5);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  tbody td {
+    padding-block: var(--sp-3);
+    padding-inline: var(--sp-5);
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text);
+    vertical-align: middle;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+// Live row pulse — fresh order indicator
+.live-row {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 0;
+    inset-block-end: 0;
+    width: 3px;
+    background: var(--color-primary);
+    opacity: 0;
+    animation: live-pulse 2s ease-out infinite;
+  }
+}
+
+@keyframes live-pulse {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+// =========================================================
+// Progress bar (used by top products + low-stock items)
+// =========================================================
+.pbar {
+  width: 100%;
+  height: 4px;
+  background: var(--color-border);
+  border-radius: var(--r-pill);
+  overflow: hidden;
+}
+
+.pbar-fill {
+  height: 100%;
+  border-radius: var(--r-pill);
+  transition: width 0.3s ease-out;
+}
+
+// =========================================================
+// Avatar circle for recent customers
+// =========================================================
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 600;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+// =========================================================
+// Donut legend (rendered in page template, not the donut comp)
+// =========================================================
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+
+  .legend-row {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    font-size: 12.5px;
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .legend-name {
+    flex: 1;
+    color: var(--color-text);
+  }
+
+  .legend-val {
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+// =========================================================
+// Inline banner used for non-fatal data load errors.
+// (Page-scoped — sc-banner could fit but the warn variant
+// here reads slightly different from the global pattern;
+// promote in Stage 9 cleanup if usages converge.)
+// =========================================================
+.banner {
+  display: flex;
+  gap: var(--sp-3);
+  padding-block: var(--sp-3);
+  padding-inline: var(--sp-4);
+  border-radius: var(--r-md);
+  font-size: 13px;
+  align-items: flex-start;
+  border: 1px solid;
+
+  &.warn {
+    background: var(--color-warning-light);
+    border-color: var(--color-warning);
+    color: var(--color-text);
+
+    admin-icon {
+      color: var(--color-warning);
+      flex-shrink: 0;
+    }
+  }
+}
+
+// =========================================================
+// Local button — used for the date picker action in the page
+// header. Page-scoped until sc-button is refactored to plain
+// CSS in a separate stage.
+// =========================================================
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  font-family: inherit;
+  font-weight: 500;
+  border-radius: var(--r-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  white-space: nowrap;
+
+  &.btn-sm {
+    height: 32px;
+    padding-inline: var(--sp-3);
+    font-size: 12.5px;
+  }
+
+  &.btn-secondary {
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    color: var(--color-text);
+
+    &:hover {
+      background: var(--color-bg);
+      border-color: var(--color-border-strong);
+    }
+  }
+}

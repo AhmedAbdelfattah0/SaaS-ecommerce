@@ -1,33 +1,24 @@
 <div class="page">
 
   <!-- ── Page header ──────────────────────────────────────────── -->
-  <div class="page-head">
-    <div>
-      <h1 class="page-title">{{ i18n.t('nav.dashboard', 'Dashboard') }}</h1>
-      <p class="page-sub">Here&#x2019;s what&#x2019;s happening with {{ storeName }} today</p>
-    </div>
-
-    <div style="display:flex;align-items:center;gap:var(--sp-3)">
-      <!-- Range segmented control -->
-      <div class="seg" role="group" aria-label="Date range">
-        @for (r of ranges; track r) {
-          <button
-            [class.active]="svc.range() === r"
-            (click)="setRange(r)"
-            [attr.aria-pressed]="svc.range() === r"
-          >
-            {{ rangeLabels[r] }}
-          </button>
-        }
-      </div>
-
-      <!-- Date button -->
-      <button class="btn btn-secondary btn-sm" style="gap:var(--sp-2)">
+  <sc-page-header
+    [title]="i18n.t('nav.dashboard', 'Dashboard')"
+    [subtitle]="subtitle()"
+  >
+    <div class="dashboard-actions">
+      <sc-tabs
+        variant="pill"
+        size="sm"
+        [tabs]="rangeTabs"
+        [active]="svc.range()"
+        (activeChange)="setRange($event)"
+      />
+      <button class="btn btn-sm btn-secondary" type="button">
         <admin-icon name="calendar" [size]="14" />
         Apr 26, 2026
       </button>
     </div>
-  </div>
+  </sc-page-header>
 
   <!-- ── KPI grid ──────────────────────────────────────────────── -->
   @if (svc.isLoading()) {

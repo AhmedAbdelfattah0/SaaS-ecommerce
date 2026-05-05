@@ -16,6 +16,7 @@ interface PathData {
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './revenue-chart.component.html',
+  styleUrl: './revenue-chart.component.scss',
 })
 export class RevenueChartComponent {
   readonly series = input.required<RevenuePoint[]>();

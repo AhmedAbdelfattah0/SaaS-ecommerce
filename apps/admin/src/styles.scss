@@ -183,3 +183,86 @@ a {
   font-size: 13.5px;
   margin-top: 4px;
 }
+
+/* =========================================================
+   Card layout utilities
+   Surface chrome used across nearly every routed page (dashboard,
+   products list, orders detail, etc.). Themeable values come from
+   var(--token). Building a full sc-card component is deferred to
+   a Stage 10+ consolidation pass; until then these layout-utility
+   rules live globally.
+   ========================================================= */
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-card);
+  display: flex;
+  flex-direction: column;
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding-block: var(--sp-4);
+  padding-inline: var(--sp-5);
+  border-bottom: 1px solid var(--color-border);
+
+  h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+  }
+}
+
+.card-pad {
+  padding: var(--sp-5);
+}
+
+.card-foot {
+  padding-block: var(--sp-3);
+  padding-inline: var(--sp-5);
+  border-top: 1px solid var(--color-border);
+  font-size: 12.5px;
+
+  a {
+    color: var(--color-primary);
+    font-weight: 600;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+/* =========================================================
+   Utility classes
+   Tiny cross-cutting helpers used across nearly every feature.
+   Deduplicates the ad-hoc copies that were appearing in
+   admin-sidebar, admin-topbar etc. — single source of truth.
+   ========================================================= */
+
+.muted {
+  color: var(--color-text-muted);
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -1,0 +1,15 @@
+// =========================================================
+// Product swatch — coloured square placeholder for product images.
+// =========================================================
+
+:host {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.swatch {
+  display: block;
+  border-radius: var(--r-md);
+  flex-shrink: 0;
+  border: 1px solid var(--color-border);
+}

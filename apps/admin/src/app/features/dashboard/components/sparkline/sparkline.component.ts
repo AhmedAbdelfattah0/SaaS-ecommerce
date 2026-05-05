@@ -9,6 +9,7 @@ import {
   selector: 'admin-sparkline',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './sparkline.component.scss',
   template: `
     <svg
       [attr.viewBox]="viewBox()"
