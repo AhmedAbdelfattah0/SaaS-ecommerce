@@ -12,3 +12,7 @@ export * from './lib/tabs/tabs.types';
 export * from './lib/tabs/tabs.component';
 export * from './lib/modal/modal.component';
 export * from './lib/banner/banner.component';
+export * from './lib/dropdown-menu/dropdown-menu.types';
+export * from './lib/dropdown-menu/dropdown-menu.component';
+export * from './lib/dropdown-menu/dropdown-item.component';
+export * from './lib/dropdown-menu/dropdown-divider.component';

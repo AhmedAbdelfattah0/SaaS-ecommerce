@@ -1,0 +1,11 @@
+<ng-content select="[trigger]" />
+
+@if (isOpen()) {
+  <div
+    class="sc-dropdown-popup"
+    [attr.data-placement]="placement()"
+    role="menu"
+  >
+    <ng-content />
+  </div>
+}

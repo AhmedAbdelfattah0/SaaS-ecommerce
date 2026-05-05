@@ -1,0 +1,42 @@
+// =========================================================
+// sc-dropdown-menu
+// Wrapper that hosts the trigger inline and the popup as an
+// absolutely-positioned descendant. Logical CSS for RTL.
+// =========================================================
+
+:host {
+  position: relative;
+  display: inline-block;
+}
+
+.sc-dropdown-popup {
+  position: absolute;
+  z-index: 50;
+  min-width: 180px;
+  max-height: 60vh;
+  overflow-y: auto;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-md);
+  box-shadow: var(--sh-dropdown);
+  padding-block: var(--sp-1);
+  padding-inline: 0;
+
+  // Placement via logical inset properties — flips automatically in RTL
+  &[data-placement='bottom-end'] {
+    inset-block-start: calc(100% + var(--sp-1));
+    inset-inline-end: 0;
+  }
+  &[data-placement='bottom-start'] {
+    inset-block-start: calc(100% + var(--sp-1));
+    inset-inline-start: 0;
+  }
+  &[data-placement='top-end'] {
+    inset-block-end: calc(100% + var(--sp-1));
+    inset-inline-end: 0;
+  }
+  &[data-placement='top-start'] {
+    inset-block-end: calc(100% + var(--sp-1));
+    inset-inline-start: 0;
+  }
+}
