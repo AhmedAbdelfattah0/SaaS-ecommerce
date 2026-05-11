@@ -1,35 +1,39 @@
 <div class="page">
 
   <!-- Page Header -->
-  <div class="page-head">
-    <div>
-      <h1 class="page-title">
-        Products
-        <span class="page-count">{{ service.total() }}</span>
-      </h1>
-      <p class="page-sub">Manage your store's product catalog</p>
-    </div>
-    <div class="hstack" style="gap: var(--sp-3);">
-      <button type="button" class="btn btn-secondary">
-        <admin-icon name="download" [size]="15" />
-        Export
-      </button>
-      <button type="button" class="btn btn-primary" (click)="onAddProduct()">
-        <admin-icon name="plus" [size]="15" />
-        Add Product
-      </button>
-    </div>
+  <sc-page-header
+    title="Products"
+    subtitle="Manage your store's product catalog"
+    [count]="service.total()"
+  >
+    <button type="button" class="btn btn-secondary btn-sm" style="margin-inline-end: var(--sp-2);">
+      <admin-icon name="download" [size]="15" />
+      Export
+    </button>
+    <button type="button" class="btn btn-primary btn-sm" (click)="onAddProduct()">
+      <admin-icon name="plus" [size]="15" />
+      Add Product
+    </button>
+  </sc-page-header>
+
+  <!-- Status Tabs (hoisted from product-filters) -->
+  <div class="tabs-row">
+    <sc-tabs
+      variant="pill"
+      size="sm"
+      [tabs]="statusTabs"
+      [active]="service.statusFilter()"
+      (activeChange)="onStatusChange($any($event))"
+    />
   </div>
 
-  <!-- Filters -->
+  <!-- Secondary Filters (search + category + sort) -->
   <admin-product-filters
     [categories]="service.categories()"
-    [currentStatus]="service.statusFilter()"
     [currentSort]="service.sortBy()"
     [currentCategory]="service.categoryFilter()"
     [currentSearch]="service.search()"
     (searchChanged)="onSearch($event)"
-    (statusChanged)="onStatusChange($event)"
     (categoryChanged)="onCategoryChange($event)"
     (sortChanged)="onSortChange($event)"
   />
@@ -44,73 +48,115 @@
     />
   }
 
-  <!-- Table -->
-  <div class="card" style="margin-top: var(--sp-4); overflow: hidden;">
+  <!-- Error Banner -->
+  @if (service.error()) {
+    <sc-banner variant="warning" style="margin-bottom: var(--sp-4);">
+      {{ service.error() }}
+    </sc-banner>
+  }
 
-    @if (service.error()) {
-      <div class="banner warn" style="margin: var(--sp-4);">
-        <admin-icon name="warning" [size]="16" />
-        <span>{{ service.error() }}</span>
-      </div>
-    }
+  <!-- Table Card -->
+  <div class="card table-card">
 
-    @if (service.isLoading()) {
-      <div style="padding: var(--sp-8); display: flex; justify-content: center; align-items: center; gap: var(--sp-3); color: var(--color-text-muted);">
-        <admin-icon name="refresh" [size]="18" />
-        Loading products...
-      </div>
-    } @else if (service.items().length === 0) {
+    @if (service.items().length === 0 && !service.isLoading()) {
       <!-- Empty State -->
-      <div class="empty-state">
-        <admin-icon name="package" [size]="40" />
-        <h3>No products found</h3>
-        <p>Try adjusting your filters or add a new product.</p>
-        <button type="button" class="btn btn-primary" (click)="onAddProduct()">
-          <admin-icon name="plus" [size]="15" />
+      <sc-empty-state
+        title="No products found"
+        description="Try adjusting your filters or add a new product."
+      >
+        <admin-icon icon name="package" [size]="32" />
+        <button type="button" class="btn btn-primary btn-sm" (click)="onAddProduct()">
+          <admin-icon name="plus" [size]="14" />
           Add Product
         </button>
-      </div>
+      </sc-empty-state>
     } @else {
-      <table class="table">
-        <thead>
-          <tr>
-            <th style="width: 44px;">
-              <div
-                class="checkbox"
-                [class.on]="service.allSelected()"
-                (click)="onSelectAll()"
-                role="checkbox"
-                [attr.aria-checked]="service.allSelected()"
+      <!-- Data Table -->
+      <sc-data-table
+        [data]="service.items()"
+        [loading]="service.isLoading()"
+        [selectable]="true"
+        selectionKey="id"
+        [selection]="selectionSet()"
+        (selectionChange)="onSelectionChange($event)"
+        [sort]="sortState()"
+        (sortChange)="onTableSort($event)"
+        (rowClick)="onRowClick($event)"
+      >
+        <!-- Image column -->
+        <sc-data-column key="image" label="" width="56px">
+          <ng-template let-product>
+            <div class="product-img">
+              @if (product.images && product.images.length > 0) {
+                <img [src]="product.images[0]" [alt]="product.name" />
+              } @else {
+                <div class="product-img-placeholder">
+                  {{ product.name.charAt(0).toUpperCase() }}
+                </div>
+              }
+            </div>
+          </ng-template>
+        </sc-data-column>
+
+        <!-- Product name + slug -->
+        <sc-data-column key="name" label="Product" [sortable]="true">
+          <ng-template let-product>
+            <div style="font-weight: 500; color: var(--color-text);">{{ product.name }}</div>
+            <div class="muted" style="font-size: 12px; margin-block-start: 1px;">{{ product.slug }}</div>
+          </ng-template>
+        </sc-data-column>
+
+        <!-- Category -->
+        <sc-data-column key="category" label="Category">
+          <ng-template let-product>
+            <span class="muted">{{ getCategoryName(product.categoryId) || '—' }}</span>
+          </ng-template>
+        </sc-data-column>
+
+        <!-- Price -->
+        <sc-data-column key="price" label="Price" [sortable]="true" align="end" [nowrap]="true">
+          <ng-template let-product>
+            <span class="num">{{ formatPrice(product.price) }}</span>
+          </ng-template>
+        </sc-data-column>
+
+        <!-- Stock -->
+        <sc-data-column key="stock" label="Stock" [sortable]="true">
+          <ng-template let-product>
+            <span [class]="stockClass(product.stock)">{{ product.stock }}</span>
+          </ng-template>
+        </sc-data-column>
+
+        <!-- Status badge -->
+        <sc-data-column key="status" label="Status">
+          <ng-template let-product>
+            <admin-product-status-badge [status]="product.status" />
+          </ng-template>
+        </sc-data-column>
+
+        <!-- Row actions -->
+        <sc-data-column key="actions" label="" width="48px" align="end">
+          <ng-template let-product>
+            <sc-dropdown-menu placement="bottom-end">
+              <button
+                trigger
+                type="button"
+                class="icon-btn"
+                (click)="$event.stopPropagation()"
+                aria-haspopup="menu"
               >
-                @if (service.allSelected()) {
-                  <svg viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11">
-                    <polyline points="1,5.5 4,8.5 10,2.5" />
-                  </svg>
-                }
-              </div>
-            </th>
-            <th style="width: 56px;"></th>
-            <th>Product</th>
-            <th>Category</th>
-            <th>Price</th>
-            <th>Stock</th>
-            <th>Status</th>
-            <th style="width: 80px;"></th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (product of service.items(); track product.id) {
-            <tr
-              admin-product-row
-              [product]="product"
-              [isSelected]="service.selectedIds().has(product.id)"
-              [categoryName]="getCategoryName(product.categoryId)"
-              (toggleSelect)="onToggleSelect($event)"
-              (deleteProduct)="onDeleteProduct($event)"
-            ></tr>
-          }
-        </tbody>
-      </table>
+                <admin-icon name="more" [size]="15" />
+              </button>
+              <sc-dropdown-item (select)="onEditProduct(product.id)">
+                <admin-icon name="edit" [size]="14" /> Edit
+              </sc-dropdown-item>
+              <sc-dropdown-item variant="danger" (select)="askDelete(product.id)">
+                <admin-icon name="trash" [size]="14" /> Delete
+              </sc-dropdown-item>
+            </sc-dropdown-menu>
+          </ng-template>
+        </sc-data-column>
+      </sc-data-table>
 
       <!-- Pagination -->
       @if (service.totalPages() > 1) {
@@ -157,3 +203,41 @@
   </div>
 
 </div>
+
+<!-- Single-delete confirmation modal -->
+@if (deleteConfirmId() !== null) {
+  <sc-modal title="Delete product?" size="sm" (close)="deleteConfirmId.set(null)">
+    <p style="margin: 0; color: var(--color-text-muted); font-size: 13.5px;">
+      This action cannot be undone.
+    </p>
+    <div modal-footer class="modal-actions">
+      <button type="button" class="btn btn-secondary btn-sm" (click)="deleteConfirmId.set(null)">
+        Cancel
+      </button>
+      <button type="button" class="btn btn-danger btn-sm" (click)="confirmDelete()">
+        Delete
+      </button>
+    </div>
+  </sc-modal>
+}
+
+<!-- Bulk-delete confirmation modal -->
+@if (bulkDeleteConfirmOpen()) {
+  <sc-modal
+    [title]="'Delete ' + service.selectedCount() + ' products?'"
+    size="sm"
+    (close)="bulkDeleteConfirmOpen.set(false)"
+  >
+    <p style="margin: 0; color: var(--color-text-muted); font-size: 13.5px;">
+      This action cannot be undone.
+    </p>
+    <div modal-footer class="modal-actions">
+      <button type="button" class="btn btn-secondary btn-sm" (click)="bulkDeleteConfirmOpen.set(false)">
+        Cancel
+      </button>
+      <button type="button" class="btn btn-danger btn-sm" (click)="confirmBulkDelete()">
+        Delete all
+      </button>
+    </div>
+  </sc-modal>
+}

@@ -19,7 +19,7 @@
           type="button"
           class="btn btn-danger-outline btn-sm"
           [disabled]="detailService.isDeleting()"
-          (click)="onDelete()"
+          (click)="askDelete()"
         >
           <admin-icon name="trash" [size]="14" />
           Delete
@@ -51,10 +51,9 @@
 
   <!-- Error Banner -->
   @if (detailService.error()) {
-    <div class="banner warn" style="margin-bottom: var(--sp-4);">
-      <admin-icon name="warning" [size]="16" />
-      <span>{{ detailService.error() }}</span>
-    </div>
+    <sc-banner variant="warning" style="margin-bottom: var(--sp-4);">
+      {{ detailService.error() }}
+    </sc-banner>
   }
 
   <!-- Loading Skeleton -->
@@ -84,7 +83,6 @@
       <!-- Left: Main Form -->
       <div class="detail-main">
         <admin-product-form
-          #productFormRef
           [product]="detailService.product()"
           [categories]="productsService.categories()"
           [isSaving]="detailService.isSaving()"
@@ -136,8 +134,8 @@
           </div>
           <div class="card-pad">
             <div class="field">
-              <label>Category</label>
-              <select class="select" disabled>
+              <label for="pd-category">Category</label>
+              <select id="pd-category" class="select" disabled>
                 <option value="">Uncategorized</option>
                 @for (cat of productsService.categories(); track cat.id) {
                   <option [value]="cat.id" [selected]="detailService.product()?.categoryId === cat.id">
@@ -184,3 +182,25 @@
   }
 
 </div>
+
+<!-- Delete confirmation modal -->
+@if (deleteConfirmOpen()) {
+  <sc-modal title="Delete product?" size="sm" (close)="deleteConfirmOpen.set(false)">
+    <p style="margin: 0; color: var(--color-text-muted); font-size: 13.5px;">
+      This action cannot be undone.
+    </p>
+    <div modal-footer class="modal-actions">
+      <button type="button" class="btn btn-secondary btn-sm" (click)="deleteConfirmOpen.set(false)">
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger-outline btn-sm"
+        [disabled]="detailService.isDeleting()"
+        (click)="confirmDelete()"
+      >
+        Delete
+      </button>
+    </div>
+  </sc-modal>
+}

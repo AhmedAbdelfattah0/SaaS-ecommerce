@@ -12,6 +12,7 @@ import { AdminIconComponent } from '../../../../shared/components/admin-icon/adm
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AdminIconComponent],
   templateUrl: './product-image-grid.component.html',
+  styleUrl: './product-image-grid.component.scss',
 })
 export class ProductImageGridComponent {
   readonly images = input<string[]>([]);

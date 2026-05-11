@@ -5,6 +5,7 @@ import {
   ViewChild,
   computed,
   inject,
+  signal,
 } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -16,6 +17,7 @@ import { ProductFormComponent } from '../../components/product-form/product-form
 import type { ProductFormValue } from '../../components/product-form/product-form.component';
 import { ProductDetailService } from '../../services/product-detail.service';
 import { ProductsService } from '../../services/products.service';
+import { ModalComponent, BannerComponent } from '@storecraft/ui';
 import type { ProductStatus } from '../../models/product.model';
 
 @Component({
@@ -28,9 +30,11 @@ import type { ProductStatus } from '../../models/product.model';
     AdminIconComponent,
     ProductStatusBadgeComponent,
     ProductFormComponent,
+    ModalComponent,
+    BannerComponent,
   ],
   templateUrl: './product-detail-page.component.html',
-  styleUrl: './product-detail-page.component.css',
+  styleUrl: './product-detail-page.component.scss',
 })
 export class ProductDetailPageComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
@@ -55,6 +59,9 @@ export class ProductDetailPageComponent implements OnInit {
     return product?.name ?? 'Edit Product';
   });
 
+  /** Controls the delete-confirmation modal. */
+  readonly deleteConfirmOpen = signal(false);
+
   ngOnInit(): void {
     this.productsService.loadCategories();
     const id = this.routeId();
@@ -78,12 +85,17 @@ export class ProductDetailPageComponent implements OnInit {
     this.router.navigate(['/products']);
   }
 
-  onDelete(): void {
+  /** Opens the delete confirmation modal. */
+  askDelete(): void {
+    this.deleteConfirmOpen.set(true);
+  }
+
+  /** Called when user confirms deletion in the modal. */
+  confirmDelete(): void {
     const id = this.routeId();
     if (!id || id === 'new') return;
-    if (confirm('Delete this product? This cannot be undone.')) {
-      this.detailService.delete(id);
-    }
+    this.deleteConfirmOpen.set(false);
+    this.detailService.delete(id);
   }
 
   onBack(): void {

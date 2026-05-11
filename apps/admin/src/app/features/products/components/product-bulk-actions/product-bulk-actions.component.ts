@@ -8,6 +8,7 @@ import type { ProductStatus } from '../../models/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AdminIconComponent],
   templateUrl: './product-bulk-actions.component.html',
+  styleUrl: './product-bulk-actions.component.scss',
 })
 export class ProductBulkActionsComponent {
   readonly selectedCount = input.required<number>();

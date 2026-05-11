@@ -1,0 +1,139 @@
+// =========================================================
+// Product Image Grid — thumbnail list + URL upload card
+// =========================================================
+
+:host {
+  display: block;
+}
+
+// ─── Outer wrap ──────────────────────────────────────────
+.image-grid-wrap {
+  min-height: 60px;
+}
+
+// ─── Flex grid ───────────────────────────────────────────
+.image-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+// ─── Thumbnail cell ──────────────────────────────────────
+.image-cell {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.image-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--r-md);
+  border: 1px solid var(--color-border);
+  display: block;
+}
+
+// ─── Remove button ────────────────────────────────────────
+.image-remove {
+  position: absolute;
+  inset-block-start: -6px;
+  inset-inline-end: -6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-danger);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--color-surface);
+  box-shadow: var(--sh-card);
+  cursor: pointer;
+  transition: background 0.12s;
+
+  &:hover {
+    background: #b91c1c;
+  }
+}
+
+// ─── Add URL card ─────────────────────────────────────────
+.image-add-cell {
+  flex: 1;
+  min-width: 200px;
+}
+
+// ─── Upload dashed area ───────────────────────────────────
+.upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-4);
+  font-size: 12px;
+  border: 2px dashed var(--color-border);
+  border-radius: var(--r-md);
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  text-align: center;
+  transition: border-color 0.12s, background 0.12s;
+
+  &:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-light);
+  }
+}
+
+// ─── Inline URL input row ────────────────────────────────
+.url-row {
+  display: flex;
+  gap: var(--sp-2);
+  width: 100%;
+  margin-block-start: var(--sp-3);
+}
+
+.url-input {
+  flex: 1;
+  height: 32px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-md);
+  padding-inline: var(--sp-3);
+  font-size: 12px;
+  color: var(--color-text);
+  outline: none;
+  transition: border-color 0.12s, box-shadow 0.12s;
+
+  &:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  }
+
+  &::placeholder {
+    color: var(--color-text-subtle);
+  }
+}
+
+// ─── Add button ───────────────────────────────────────────
+.btn-add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding-inline: var(--sp-3);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-md);
+  color: var(--color-text);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s, border-color 0.12s;
+
+  &:hover:not(:disabled) {
+    background: var(--color-bg);
+    border-color: var(--color-border-strong);
+  }
+}

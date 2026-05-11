@@ -11,6 +11,7 @@ import type { ProductStatus } from '../../models/product.model';
       {{ label() }}
     </span>
   `,
+  styleUrl: './product-status-badge.component.scss',
 })
 export class ProductStatusBadgeComponent {
   readonly status = input.required<ProductStatus>();

@@ -21,6 +21,7 @@ export type ProductFormValue = ProductCreateDto | ProductUpdateDto;
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, AdminIconComponent, ProductImageGridComponent],
   templateUrl: './product-form.component.html',
+  styleUrl: './product-form.component.scss',
 })
 export class ProductFormComponent implements OnInit {
   private readonly fb = inject(FormBuilder);

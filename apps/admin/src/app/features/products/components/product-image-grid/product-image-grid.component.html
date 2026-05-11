@@ -6,7 +6,7 @@
         @if (!readonly()) {
           <button
             type="button"
-            class="image-remove icon-btn danger"
+            class="image-remove"
             (click)="onRemove(i)"
             title="Remove image"
           >
@@ -18,19 +18,18 @@
 
     @if (!readonly()) {
       <div class="image-add-cell">
-        <div class="upload" style="padding: var(--sp-4); font-size: 12px;">
+        <div class="upload">
           <admin-icon name="upload" [size]="20" />
-          <p style="margin: var(--sp-2) 0 var(--sp-3);">Add image URL</p>
-          <div style="display: flex; gap: var(--sp-2);">
+          <p style="margin: var(--sp-2) 0 0;">Add image URL</p>
+          <div class="url-row">
             <input
               #urlInput
               type="url"
-              class="input"
+              class="url-input"
               placeholder="https://example.com/image.jpg"
-              style="flex: 1; font-size: 12px;"
               (keyup.enter)="onAddUrl(urlInput)"
             />
-            <button type="button" class="btn btn-secondary btn-sm" (click)="onAddUrl(urlInput)">
+            <button type="button" class="btn-add" (click)="onAddUrl(urlInput)">
               Add
             </button>
           </div>

@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { AdminIconComponent } from '../../../../shared/components/admin-icon/admin-icon.component';
-import type { Category, FilterState, SortOption } from '../../models/product.model';
+import type { Category, SortOption } from '../../models/product.model';
 
 @Component({
   selector: 'admin-product-filters',
@@ -16,27 +16,19 @@ import type { Category, FilterState, SortOption } from '../../models/product.mod
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, AdminIconComponent],
   templateUrl: './product-filters.component.html',
+  styleUrl: './product-filters.component.scss',
 })
 export class ProductFiltersComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   readonly categories = input<Category[]>([]);
-  readonly currentStatus = input<FilterState['status']>('all');
   readonly currentSort = input<SortOption>('created_desc');
   readonly currentCategory = input<string>('');
   readonly currentSearch = input<string>('');
 
   readonly searchChanged = output<string>();
-  readonly statusChanged = output<FilterState['status']>();
   readonly categoryChanged = output<string>();
   readonly sortChanged = output<SortOption>();
-
-  readonly statusOptions: { value: FilterState['status']; label: string }[] = [
-    { value: 'all', label: 'All' },
-    { value: 'active', label: 'Active' },
-    { value: 'draft', label: 'Draft' },
-    { value: 'deleted', label: 'Out of Stock' },
-  ];
 
   readonly sortOptions: { value: SortOption; label: string }[] = [
     { value: 'created_desc', label: 'Newest first' },
@@ -67,10 +59,6 @@ export class ProductFiltersComponent implements OnInit {
     if (input.value === '') {
       this.searchChanged.emit('');
     }
-  }
-
-  onStatusChange(value: FilterState['status']): void {
-    this.statusChanged.emit(value);
   }
 
   onCategoryChange(event: Event): void {
