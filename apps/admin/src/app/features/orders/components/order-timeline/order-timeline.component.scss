@@ -1,0 +1,137 @@
+// =========================================================
+// Order Timeline — full visual rules
+// =========================================================
+
+:host {
+  display: block;
+}
+
+// ─── Timeline container ───────────────────────────────────
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+// ─── Individual step row ──────────────────────────────────
+.tl-step {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding-block-end: var(--sp-5);
+
+  // Connector line between dots — drawn as ::before on the step,
+  // positioned using logical inset so it flips for RTL.
+  &:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 11px; // half of 24px dot — centers on dot
+    inset-block-start: 24px;  // starts below the dot
+    inset-block-end: 0;
+    width: 2px;
+    background: var(--color-border);
+  }
+
+  // Completed step connector
+  &.done:not(:last-child)::before {
+    background: var(--color-success);
+  }
+}
+
+// Last step has no connector and no bottom padding
+.tl-step:last-child {
+  padding-block-end: 0;
+}
+
+// ─── Dot ─────────────────────────────────────────────────
+.tl-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background: var(--color-surface);
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  color: transparent;
+  position: relative;
+  z-index: 1;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+// Active state (current step)
+.tl-step.active .tl-dot {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+// Done state (past step)
+.tl-step.done .tl-dot {
+  background: var(--color-success);
+  border-color: var(--color-success);
+  color: #fff;
+}
+
+// Cancelled dot (uses danger)
+.tl-step.cancelled .tl-dot {
+  background: var(--color-danger);
+  border-color: var(--color-danger);
+  color: #fff;
+}
+
+// ─── Body (title + meta) ─────────────────────────────────
+.tl-body {
+  flex: 1;
+  min-width: 0;
+  padding-block-start: 2px;
+}
+
+.tl-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+.tl-step.done .tl-title,
+.tl-step.active .tl-title {
+  color: var(--color-text);
+}
+
+.cancelled-title {
+  color: var(--color-danger) !important;
+}
+
+.tl-meta {
+  font-size: 12px;
+  color: var(--color-text-subtle);
+  margin-block-start: 2px;
+  line-height: 1.5;
+}
+
+// ─── Mobile responsive ────────────────────────────────────
+@media (max-width: 640px) {
+  .tl-step {
+    gap: var(--sp-2);
+    padding-block-end: var(--sp-4);
+  }
+
+  .tl-dot {
+    width: 20px;
+    height: 20px;
+  }
+
+  .tl-step:not(:last-child)::before {
+    inset-inline-start: 9px; // half of 20px dot
+    inset-block-start: 20px;
+  }
+
+  .tl-title {
+    font-size: 12.5px;
+  }
+
+  .tl-meta {
+    font-size: 11.5px;
+  }
+}

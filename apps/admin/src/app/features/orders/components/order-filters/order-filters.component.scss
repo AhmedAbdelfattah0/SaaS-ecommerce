@@ -1,0 +1,100 @@
+// =========================================================
+// Order Filters — scoped form chrome
+// =========================================================
+
+:host {
+  display: block;
+}
+
+.filters-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 240px;
+}
+
+.search-icon {
+  position: absolute;
+  inset-inline-start: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-subtle);
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  height: 36px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-md);
+  padding-inline: var(--sp-3);
+  padding-inline-start: 34px;
+  font-size: 13.5px;
+  color: var(--color-text);
+  outline: none;
+  transition: border-color 0.12s, box-shadow 0.12s;
+
+  &::placeholder {
+    color: var(--color-text-subtle);
+  }
+
+  &:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  }
+}
+
+.sort-wrap {
+  flex-shrink: 0;
+}
+
+.sort-select {
+  height: 36px;
+  width: 200px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-md);
+  padding-inline: var(--sp-3);
+  font-size: 13.5px;
+  color: var(--color-text);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.12s, box-shadow 0.12s;
+
+  &:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  }
+}
+
+// RTL: search icon is already handled via inset-inline-start.
+// padding-inline-start on .search-input also flips automatically in RTL.
+// No additional :host-context([dir="rtl"]) rule needed since we use
+// logical properties throughout.
+
+@media (max-width: 640px) {
+  .filters-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-wrap {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .sort-wrap {
+    width: 100%;
+  }
+
+  .sort-select {
+    width: 100%;
+  }
+}

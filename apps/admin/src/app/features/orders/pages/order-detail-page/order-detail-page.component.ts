@@ -16,6 +16,7 @@ import {
   type StatusChangeEvent,
 } from '../../components/order-status-update/order-status-update.component';
 import { AdminIconComponent } from '../../../../shared/components/admin-icon/admin-icon.component';
+import { BannerComponent } from '@storecraft/ui';
 
 function fmtMoney(n: number): string {
   return `EGP ${new Intl.NumberFormat('en-EG').format(n)}`;
@@ -46,9 +47,10 @@ const AVATAR_COLORS = [
     OrderItemsListComponent,
     OrderStatusUpdateComponent,
     AdminIconComponent,
+    BannerComponent,
   ],
   templateUrl: './order-detail-page.component.html',
-  styleUrl: './order-detail-page.component.css',
+  styleUrl: './order-detail-page.component.scss',
 })
 export class OrderDetailPageComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
@@ -59,7 +61,16 @@ export class OrderDetailPageComponent implements OnInit {
 
   readonly shortId = computed(() => {
     const order = this.svc.order();
-    return order ? '#' + order.id.slice(0, 8).toUpperCase() : '';
+    return order ? order.id.slice(0, 8).toUpperCase() : '';
+  });
+
+  readonly placedAt = computed(() => {
+    const order = this.svc.order();
+    if (!order) return '';
+    const d = new Date(order.createdAt);
+    const date = d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const time = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    return `Placed on ${date} at ${time}`;
   });
 
   readonly customerInitials = computed(() => {

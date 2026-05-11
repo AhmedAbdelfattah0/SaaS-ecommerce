@@ -28,46 +28,8 @@ const STATUS_OPTIONS: { value: OrderStatus; label: string }[] = [
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, AdminIconComponent],
-  template: `
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="status-form">
-      <div class="field">
-        <label for="status-select">New Status</label>
-        <select id="status-select" class="select" formControlName="status">
-          @for (opt of statusOptions; track opt.value) {
-            <option [value]="opt.value">{{ opt.label }}</option>
-          }
-        </select>
-      </div>
-
-      <div class="field" style="margin-top: var(--sp-3)">
-        <label for="status-note">Note (optional)</label>
-        <textarea
-          id="status-note"
-          class="textarea"
-          formControlName="note"
-          placeholder="Add a note about this status change..."
-          rows="3"
-        ></textarea>
-      </div>
-
-      <button
-        type="submit"
-        class="btn btn-primary btn-full"
-        style="margin-top: var(--sp-4)"
-        [disabled]="isStatusUnchanged() || isUpdating()"
-      >
-        @if (isUpdating()) {
-          <admin-icon name="refresh" [size]="14" />
-          Updating...
-        } @else {
-          Update Status
-        }
-      </button>
-    </form>
-  `,
-  styles: [`
-    .status-form { display: flex; flex-direction: column; }
-  `],
+  templateUrl: './order-status-update.component.html',
+  styleUrl: './order-status-update.component.scss',
 })
 export class OrderStatusUpdateComponent implements OnInit {
   private readonly fb = inject(FormBuilder);

@@ -1,51 +1,41 @@
 <div class="page">
 
   <!-- Page Header -->
-  <div class="page-head">
-    <div>
-      <h1 class="page-title">
-        Orders
-        <span class="page-count">{{ svc.total() }}</span>
-      </h1>
-      <p class="page-sub">Manage and track all customer orders</p>
-    </div>
-    <div class="hstack gap-3">
-      <button class="btn btn-secondary" (click)="onRefresh()">
-        <admin-icon name="refresh" [size]="15" />
-        Refresh
-      </button>
-      <button class="btn btn-secondary">
-        <admin-icon name="download" [size]="15" />
-        Export
-      </button>
-    </div>
-  </div>
+  <sc-page-header
+    title="Orders"
+    subtitle="Manage and track all customer orders"
+    [count]="svc.total()"
+  >
+    <button type="button" class="btn btn-secondary btn-sm" style="margin-inline-end: var(--sp-2);" (click)="onRefresh()">
+      <admin-icon name="refresh" [size]="15" />
+      Refresh
+    </button>
+    <button type="button" class="btn btn-secondary btn-sm">
+      <admin-icon name="download" [size]="15" />
+      Export
+    </button>
+  </sc-page-header>
 
   <!-- Live Banner: new pending orders -->
   @if (svc.newPendingCount() > 0 && !svc.isLoading()) {
-    <div class="banner info">
-      <admin-icon name="bolt" [size]="16" />
-      <span>
-        <strong>{{ svc.newPendingCount() }} pending order{{ svc.newPendingCount() !== 1 ? 's' : '' }}</strong>
-        awaiting processing.
-      </span>
-      <button class="btn btn-sm btn-secondary" style="margin-left: auto" (click)="onStatusTabChange('pending')">
+    <sc-banner variant="info" style="margin-bottom: var(--sp-4);">
+      <strong>{{ svc.newPendingCount() }} pending order{{ svc.newPendingCount() !== 1 ? 's' : '' }}</strong>
+      awaiting processing.
+      <button banner-actions type="button" class="btn btn-sm btn-secondary" (click)="onStatusTabChange('pending')">
         View Pending
       </button>
-    </div>
+    </sc-banner>
   }
 
   <!-- Status Tabs -->
-  <div class="tabs-pill" style="margin-bottom: var(--sp-5)">
-    @for (tab of statusTabs; track tab.key) {
-      <button
-        [class.active]="svc.statusFilter() === tab.key"
-        (click)="onStatusTabChange(tab.key)"
-      >
-        {{ tab.label }}
-        <span class="count">{{ getTabCount(tab.key) }}</span>
-      </button>
-    }
+  <div class="tabs-row">
+    <sc-tabs
+      variant="pill"
+      size="sm"
+      [tabs]="statusTabs()"
+      [active]="svc.statusFilter()"
+      (activeChange)="onStatusTabChange($any($event))"
+    />
   </div>
 
   <!-- Filters Row -->
@@ -53,103 +43,139 @@
     <admin-order-filters (filtersChange)="onFiltersChange($event)" />
   </div>
 
-  <!-- Error State -->
+  <!-- Error Banner -->
   @if (svc.error()) {
-    <div class="banner warn" style="margin-bottom: var(--sp-4)">
-      <admin-icon name="warning" [size]="16" />
-      <span>{{ svc.error() }}</span>
-      <button class="btn btn-sm btn-secondary" style="margin-left: auto" (click)="onRefresh()">
+    <sc-banner variant="warning" style="margin-bottom: var(--sp-4);">
+      {{ svc.error() }}
+      <button banner-actions type="button" class="btn btn-sm btn-secondary" (click)="onRefresh()">
         Retry
       </button>
-    </div>
+    </sc-banner>
   }
 
   <!-- Table Card -->
-  <div class="card">
-    <div class="table-wrap">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>Customer</th>
-            <th>Items</th>
-            <th>Total</th>
-            <th>Status</th>
-            <th>Date</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          @if (svc.isLoading()) {
-            @for (i of [1,2,3,4,5,6,7,8]; track i) {
-              <tr class="skeleton-row">
-                <td><div class="skeleton" style="width:80px;height:16px;border-radius:4px"></div></td>
-                <td>
-                  <div class="hstack gap-3">
-                    <div class="skeleton" style="width:32px;height:32px;border-radius:50%"></div>
-                    <div class="skeleton" style="width:120px;height:16px;border-radius:4px"></div>
-                  </div>
-                </td>
-                <td><div class="skeleton" style="width:50px;height:16px;border-radius:4px"></div></td>
-                <td><div class="skeleton" style="width:80px;height:16px;border-radius:4px"></div></td>
-                <td><div class="skeleton" style="width:80px;height:22px;border-radius:999px"></div></td>
-                <td><div class="skeleton" style="width:60px;height:16px;border-radius:4px"></div></td>
-                <td></td>
-              </tr>
-            }
-          } @else if (svc.items().length === 0) {
-            <tr>
-              <td colspan="7">
-                <div class="empty-state">
-                  <admin-icon name="cart" [size]="40" />
-                  <div class="empty-title">No orders found</div>
-                  <div class="empty-sub">Try adjusting your filters or search query.</div>
-                </div>
-              </td>
-            </tr>
-          } @else {
-            @for (order of svc.items(); track order.id; let i = $index) {
-              <admin-order-row
-                [order]="order"
-                [index]="i"
-                (rowClick)="navigateToOrder($event)"
-              />
-            }
-          }
-        </tbody>
-      </table>
-    </div>
+  <div class="card table-card">
 
-    <!-- Pagination -->
-    @if (!svc.isLoading() && svc.totalPages() > 1) {
-      <div class="pagination">
-        <button
-          class="btn btn-secondary btn-sm"
-          [disabled]="svc.page() <= 1"
-          (click)="onPageChange(svc.page() - 1)"
-        >
-          <admin-icon name="chevronleft" [size]="14" />
-          Previous
-        </button>
-        <div class="page-pills">
-          @for (p of pages; track p) {
+    @if (svc.items().length === 0 && !svc.isLoading()) {
+      <!-- Empty State -->
+      <sc-empty-state
+        title="No orders found"
+        description="Try adjusting your filters or search query."
+      >
+        <admin-icon icon name="cart" [size]="32" />
+      </sc-empty-state>
+    } @else {
+      <!-- Data Table -->
+      <sc-data-table
+        [data]="svc.items()"
+        [loading]="svc.isLoading()"
+        (rowClick)="onRowClick($event)"
+      >
+        <!-- Order ID -->
+        <sc-data-column key="id" label="Order ID" width="120px" [nowrap]="true">
+          <ng-template let-order>
+            <span class="mono">#{{ shortId(order.id) }}</span>
+          </ng-template>
+        </sc-data-column>
+
+        <!-- Customer -->
+        <sc-data-column key="customer" label="Customer">
+          <ng-template let-order>
+            <div class="customer-cell">
+              <div class="avatar sm" [style.background]="avatarBgForOrder(order)">{{ customerInitials(order) }}</div>
+              <div>
+                <div class="customer-name">{{ customerName(order) }}</div>
+                <div class="muted customer-email">{{ order.customerId }}</div>
+              </div>
+            </div>
+          </ng-template>
+        </sc-data-column>
+
+        <!-- Items -->
+        <sc-data-column key="items" label="Items" align="end">
+          <ng-template let-order>
+            <span class="num muted">{{ order.items.length }} item{{ order.items.length !== 1 ? 's' : '' }}</span>
+          </ng-template>
+        </sc-data-column>
+
+        <!-- Total -->
+        <sc-data-column key="total" label="Total" [sortable]="true" align="end" [nowrap]="true">
+          <ng-template let-order>
+            <span class="num">{{ fmtMoney(order.total) }}</span>
+          </ng-template>
+        </sc-data-column>
+
+        <!-- Status -->
+        <sc-data-column key="status" label="Status">
+          <ng-template let-order>
+            <admin-order-status-badge [status]="order.status" />
+          </ng-template>
+        </sc-data-column>
+
+        <!-- Date -->
+        <sc-data-column key="date" label="Date" [sortable]="true" [nowrap]="true">
+          <ng-template let-order>
+            <span class="muted">{{ relativeDate(order.createdAt) }}</span>
+          </ng-template>
+        </sc-data-column>
+
+        <!-- Actions -->
+        <sc-data-column key="actions" label="" width="48px" align="end">
+          <ng-template let-order>
             <button
-              class="page-pill"
-              [class.active]="p === svc.page()"
-              (click)="onPageChange(p)"
-            >{{ p }}</button>
-          }
+              type="button"
+              class="icon-btn"
+              (click)="$event.stopPropagation(); onRowClick(order)"
+              aria-label="View order"
+            >
+              <admin-icon name="eye" [size]="15" />
+            </button>
+          </ng-template>
+        </sc-data-column>
+      </sc-data-table>
+
+      <!-- Pagination -->
+      @if (!svc.isLoading() && svc.totalPages() > 1) {
+        <div class="pagination-footer">
+          <span class="pagination-info">
+            Page {{ svc.page() }} of {{ svc.totalPages() }} &mdash;
+            {{ svc.total() }} orders
+          </span>
+          <div class="pagination-pages">
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              [disabled]="svc.page() <= 1"
+              (click)="onPageChange(svc.page() - 1)"
+            >
+              <admin-icon name="chevronleft" [size]="14" />
+            </button>
+
+            @for (p of paginationPages(); track p) {
+              <button
+                type="button"
+                class="btn btn-sm"
+                [class.btn-primary]="p === svc.page()"
+                [class.btn-secondary]="p !== svc.page()"
+                (click)="onPageChange(p)"
+              >
+                {{ p }}
+              </button>
+            }
+
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              [disabled]="svc.page() >= svc.totalPages()"
+              (click)="onPageChange(svc.page() + 1)"
+            >
+              <admin-icon name="chevronright" [size]="14" />
+            </button>
+          </div>
         </div>
-        <button
-          class="btn btn-secondary btn-sm"
-          [disabled]="svc.page() >= svc.totalPages()"
-          (click)="onPageChange(svc.page() + 1)"
-        >
-          Next
-          <admin-icon name="chevronright" [size]="14" />
-        </button>
-      </div>
+      }
     }
+
   </div>
 
 </div>

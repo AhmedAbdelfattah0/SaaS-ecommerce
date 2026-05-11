@@ -1,0 +1,282 @@
+// =========================================================
+// Order Detail Page — page-scoped layout + btn family
+// Global card/.page/.muted/.num utilities from styles.scss
+// remain available.
+// =========================================================
+
+:host {
+  display: block;
+}
+
+// ─── Sticky detail header ──────────────────────────────────
+.detail-header {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 10;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding-block: var(--sp-4);
+  padding-inline: var(--sp-8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+}
+
+.detail-header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-width: 0;
+}
+
+.detail-header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-shrink: 0;
+}
+
+.detail-header-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.detail-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.detail-subtitle {
+  font-size: 13px;
+  margin-block-start: 2px;
+}
+
+// ─── Back / icon button ───────────────────────────────────
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-md);
+  border: 0;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+
+  &:hover {
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+}
+
+.back-btn {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+// ─── Local button family ──────────────────────────────────
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  font-family: inherit;
+  font-weight: 500;
+  border-radius: var(--r-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  white-space: nowrap;
+
+  &.btn-sm {
+    height: 32px;
+    padding-inline: var(--sp-3);
+    font-size: 12.5px;
+  }
+
+  &.btn-secondary {
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    color: var(--color-text);
+
+    &:hover:not(:disabled) {
+      background: var(--color-bg);
+      border-color: var(--color-border-strong);
+    }
+  }
+}
+
+// ─── Transient feedback badges ────────────────────────────
+// TODO(stage-9): replace with sc-toast when transient feedback component exists.
+// These are auto-cleared after 3s by OrderDetailService.
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  padding-block: 3px;
+  padding-inline: 8px;
+  border-radius: var(--r-pill);
+  white-space: nowrap;
+}
+
+.badge-green {
+  background: var(--color-success-light);
+  color: var(--color-success);
+}
+
+.badge-red {
+  background: var(--color-danger-light);
+  color: var(--color-danger);
+}
+
+// ─── Body layout ─────────────────────────────────────────
+.detail-body {
+  padding-block-start: var(--sp-6);
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: var(--sp-6);
+  align-items: start;
+}
+
+.detail-left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+.detail-right {
+  display: flex;
+  flex-direction: column;
+}
+
+// ─── Card section title ───────────────────────────────────
+.card-section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+
+// ─── Customer card chrome ─────────────────────────────────
+.customer-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-block-start: var(--sp-3);
+}
+
+.avatar {
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 600;
+  flex-shrink: 0;
+
+  &.lg {
+    width: 44px;
+    height: 44px;
+    font-size: 14px;
+  }
+}
+
+.customer-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.customer-id {
+  font-size: 12px;
+  margin-block-start: 2px;
+}
+
+// ─── Totals summary ───────────────────────────────────────
+.totals-summary {
+  margin-block-start: var(--sp-3);
+}
+
+.totals-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: var(--sp-2);
+  font-size: 13.5px;
+}
+
+.totals-total {
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.divider {
+  height: 1px;
+  background: var(--color-border);
+  margin-block: var(--sp-2);
+}
+
+// ─── Loading skeleton ─────────────────────────────────────
+// TODO(stage-9): deduplicate with dashboard-page skeleton — promote to
+// a shared utility or sc-skeleton component in Stage 9 cleanup.
+.loading-center {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--sp-8);
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-border) 25%,
+    var(--color-bg) 50%,
+    var(--color-border) 75%
+  );
+  background-size: 200% 100%;
+  border-radius: var(--r-sm);
+  animation: detail-shimmer 1.4s linear infinite;
+}
+
+@keyframes detail-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// ─── Responsive ───────────────────────────────────────────
+@media (max-width: 900px) {
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .detail-header {
+    flex-wrap: wrap;
+    padding-inline: var(--sp-4);
+    gap: var(--sp-2);
+  }
+
+  .detail-header-right {
+    width: 100%;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+}

@@ -1,0 +1,18 @@
+<form [formGroup]="form" class="filters-row">
+  <div class="search-wrap">
+    <admin-icon name="search" [size]="16" class="search-icon" />
+    <input
+      type="text"
+      class="search-input"
+      formControlName="search"
+      placeholder="Search by order ID, customer, email..."
+    />
+  </div>
+  <div class="sort-wrap">
+    <select class="sort-select" formControlName="sortBy">
+      @for (opt of sortOptions; track opt.value) {
+        <option [value]="opt.value">{{ opt.label }}</option>
+      }
+    </select>
+  </div>
+</form>

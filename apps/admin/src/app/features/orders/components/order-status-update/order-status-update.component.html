@@ -1,0 +1,35 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="status-form">
+  <div class="field">
+    <label class="label" for="status-select">New Status</label>
+    <select id="status-select" class="select" formControlName="status">
+      @for (opt of statusOptions; track opt.value) {
+        <option [value]="opt.value">{{ opt.label }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="field" style="margin-block-start: var(--sp-3)">
+    <label class="label" for="status-note">Note (optional)</label>
+    <textarea
+      id="status-note"
+      class="textarea"
+      formControlName="note"
+      placeholder="Add a note about this status change..."
+      rows="3"
+    ></textarea>
+  </div>
+
+  <button
+    type="submit"
+    class="btn btn-primary btn-full"
+    style="margin-block-start: var(--sp-4)"
+    [disabled]="isStatusUnchanged() || isUpdating()"
+  >
+    @if (isUpdating()) {
+      <admin-icon name="refresh" [size]="14" />
+      Updating...
+    } @else {
+      Update Status
+    }
+  </button>
+</form>

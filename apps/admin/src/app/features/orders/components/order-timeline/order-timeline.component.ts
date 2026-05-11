@@ -43,63 +43,8 @@ function formatDate(iso: string): string {
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, AdminIconComponent],
-  template: `
-    <div class="timeline">
-      @for (step of steps(); track step.status) {
-        <div class="tl-step" [class.done]="step.state === 'done'" [class.active]="step.state === 'active'">
-          <div class="tl-dot">
-            @if (step.state === 'done') {
-              <admin-icon name="check" [size]="11" [strokeWidth]="3" />
-            }
-          </div>
-          <div class="tl-body">
-            <div class="tl-title">{{ step.label }}</div>
-            <div class="tl-meta">
-              @if (step.historyEntry) {
-                {{ formatDate(step.historyEntry.changedAt) }}
-                @if (step.historyEntry.note) {
-                  &mdash; {{ step.historyEntry.note }}
-                }
-              } @else {
-                {{ step.description }}
-              }
-            </div>
-          </div>
-        </div>
-      }
-
-      @if (isCancelled()) {
-        <div class="tl-step done">
-          <div class="tl-dot">
-            <admin-icon name="x" [size]="11" [strokeWidth]="3" />
-          </div>
-          <div class="tl-body">
-            <div class="tl-title" style="color: var(--color-danger)">Cancelled</div>
-            <div class="tl-meta">
-              @if (cancelEntry(); as entry) {
-                {{ formatDate(entry.changedAt) }}
-                @if (entry.note) {
-                  &mdash; {{ entry.note }}
-                }
-              } @else {
-                Order has been cancelled
-              }
-            </div>
-          </div>
-        </div>
-      }
-    </div>
-  `,
-  styles: [`
-    .tl-step.done .tl-dot {
-      background: var(--color-success);
-      border-color: var(--color-success);
-      color: white;
-    }
-    .tl-step.done:not(:last-child)::before {
-      background: var(--color-success);
-    }
-  `],
+  templateUrl: './order-timeline.component.html',
+  styleUrl: './order-timeline.component.scss',
 })
 export class OrderTimelineComponent {
   readonly history = input.required<OrderStatusHistory[]>();

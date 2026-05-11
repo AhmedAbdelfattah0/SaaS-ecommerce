@@ -25,6 +25,7 @@ export const ORDER_STATUS_MAP: Record<OrderStatus, StatusConfig> = {
       {{ config().label }}
     </span>
   `,
+  styleUrl: './order-status-badge.component.scss',
 })
 export class OrderStatusBadgeComponent {
   readonly status = input.required<OrderStatus>();

@@ -1,0 +1,15 @@
+<div class="items-list">
+  @for (item of items(); track item.id) {
+    <div class="item-row">
+      <div class="item-img-placeholder"></div>
+      <div class="item-info">
+        <span class="item-name">{{ item.name }}</span>
+        @if (item.variantId) {
+          <span class="item-variant muted">Variant: {{ item.variantId }}</span>
+        }
+      </div>
+      <div class="item-qty muted">× {{ item.quantity }}</div>
+      <div class="item-price num">{{ fmtMoney(item.price * item.quantity) }}</div>
+    </div>
+  }
+</div>

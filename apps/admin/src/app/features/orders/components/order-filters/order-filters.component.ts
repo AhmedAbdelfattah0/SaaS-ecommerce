@@ -28,53 +28,8 @@ const SORT_OPTIONS: { value: SortOption; label: string }[] = [
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, AdminIconComponent],
-  template: `
-    <form [formGroup]="form" class="filters-row">
-      <div class="search-wrap">
-        <admin-icon name="search" [size]="16" class="search-icon" />
-        <input
-          type="text"
-          class="input search-input"
-          formControlName="search"
-          placeholder="Search by order ID, customer, email..."
-        />
-      </div>
-      <div class="sort-wrap">
-        <select class="select" formControlName="sortBy" style="width: 200px">
-          @for (opt of sortOptions; track opt.value) {
-            <option [value]="opt.value">{{ opt.label }}</option>
-          }
-        </select>
-      </div>
-    </form>
-  `,
-  styles: [`
-    .filters-row {
-      display: flex;
-      align-items: center;
-      gap: var(--sp-3);
-      flex-wrap: wrap;
-    }
-    .search-wrap {
-      position: relative;
-      flex: 1;
-      min-width: 240px;
-    }
-    .search-icon {
-      position: absolute;
-      left: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--color-text-subtle);
-      pointer-events: none;
-    }
-    .search-input {
-      padding-left: 34px;
-    }
-    .sort-wrap {
-      flex-shrink: 0;
-    }
-  `],
+  templateUrl: './order-filters.component.html',
+  styleUrl: './order-filters.component.scss',
 })
 export class OrderFiltersComponent implements OnInit, OnDestroy {
   private readonly fb = inject(FormBuilder);
