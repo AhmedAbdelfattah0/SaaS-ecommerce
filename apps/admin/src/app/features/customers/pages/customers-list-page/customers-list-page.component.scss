@@ -1,0 +1,141 @@
+// =========================================================
+// Customers List Page — scoped layout styles
+// Global card/.page/.muted/.num/.nowrap/.truncate utilities from styles.scss
+// are still available. This file only contains:
+//   - local btn family
+//   - customer cell + avatar
+//   - icon-btn (eye action)
+//   - table card shell
+//   - pagination footer
+// =========================================================
+
+:host {
+  display: block;
+}
+
+// ─── Local button family ──────────────────────────────────
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  font-family: inherit;
+  font-weight: 500;
+  border-radius: var(--r-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  white-space: nowrap;
+
+  &.btn-sm {
+    height: 32px;
+    padding-inline: var(--sp-3);
+    font-size: 12.5px;
+  }
+
+  &.btn-primary {
+    background: var(--color-primary);
+    color: #fff;
+
+    &:hover:not(:disabled) {
+      background: var(--color-primary-hover);
+    }
+  }
+
+  &.btn-secondary {
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    color: var(--color-text);
+
+    &:hover:not(:disabled) {
+      background: var(--color-bg);
+      border-color: var(--color-border-strong);
+    }
+  }
+}
+
+// ─── Table card shell ─────────────────────────────────────
+.customers-table-card {
+  margin-block-start: var(--sp-4);
+  overflow: hidden;
+}
+
+// ─── Customer cell ────────────────────────────────────────
+.customer-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+// ─── Avatar circle ────────────────────────────────────────
+.avatar {
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 600;
+  flex-shrink: 0;
+
+  &.sm {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+}
+
+.customer-name {
+  font-weight: 500;
+  color: var(--color-text);
+  font-size: 13px;
+}
+
+// ─── Icon button (eye action in row) ──────────────────────
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--r-md);
+  border: 0;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+
+  &:hover {
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+}
+
+// ─── Pagination footer ────────────────────────────────────
+.pagination-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: var(--sp-3);
+  padding-inline: var(--sp-5);
+  border-top: 1px solid var(--color-border);
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+.pagination-info {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.pagination-pages {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: center;
+}
+
+// ─── Mobile responsive ────────────────────────────────────
+@media (max-width: 640px) {
+  .pagination-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

@@ -22,6 +22,7 @@ export interface CustomerFilterChange {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, AdminIconComponent],
   templateUrl: './customer-filters.component.html',
+  styleUrl: './customer-filters.component.scss',
 })
 export class CustomerFiltersComponent implements OnInit {
   private readonly fb = inject(FormBuilder);

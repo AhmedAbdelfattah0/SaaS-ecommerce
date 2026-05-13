@@ -111,6 +111,7 @@ export class OrdersListPageComponent implements OnInit {
     return AVATAR_COLORS[index % AVATAR_COLORS.length];
   }
 
+  // TODO(stage-9): consider unifying with avatarColorForName once both call sites agree on a hash key
   // avatarBgForOrder derives a stable color from the order id's char code sum
   avatarBgForOrder(order: Order): string {
     const sum = order.id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);

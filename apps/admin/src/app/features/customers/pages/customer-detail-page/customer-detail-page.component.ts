@@ -10,7 +10,8 @@ import { CustomerCardComponent } from '../../components/customer-card/customer-c
 import { CustomerStatsComponent } from '../../components/customer-stats/customer-stats.component';
 import { CustomerOrdersComponent } from '../../components/customer-orders/customer-orders.component';
 import { CustomerDetailService } from '../../services/customer-detail.service';
-import { avatarColor, initials } from '../../models/customer.model';
+import { BannerComponent } from '@storecraft/ui';
+import { avatarColorForName as avatarColor, initials } from '@storecraft/utils';
 
 @Component({
   selector: 'admin-customer-detail-page',
@@ -21,10 +22,11 @@ import { avatarColor, initials } from '../../models/customer.model';
     CustomerCardComponent,
     CustomerStatsComponent,
     CustomerOrdersComponent,
+    BannerComponent,
   ],
   providers: [CustomerDetailService],
   templateUrl: './customer-detail-page.component.html',
-  styleUrl: './customer-detail-page.component.css',
+  styleUrl: './customer-detail-page.component.scss',
 })
 export class CustomerDetailPageComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);

@@ -6,7 +6,8 @@ import {
 } from '@angular/core';
 import { AdminIconComponent } from '../../../../shared/components/admin-icon/admin-icon.component';
 import type { Customer } from '../../models/customer.model';
-import { avatarColor, initials, fmtDate } from '../../models/customer.model';
+import { fmtDate } from '../../models/customer.model';
+import { avatarColorForName as avatarColor, initials } from '@storecraft/utils';
 
 @Component({
   selector: 'admin-customer-card',
@@ -14,6 +15,7 @@ import { avatarColor, initials, fmtDate } from '../../models/customer.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AdminIconComponent],
   templateUrl: './customer-card.component.html',
+  styleUrl: './customer-card.component.scss',
 })
 export class CustomerCardComponent {
   readonly customer = input.required<Customer>();

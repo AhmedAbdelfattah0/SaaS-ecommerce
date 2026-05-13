@@ -5,12 +5,12 @@ import { AdminIconComponent } from '../../../../shared/components/admin-icon/adm
 import type { Order } from '@storecraft/models';
 import { fmtDate } from '../../models/customer.model';
 
-const STATUS_MAP: Record<string, { label: string; cls: string }> = {
-  pending:    { label: 'Pending',    cls: 'badge badge-amber' },
-  processing: { label: 'Processing', cls: 'badge badge-blue' },
-  shipped:    { label: 'Shipped',    cls: 'badge badge-purple' },
-  delivered:  { label: 'Delivered',  cls: 'badge badge-green' },
-  cancelled:  { label: 'Cancelled',  cls: 'badge badge-red' },
+const STATUS_MAP: Record<string, { label: string; cls: string; dotColor: string }> = {
+  pending:    { label: 'Pending',    cls: 'badge badge-amber',  dotColor: '#D97706' },
+  processing: { label: 'Processing', cls: 'badge badge-blue',   dotColor: '#2563EB' },
+  shipped:    { label: 'Shipped',    cls: 'badge badge-purple', dotColor: '#7C3AED' },
+  delivered:  { label: 'Delivered',  cls: 'badge badge-green',  dotColor: '#16A34A' },
+  cancelled:  { label: 'Cancelled',  cls: 'badge badge-red',    dotColor: '#DC2626' },
 };
 
 @Component({
@@ -19,14 +19,15 @@ const STATUS_MAP: Record<string, { label: string; cls: string }> = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AdminIconComponent],
   templateUrl: './customer-orders.component.html',
+  styleUrl: './customer-orders.component.scss',
 })
 export class CustomerOrdersComponent {
   private readonly router = inject(Router);
 
   readonly orders = input.required<Order[]>();
 
-  statusBadge(status: string): { label: string; cls: string } {
-    return STATUS_MAP[status] ?? { label: status, cls: 'badge badge-gray' };
+  statusBadge(status: string): { label: string; cls: string; dotColor: string } {
+    return STATUS_MAP[status] ?? { label: status, cls: 'badge badge-gray', dotColor: '#64748B' };
   }
 
   fmtDate(iso: string): string {

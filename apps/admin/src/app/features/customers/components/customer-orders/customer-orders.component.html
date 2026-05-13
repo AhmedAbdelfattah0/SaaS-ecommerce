@@ -8,10 +8,10 @@
   </div>
 
   @if (orders().length === 0) {
-    <div class="card-pad" style="text-align: center; padding: var(--sp-10) var(--sp-5);">
+    <div class="empty-orders">
       <admin-icon name="cart" [size]="32" style="color: var(--color-text-subtle);" />
-      <div style="margin-top: var(--sp-3); color: var(--color-text-muted); font-size: 14px;">No orders yet</div>
-      <div style="color: var(--color-text-subtle); font-size: 12px; margin-top: var(--sp-2);">Orders placed by this customer will appear here.</div>
+      <div class="empty-orders-label">No orders yet</div>
+      <div class="empty-orders-sub">Orders placed by this customer will appear here.</div>
     </div>
   } @else {
     <div style="overflow-x: auto;">
@@ -36,7 +36,10 @@
               <td class="muted num">{{ order.items.length }}</td>
               <td class="num" style="font-weight: 600;">{{ fmtMoney(order.total) }}</td>
               <td>
-                <span [class]="statusBadge(order.status).cls">{{ statusBadge(order.status).label }}</span>
+                <span [class]="statusBadge(order.status).cls">
+                  <span class="badge-dot" [style.background]="statusBadge(order.status).dotColor"></span>
+                  {{ statusBadge(order.status).label }}
+                </span>
               </td>
               <td>
                 <div class="row-actions">

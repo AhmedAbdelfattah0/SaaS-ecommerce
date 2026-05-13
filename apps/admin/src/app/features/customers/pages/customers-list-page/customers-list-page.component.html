@@ -1,83 +1,107 @@
 <div class="page">
 
   <!-- Page Header -->
-  <div class="page-head">
-    <div>
-      <h1 class="page-title">
-        Customers
-        <span class="page-count">{{ service.total() }}</span>
-      </h1>
-      <p class="page-sub">Manage your customer base and view purchase history.</p>
-    </div>
-    <div class="hstack gap-3">
-      <button class="btn btn-secondary btn-sm">
-        <admin-icon name="download" [size]="14" />
-        Export
-      </button>
-      <button class="btn btn-primary btn-sm">
-        <admin-icon name="mail" [size]="14" />
-        Send Broadcast
-      </button>
-    </div>
-  </div>
+  <sc-page-header
+    title="Customers"
+    [count]="service.total()"
+    subtitle="Manage your customer base and view purchase history."
+  >
+    <button type="button" class="btn btn-secondary btn-sm">
+      <admin-icon name="download" [size]="14" />
+      Export
+    </button>
+    <button type="button" class="btn btn-primary btn-sm" style="margin-inline-start: var(--sp-2);">
+      <admin-icon name="mail" [size]="14" />
+      Send Broadcast
+    </button>
+  </sc-page-header>
 
   <!-- Filters -->
   <admin-customer-filters (filterChange)="onFilterChange($event)" />
 
-  <!-- Table -->
-  <div class="card mt-4">
+  <!-- Error Banner (above the card per decision 6) -->
+  @if (service.error()) {
+    <sc-banner variant="warning" style="margin-bottom: var(--sp-4);">
+      {{ service.error() }}
+      <button banner-actions type="button" class="btn btn-sm btn-secondary" (click)="service.load()">
+        <admin-icon name="refresh" [size]="13" />
+        Retry
+      </button>
+    </sc-banner>
+  }
 
-    @if (service.isLoading()) {
-      <div class="card-pad" style="text-align: center; padding: var(--sp-10) var(--sp-5);">
-        <div style="display: inline-flex; flex-direction: column; align-items: center; gap: var(--sp-3);">
-          <div class="skeleton" style="width: 32px; height: 32px; border-radius: 50%;"></div>
-          <span style="color: var(--color-text-muted); font-size: 13px;">Loading customers…</span>
-        </div>
-      </div>
-    } @else if (service.error()) {
-      <div class="card-pad" style="text-align: center; padding: var(--sp-8) var(--sp-5);">
-        <admin-icon name="warning" [size]="24" style="color: var(--color-danger);" />
-        <div style="margin-top: var(--sp-2); color: var(--color-danger); font-size: 14px;">{{ service.error() }}</div>
-        <button class="btn btn-secondary btn-sm" style="margin-top: var(--sp-3);" (click)="service.load()">
-          <admin-icon name="refresh" [size]="13" />
-          Retry
-        </button>
-      </div>
-    } @else if (service.sortedItems().length === 0) {
-      <div class="card-pad" style="text-align: center; padding: var(--sp-10) var(--sp-5);">
-        <admin-icon name="users" [size]="36" style="color: var(--color-text-subtle);" />
-        <div style="margin-top: var(--sp-3); font-size: 15px; font-weight: 600; color: var(--color-text);">No customers found</div>
-        <div style="color: var(--color-text-muted); font-size: 13px; margin-top: var(--sp-2);">Try adjusting your search or filters.</div>
-      </div>
+  <!-- Table Card -->
+  <div class="card customers-table-card">
+
+    @if (service.sortedItems().length === 0 && !service.isLoading() && !service.error()) {
+      <sc-empty-state title="No customers found" description="Try adjusting your search or filters.">
+        <admin-icon icon name="users" [size]="32" />
+      </sc-empty-state>
     } @else {
-      <div style="overflow-x: auto;">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Customer</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Joined</th>
-              <th style="text-align: right;">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (customer of service.sortedItems(); track customer.id) {
-              <admin-customer-row [customer]="customer" />
-            }
-          </tbody>
-        </table>
-      </div>
+      <sc-data-table
+        [data]="service.sortedItems()"
+        [loading]="service.isLoading()"
+        (rowClick)="onRowClick($event)"
+      >
+        <!-- Customer: avatar + name -->
+        <sc-data-column key="customer" label="Customer">
+          <ng-template let-customer>
+            <div class="customer-cell">
+              <div
+                class="avatar sm"
+                [style.background]="avatarColor(customer.name)"
+                [attr.aria-label]="customer.name"
+              >{{ initials(customer.name) }}</div>
+              <span class="customer-name">{{ customer.name }}</span>
+            </div>
+          </ng-template>
+        </sc-data-column>
+
+        <!-- Email -->
+        <sc-data-column key="email" label="Email">
+          <ng-template let-customer>
+            <span class="muted truncate" style="max-width: 260px; display: inline-block;">{{ customer.email }}</span>
+          </ng-template>
+        </sc-data-column>
+
+        <!-- Phone -->
+        <sc-data-column key="phone" label="Phone">
+          <ng-template let-customer>
+            <span class="muted">{{ customer.phone ?? '—' }}</span>
+          </ng-template>
+        </sc-data-column>
+
+        <!-- Joined — static label, no [sortable] (sort owned by customer-filters) -->
+        <sc-data-column key="joined" label="Joined" [nowrap]="true">
+          <ng-template let-customer>
+            <span class="muted num">{{ fmtDate(customer.createdAt) }}</span>
+          </ng-template>
+        </sc-data-column>
+
+        <!-- Actions -->
+        <sc-data-column key="actions" label="" width="48px" align="end">
+          <ng-template let-customer>
+            <button
+              type="button"
+              class="icon-btn"
+              (click)="$event.stopPropagation(); onRowClick(customer)"
+              aria-label="View customer"
+            >
+              <admin-icon name="eye" [size]="15" />
+            </button>
+          </ng-template>
+        </sc-data-column>
+      </sc-data-table>
 
       <!-- Pagination -->
       @if (service.totalPages() > 1) {
-        <div class="card-foot" style="display: flex; align-items: center; justify-content: space-between; padding: var(--sp-3) var(--sp-5);">
-          <span style="font-size: 12px; color: var(--color-text-muted);">
-            Page {{ service.page() }} of {{ service.totalPages() }}
-            &middot; {{ service.total() }} customers
+        <div class="pagination-footer">
+          <span class="pagination-info">
+            Page {{ service.page() }} of {{ service.totalPages() }} &middot; {{ service.total() }} customers
           </span>
-          <div class="hstack gap-2">
+          <div class="pagination-pages">
             <button
+              type="button"
               class="btn btn-secondary btn-sm"
               [disabled]="service.page() === 1"
               (click)="prevPage()"
@@ -86,6 +110,7 @@
               Prev
             </button>
             <button
+              type="button"
               class="btn btn-secondary btn-sm"
               [disabled]="service.page() === service.totalPages()"
               (click)="nextPage()"
@@ -97,5 +122,7 @@
         </div>
       }
     }
+
   </div>
+
 </div>

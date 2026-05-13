@@ -8,6 +8,7 @@ import { fmtDate } from '../../models/customer.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AdminIconComponent],
   templateUrl: './customer-stats.component.html',
+  styleUrl: './customer-stats.component.scss',
 })
 export class CustomerStatsComponent {
   readonly ordersCount = input.required<number>();
