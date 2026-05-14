@@ -1,28 +1,14 @@
 // =========================================================
-// Color Picker — local form-field + colorpick chrome
-// TODO(stage-9): .field / .input / .hint are duplicated from
-// product-form and other features. Promote to shared mixin
-// or sc-field component in Stage 9 cleanup pass.
+// Color Picker — form-field chrome + colorpick chrome
 // =========================================================
+
+@use '../../../../../styles/form-field' as *;
 
 :host {
   display: block;
 }
 
-// ─── Field — label + control + hint ──────────────────────
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.field label {
-  display: block;
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--color-text);
-  text-align: start;
-}
+// form-field base provided by @use above (.field, .field label)
 
 // ─── Color-pick row (native input + hex text + swatch) ───
 .colorpick {
@@ -80,11 +66,4 @@
   border-radius: var(--r-sm);
 }
 
-// ─── Hint / validation text ───────────────────────────────
-.hint {
-  display: block;
-  font-size: 11.5px;
-  color: var(--color-text-muted);
-  text-align: start;
-  line-height: 1.4;
-}
+// hint provided by @use above

@@ -3,6 +3,10 @@
 // Global card utilities from styles.scss remain available.
 // =========================================================
 
+@use '../../../../../styles/button' as *;
+@use '../../../../../styles/form-field' as *;
+@use '../../../../../styles/skeleton' as *;
+
 :host {
   display: block;
 }
@@ -79,46 +83,7 @@
   inset-block-start: 80px;
 }
 
-// ─── Aside field + select + hint ─────────────────────────
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.field label {
-  display: block;
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--color-text);
-  text-align: start;
-}
-
-.select {
-  width: 100%;
-  height: 38px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--r-md);
-  padding-inline: var(--sp-3);
-  font-size: 13.5px;
-  color: var(--color-text);
-  outline: none;
-  cursor: pointer;
-  transition: border-color 0.12s, box-shadow 0.12s;
-
-  &:focus {
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-  }
-}
-
-.hint {
-  display: block;
-  font-size: 11.5px;
-  color: var(--color-text-muted);
-  text-align: start;
-}
+// form-field families provided by @use above
 
 // ─── Meta row (created / updated / id) ───────────────────
 .detail-meta-row {
@@ -140,66 +105,7 @@
   font-size: 11.5px;
 }
 
-// ─── Local button family ──────────────────────────────────
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--sp-2);
-  font-family: inherit;
-  font-weight: 500;
-  border-radius: var(--r-md);
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: background 0.12s, border-color 0.12s, color 0.12s;
-  white-space: nowrap;
-
-  &.btn-sm {
-    height: 32px;
-    padding-inline: var(--sp-3);
-    font-size: 12.5px;
-  }
-
-  &.btn-primary {
-    background: var(--color-primary);
-    color: #fff;
-
-    &:hover:not(:disabled) {
-      background: var(--color-primary-hover);
-    }
-  }
-
-  &.btn-secondary {
-    background: var(--color-surface);
-    border-color: var(--color-border);
-    color: var(--color-text);
-
-    &:hover:not(:disabled) {
-      background: var(--color-bg);
-      border-color: var(--color-border-strong);
-    }
-  }
-
-  &.btn-ghost {
-    background: transparent;
-    color: var(--color-text-muted);
-
-    &:hover:not(:disabled) {
-      background: var(--color-bg);
-      color: var(--color-text);
-    }
-  }
-
-  &.btn-danger-outline {
-    background: transparent;
-    border-color: var(--color-danger);
-    color: var(--color-danger);
-
-    &:hover:not(:disabled) {
-      background: var(--color-danger-light);
-    }
-  }
-}
+// button family provided by @use above
 
 // ─── Delete modal action row ──────────────────────────────
 .modal-actions {
@@ -208,28 +114,7 @@
   justify-content: flex-end;
 }
 
-// ─── Skeleton shimmer ─────────────────────────────────────
-// TODO(stage-9): extract to a shared utility or sc-skeleton component.
-.skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--color-border) 25%,
-    var(--color-bg) 50%,
-    var(--color-border) 75%
-  );
-  background-size: 200% 100%;
-  border-radius: var(--r-sm);
-  animation: detail-shimmer 1.4s linear infinite;
-}
-
-@keyframes detail-shimmer {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
+// skeleton shimmer provided by @use above
 
 // ─── Responsive: single column below 900px ────────────────
 @media (max-width: 900px) {

@@ -1,56 +1,12 @@
 // =========================================================
 // Order Status Badge — scoped badge styles
-// TODO(stage-9): consolidate status-badge variants across features
-// (order-status-badge, product-status-badge share the same badge
-// chrome. Promote to a shared sc-badge or a shared .badge mixin in
-// a Stage 9 cleanup pass.)
+// TODO(stage-9b): unify status-badge variant components across features
+// into a single sc-badge component with typed input variants.
 // =========================================================
 
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 12px;
-  font-weight: 500;
-  padding-block: 3px;
-  padding-inline: 8px;
-  border-radius: var(--r-pill);
-  white-space: nowrap;
-}
+@use '../../../../../styles/badge' as *;
 
-.badge-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.badge-amber {
-  background: var(--color-warning-light);
-  color: var(--color-warning);
-}
-
-.badge-blue {
-  background: var(--color-info-light);
-  color: var(--color-primary);
-}
-
-.badge-purple {
-  background: var(--color-purple-light);
-  color: var(--color-purple);
-}
-
-.badge-green {
-  background: var(--color-success-light);
-  color: var(--color-success);
-}
-
-.badge-red {
-  background: var(--color-danger-light);
-  color: var(--color-danger);
-}
-
+// Component-specific override: .badge-gray without a border
 .badge-gray {
-  background: var(--color-bg);
-  color: var(--color-text-muted);
+  border: none;
 }

@@ -1,0 +1,135 @@
+// =========================================================
+// _button.scss — shared button family partial
+//
+// @use this partial in component .scss files:
+//   @use '../../../../../styles/button' as *;
+//   (adjust path depth as needed)
+//
+// Canonical source: orders-list-page.component.scss
+// Augmented with variants from shipping-page, integrations-page,
+// product-detail-page, settings-page.
+//
+// NOTE: Angular emulated view encapsulation inlines this at
+// compile time, so each consuming component gets its own
+// scoped copy. No leakage between components.
+// =========================================================
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  font-family: inherit;
+  font-weight: 500;
+  border-radius: var(--r-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  white-space: nowrap;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  // ─── Size variants ──────────────────────────────────────
+
+  &.btn-sm {
+    height: 32px;
+    padding-inline: var(--sp-3);
+    font-size: 12.5px;
+  }
+
+  &.btn-md {
+    height: 38px;
+    padding-inline: var(--sp-4);
+    font-size: 13.5px;
+  }
+
+  // ─── Color variants ─────────────────────────────────────
+
+  &.btn-primary {
+    background: var(--color-primary);
+    color: #fff;
+
+    &:hover:not(:disabled) {
+      background: var(--color-primary-hover);
+    }
+  }
+
+  &.btn-secondary {
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    color: var(--color-text);
+
+    &:hover:not(:disabled) {
+      background: var(--color-bg);
+      border-color: var(--color-border-strong);
+    }
+  }
+
+  &.btn-ghost {
+    background: transparent;
+    border-color: transparent;
+    color: var(--color-text-muted);
+
+    &:hover:not(:disabled) {
+      background: var(--color-bg);
+      color: var(--color-text);
+    }
+  }
+
+  &.btn-danger {
+    background: var(--color-danger);
+    color: #fff;
+
+    &:hover:not(:disabled) {
+      background: #b91c1c;
+    }
+  }
+
+  &.btn-danger-outline {
+    background: transparent;
+    border-color: var(--color-danger);
+    color: var(--color-danger);
+
+    &:hover:not(:disabled) {
+      background: var(--color-danger-light);
+    }
+  }
+
+  // ─── Layout variants ─────────────────────────────────────
+
+  &.btn-full {
+    display: flex;
+    width: 100%;
+  }
+}
+
+// ─── Icon button ─────────────────────────────────────────
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--r-md);
+  border: 0;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+
+  &:hover {
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  &.danger {
+    &:hover {
+      background: var(--color-danger-light);
+      color: var(--color-danger);
+    }
+  }
+}

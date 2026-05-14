@@ -1,0 +1,36 @@
+// =========================================================
+// _skeleton.scss — shared skeleton shimmer partial
+//
+// @use this partial in component .scss files:
+//   @use '../../../../../styles/skeleton' as *;
+//   (adjust path depth as needed)
+//
+// Canonical source: dashboard-page.component.scss
+// Unified keyframe name: skeleton-shimmer
+// (replaces per-page names: dashboard-shimmer, detail-shimmer,
+//  customer-detail-shimmer)
+//
+// NOTE: Angular emulated view encapsulation inlines this at
+// compile time, so each consuming component gets its own
+// scoped copy. No leakage between components.
+// =========================================================
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-border) 25%,
+    var(--color-bg) 50%,
+    var(--color-border) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s linear infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

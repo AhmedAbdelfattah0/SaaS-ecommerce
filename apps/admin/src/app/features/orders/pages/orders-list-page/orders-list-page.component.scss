@@ -2,65 +2,19 @@
 // Orders List Page — scoped layout styles
 // Global card/.page/.muted/.num/.nowrap utilities from styles.scss
 // are still available. This file only contains:
-//   - local btn family
 //   - customer cell + avatar
-//   - icon-btn (eye action)
 //   - tabs row spacing
 //   - table card shell
 //   - pagination footer
 //   - mono (order IDs)
 // =========================================================
 
+@use '../../../../../styles/button' as *;
+
 :host {
   display: block;
 }
 
-// ─── Local button family ──────────────────────────────────
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--sp-2);
-  font-family: inherit;
-  font-weight: 500;
-  border-radius: var(--r-md);
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: background 0.12s, border-color 0.12s, color 0.12s;
-  white-space: nowrap;
-
-  &.btn-sm {
-    height: 32px;
-    padding-inline: var(--sp-3);
-    font-size: 12.5px;
-  }
-
-  &.btn-md {
-    height: 38px;
-    padding-inline: var(--sp-4);
-    font-size: 13.5px;
-  }
-
-  &.btn-primary {
-    background: var(--color-primary);
-    color: #fff;
-
-    &:hover:not(:disabled) {
-      background: var(--color-primary-hover);
-    }
-  }
-
-  &.btn-secondary {
-    background: var(--color-surface);
-    border-color: var(--color-border);
-    color: var(--color-text);
-
-    &:hover:not(:disabled) {
-      background: var(--color-bg);
-      border-color: var(--color-border-strong);
-    }
-  }
-}
 
 // ─── Status tabs row ──────────────────────────────────────
 .tabs-row {

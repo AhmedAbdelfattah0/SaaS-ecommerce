@@ -1,0 +1,46 @@
+// =========================================================
+// _toggle.scss — shared toggle switch partial
+//
+// @use this partial in component .scss files:
+//   @use '../../../../../styles/toggle' as *;
+//   (adjust path depth as needed)
+//
+// Canonical source: payments-page.component.scss
+//
+// NOTE: Angular emulated view encapsulation inlines this at
+// compile time, so each consuming component gets its own
+// scoped copy. No leakage between components.
+// =========================================================
+
+.toggle {
+  appearance: none;
+  width: 36px;
+  height: 20px;
+  border-radius: var(--r-pill);
+  background: var(--color-border-strong);
+  border: 1px solid transparent;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.15s;
+  flex-shrink: 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset-block: 2px;
+    inset-inline-start: 2px;
+    width: 14px;
+    border-radius: 50%;
+    background: var(--color-surface);
+    transition: inset-inline-start 0.15s;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  }
+
+  &.on {
+    background: var(--color-primary);
+
+    &::before {
+      inset-inline-start: 18px;
+    }
+  }
+}

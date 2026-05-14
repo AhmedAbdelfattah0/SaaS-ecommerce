@@ -1,27 +1,12 @@
 // =========================================================
 // Layout Selector — local field chrome + layout card buttons
-// TODO(stage-9): .field / .label / .badge are duplicated across
-// features. Promote in Stage 9 cleanup pass.
 // =========================================================
+
+@use '../../../../../styles/form-field' as *;
+@use '../../../../../styles/badge' as *;
 
 :host {
   display: block;
-}
-
-// ─── Field wrapper ────────────────────────────────────────
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.field label,
-.field-label {
-  display: block;
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--color-text);
-  text-align: start;
 }
 
 // ─── Layout grid: 3 columns → 1 column at ≤640px ─────────
@@ -122,20 +107,8 @@
   text-align: start;
 }
 
-// ─── Badge (local copy) ───────────────────────────────────
-// TODO(stage-9): Nth copy of badge family — consolidate across
-// order-status-badge, layout-selector, theme-editor-page etc.
+// ─── Badge override: smaller font/padding for Active pill ─
 .badge {
-  display: inline-flex;
-  align-items: center;
   font-size: 10px;
-  font-weight: 500;
   padding: 2px 6px;
-  border-radius: var(--r-pill);
-  white-space: nowrap;
-}
-
-.badge-blue {
-  background: var(--color-info-light);
-  color: var(--color-primary);
 }

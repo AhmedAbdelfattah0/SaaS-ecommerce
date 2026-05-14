@@ -1,0 +1,76 @@
+// =========================================================
+// _integration-card.scss — shared integration card chrome partial
+//
+// @use this partial in component .scss files:
+//   @use '../../../../../styles/integration-card' as *;
+//   (adjust path depth as needed)
+//
+// Canonical source: integrations-page.component.scss
+// (shipping-page.component.scss had identical rules)
+//
+// NOTE: Angular emulated view encapsulation inlines this at
+// compile time, so each consuming component gets its own
+// scoped copy. No leakage between components.
+// =========================================================
+
+.int-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-card);
+  padding: var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  transition: box-shadow 0.15s;
+
+  &:hover {
+    box-shadow: var(--sh-card-hover);
+  }
+
+  &.enabled {
+    border-color: var(--color-primary);
+    background: var(--color-primary-light);
+  }
+}
+
+.int-head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+}
+
+.int-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-md);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 13px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.int-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.int-desc {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+.int-foot {
+  display: flex;
+  gap: var(--sp-2);
+  padding-block-start: var(--sp-3);
+  border-block-start: 1px solid var(--color-border);
+}

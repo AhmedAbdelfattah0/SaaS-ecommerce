@@ -1,28 +1,15 @@
 // =========================================================
-// Logo Upload — field chrome + dropzone + button family
-// TODO(stage-9): .field / .btn family duplicated from
-// product-form and dashboard page. Promote in Stage 9.
+// Logo Upload — form-field chrome + dropzone + button family
 // =========================================================
+
+@use '../../../../../styles/form-field' as *;
+@use '../../../../../styles/button' as *;
 
 :host {
   display: block;
 }
 
-// ─── Field wrapper ────────────────────────────────────────
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.field label,
-.field-label {
-  display: block;
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--color-text);
-  text-align: start;
-}
+// form-field provided by @use above
 
 // ─── Logo preview (when a logo exists) ───────────────────
 .logo-preview {
@@ -92,46 +79,4 @@
   color: var(--color-text-subtle);
 }
 
-// ─── Button family ────────────────────────────────────────
-// TODO(stage-9): Nth copy of .btn family across dashboard, products,
-// logo-upload. Promote to sc-button or shared mixin in Stage 9.
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--sp-2);
-  font-family: inherit;
-  font-weight: 500;
-  border-radius: var(--r-md);
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: background 0.12s, border-color 0.12s, color 0.12s;
-  white-space: nowrap;
-}
-
-.btn-sm {
-  height: 32px;
-  padding-inline: var(--sp-3);
-  font-size: 12.5px;
-}
-
-.btn-secondary {
-  background: var(--color-surface);
-  border-color: var(--color-border);
-  color: var(--color-text);
-
-  &:hover {
-    background: var(--color-bg);
-    border-color: var(--color-border-strong);
-  }
-}
-
-.btn-danger-outline {
-  background: transparent;
-  border-color: var(--color-danger);
-  color: var(--color-danger);
-
-  &:hover {
-    background: var(--color-danger-light);
-  }
-}
+// button family provided by @use above
