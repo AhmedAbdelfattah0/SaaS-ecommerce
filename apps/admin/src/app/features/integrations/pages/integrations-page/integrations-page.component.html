@@ -1,15 +1,10 @@
 <div class="page">
 
   <!-- Page header -->
-  <div class="page-head">
-    <div>
-      <h1 class="page-title">
-        <admin-icon name="bolt" [size]="22" />
-        {{ i18n.t('nav.integrations', 'Integrations') }}
-      </h1>
-      <p class="page-sub">Connect third-party services to extend your store's capabilities.</p>
-    </div>
-  </div>
+  <sc-page-header
+    [title]="i18n.t('nav.integrations', 'Integrations')"
+    subtitle="Connect third-party services to extend your store's capabilities."
+  />
 
   <!-- Analytics section -->
   <p class="section-label">Analytics &amp; Tracking</p>

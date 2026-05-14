@@ -19,7 +19,7 @@ export class LogoUploadComponent {
   /** Currently saved logo URL */
   readonly currentUrl = input<string>('');
   /** Emits a data URL from FileReader — does NOT upload to server */
-  readonly change = output<string>();
+  readonly fileChange = output<string>();
 
   private readonly _previewUrl = signal<string | null>(null);
   readonly previewUrl = this._previewUrl.asReadonly();
@@ -62,7 +62,7 @@ export class LogoUploadComponent {
     reader.onload = (e) => {
       const result = e.target?.result as string;
       this._previewUrl.set(result);
-      this.change.emit(result);
+      this.fileChange.emit(result);
     };
     reader.readAsDataURL(file);
   }
@@ -73,6 +73,6 @@ export class LogoUploadComponent {
 
   clearPreview(): void {
     this._previewUrl.set(null);
-    this.change.emit('');
+    this.fileChange.emit('');
   }
 }

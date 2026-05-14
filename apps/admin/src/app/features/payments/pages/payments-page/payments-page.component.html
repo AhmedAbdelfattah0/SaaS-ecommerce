@@ -1,28 +1,21 @@
 <div class="page">
 
   <!-- Page header -->
-  <div class="page-head">
-    <div>
-      <h1 class="page-title">
-        <admin-icon name="dollar" [size]="22" />
-        {{ i18n.t('nav.payments', 'Payments') }}
-      </h1>
-      <p class="page-sub">Configure payment gateways available to your customers at checkout.</p>
-    </div>
+  <sc-page-header
+    [title]="i18n.t('nav.payments', 'Payments')"
+    subtitle="Configure payment gateways available to your customers at checkout."
+  >
     <button class="btn btn-primary">
       <admin-icon name="check" [size]="15" />
       Save Changes
     </button>
-  </div>
+  </sc-page-header>
 
   <!-- Info banner -->
-  <div class="banner info" style="margin-bottom: var(--sp-6)">
-    <admin-icon name="info" [size]="16" />
-    <div>
-      <strong>Sandbox mode active.</strong> All transactions go to the test environment. Switch to
-      production keys when you're ready to go live.
-    </div>
-  </div>
+  <sc-banner variant="info" style="margin-bottom: var(--sp-6)">
+    <strong>Sandbox mode active.</strong> All transactions go to the test environment. Switch to
+    production keys when you're ready to go live.
+  </sc-banner>
 
   <div class="payments-layout">
 
@@ -54,8 +47,8 @@
         @if (svc.config().paymob.enabled) {
           <div class="card-pad stack">
             <div class="field">
-              <label>API Key</label>
-              <input class="input" type="password" [value]="svc.config().paymob.apiKey" readonly />
+              <label for="paymob-api-key">API Key</label>
+              <input id="paymob-api-key" class="input" type="password" [value]="svc.config().paymob.apiKey" readonly />
             </div>
 
             <p class="subsection-label">Payment Methods</p>
@@ -69,7 +62,7 @@
                 <div class="method-hint">Visa, Mastercard, Meeza</div>
               </div>
               <div class="field" style="width:140px;margin:0">
-                <input class="input" type="text" [value]="svc.config().paymob.integrationIdCard" readonly placeholder="Integration ID" />
+                <input id="paymob-card-integration" class="input" type="text" [value]="svc.config().paymob.integrationIdCard" readonly placeholder="Integration ID" />
               </div>
             </div>
 
@@ -82,7 +75,7 @@
                 <div class="method-hint">Pay at Fawry outlets</div>
               </div>
               <div class="field" style="width:140px;margin:0">
-                <input class="input" type="text" [value]="svc.config().paymob.integrationIdFawry" readonly placeholder="Integration ID" />
+                <input id="paymob-fawry-integration" class="input" type="text" [value]="svc.config().paymob.integrationIdFawry" readonly placeholder="Integration ID" />
               </div>
             </div>
 
@@ -95,7 +88,7 @@
                 <div class="method-hint">Vodafone Cash, Orange Money, Etisalat</div>
               </div>
               <div class="field" style="width:140px;margin:0">
-                <input class="input" type="text" [value]="svc.config().paymob.integrationIdWallet" readonly placeholder="Integration ID" />
+                <input id="paymob-wallet-integration" class="input" type="text" [value]="svc.config().paymob.integrationIdWallet" readonly placeholder="Integration ID" />
               </div>
             </div>
 
@@ -108,15 +101,15 @@
                 <div class="method-hint">Pay over 3, 6, 12 months</div>
               </div>
               <div class="field" style="width:140px;margin:0">
-                <input class="input" type="text" [value]="svc.config().paymob.integrationIdInstallments" readonly placeholder="Integration ID" />
+                <input id="paymob-installments-integration" class="input" type="text" [value]="svc.config().paymob.integrationIdInstallments" readonly placeholder="Integration ID" />
               </div>
             </div>
 
             <div class="divider"></div>
 
             <div class="field">
-              <label>iFrame ID</label>
-              <input class="input" type="text" [value]="svc.config().paymob.iframeId" readonly />
+              <label for="paymob-iframe-id">iFrame ID</label>
+              <input id="paymob-iframe-id" class="input" type="text" [value]="svc.config().paymob.iframeId" readonly />
               <span class="hint">Used to render the hosted payment form.</span>
             </div>
 
@@ -150,12 +143,12 @@
           <div class="card-pad stack">
             <div class="row">
               <div class="field">
-                <label>Merchant Code</label>
-                <input class="input" type="text" [value]="svc.config().fawry.merchantCode" readonly placeholder="FW_MERCHANT_CODE" />
+                <label for="fawry-merchant-code">Merchant Code</label>
+                <input id="fawry-merchant-code" class="input" type="text" [value]="svc.config().fawry.merchantCode" readonly placeholder="FW_MERCHANT_CODE" />
               </div>
               <div class="field">
-                <label>Security Key</label>
-                <input class="input" type="password" [value]="svc.config().fawry.securityKey" readonly />
+                <label for="fawry-security-key">Security Key</label>
+                <input id="fawry-security-key" class="input" type="password" [value]="svc.config().fawry.securityKey" readonly />
               </div>
             </div>
           </div>
@@ -187,8 +180,8 @@
         @if (svc.config().valu.enabled) {
           <div class="card-pad">
             <div class="field">
-              <label>Merchant ID</label>
-              <input class="input" type="text" [value]="svc.config().valu.merchantId" readonly placeholder="VALU_MERCHANT_ID" />
+              <label for="valu-merchant-id">Merchant ID</label>
+              <input id="valu-merchant-id" class="input" type="text" [value]="svc.config().valu.merchantId" readonly placeholder="VALU_MERCHANT_ID" />
             </div>
           </div>
         }
@@ -220,12 +213,12 @@
           <div class="card-pad">
             <div class="row">
               <div class="field">
-                <label>COD Fee</label>
-                <input class="input" type="number" [value]="svc.config().cod.fee" readonly min="0" />
+                <label for="cod-fee">COD Fee</label>
+                <input id="cod-fee" class="input" type="number" [value]="svc.config().cod.fee" readonly min="0" />
               </div>
               <div class="field">
-                <label>Fee Type</label>
-                <select class="select" [value]="svc.config().cod.feeType">
+                <label for="cod-fee-type">Fee Type</label>
+                <select id="cod-fee-type" class="select" [value]="svc.config().cod.feeType">
                   <option value="fixed">Fixed (EGP)</option>
                   <option value="percent">Percent (%)</option>
                 </select>

@@ -1,19 +1,15 @@
 <div class="page">
 
   <!-- Page header -->
-  <div class="page-head">
-    <div>
-      <h1 class="page-title">
-        <admin-icon name="settings" [size]="22" />
-        {{ i18n.t('nav.settings', 'Settings') }}
-      </h1>
-      <p class="page-sub">Manage your store's general configuration, branding, and preferences.</p>
-    </div>
+  <sc-page-header
+    [title]="i18n.t('nav.settings', 'Settings')"
+    subtitle="Manage your store's general configuration, branding, and preferences."
+  >
     <button class="btn btn-primary">
       <admin-icon name="check" [size]="15" />
       {{ i18n.t('common.save', 'Save Changes') }}
     </button>
-  </div>
+  </sc-page-header>
 
   <div class="settings-layout">
     <div class="stack">
@@ -29,22 +25,22 @@
         <div class="card-pad stack">
           <div class="row">
             <div class="field">
-              <label>Store Name</label>
-              <input class="input" type="text" [value]="svc.settings().storeName" />
+              <label for="store-name">Store Name</label>
+              <input id="store-name" class="input" type="text" [value]="svc.settings().storeName" />
             </div>
             <div class="field">
-              <label>Store Email</label>
-              <input class="input" type="email" [value]="svc.settings().storeEmail" />
+              <label for="store-email">Store Email</label>
+              <input id="store-email" class="input" type="email" [value]="svc.settings().storeEmail" />
             </div>
           </div>
           <div class="row">
             <div class="field">
-              <label>Phone Number</label>
-              <input class="input" type="tel" [value]="svc.settings().storePhone" />
+              <label for="store-phone">Phone Number</label>
+              <input id="store-phone" class="input" type="tel" [value]="svc.settings().storePhone" />
             </div>
             <div class="field">
-              <label>Currency</label>
-              <select class="select">
+              <label for="store-currency">Currency</label>
+              <select id="store-currency" class="select">
                 <option value="EGP" selected>EGP — Egyptian Pound</option>
                 <option value="USD">USD — US Dollar</option>
                 <option value="SAR">SAR — Saudi Riyal</option>
@@ -54,8 +50,8 @@
           </div>
           <div class="row">
             <div class="field">
-              <label>Timezone</label>
-              <select class="select">
+              <label for="store-timezone">Timezone</label>
+              <select id="store-timezone" class="select">
                 <option value="Africa/Cairo" selected>Africa/Cairo (GMT+3)</option>
                 <option value="Asia/Riyadh">Asia/Riyadh (GMT+3)</option>
                 <option value="Asia/Dubai">Asia/Dubai (GMT+4)</option>
@@ -63,8 +59,8 @@
               </select>
             </div>
             <div class="field">
-              <label>Language</label>
-              <select class="select">
+              <label for="store-language">Language</label>
+              <select id="store-language" class="select">
                 <option value="en" selected>English</option>
                 <option value="ar">العربية</option>
               </select>
@@ -84,26 +80,28 @@
         <div class="card-pad stack">
           <div class="row">
             <div class="field">
-              <label>Store Logo</label>
-              <div class="upload">
-                <admin-icon name="upload" [size]="20" style="margin:0 auto var(--sp-2);display:block;color:var(--color-text-muted)" />
-                <div>Drop PNG / SVG here or <a>browse</a></div>
-                <div style="font-size:12px;margin-top:4px">Max 2 MB</div>
-              </div>
+              <label for="store-logo-upload">Store Logo</label>
+              <label for="store-logo-upload" class="upload">
+                <admin-icon name="upload" [size]="20" class="upload__icon" />
+                <div>Drop PNG / SVG here or <span class="upload__browse">browse</span></div>
+                <div class="upload__hint">Max 2 MB</div>
+                <input id="store-logo-upload" type="file" accept="image/png,image/svg+xml" style="display:none" />
+              </label>
             </div>
             <div class="field">
-              <label>Favicon</label>
-              <div class="upload">
-                <admin-icon name="upload" [size]="20" style="margin:0 auto var(--sp-2);display:block;color:var(--color-text-muted)" />
-                <div>Drop ICO / PNG here or <a>browse</a></div>
-                <div style="font-size:12px;margin-top:4px">32×32 px recommended</div>
-              </div>
+              <label for="store-favicon-upload">Favicon</label>
+              <label for="store-favicon-upload" class="upload">
+                <admin-icon name="upload" [size]="20" class="upload__icon" />
+                <div>Drop ICO / PNG here or <span class="upload__browse">browse</span></div>
+                <div class="upload__hint">32×32 px recommended</div>
+                <input id="store-favicon-upload" type="file" accept="image/x-icon,image/png" style="display:none" />
+              </label>
             </div>
           </div>
           <div class="field">
-            <label>Primary Colour</label>
+            <label for="store-primary-color">Primary Colour</label>
             <div class="colorpick">
-              <input type="color" [value]="svc.settings().primaryColor" />
+              <input id="store-primary-color" type="color" [value]="svc.settings().primaryColor" />
               <input class="input" type="text" [value]="svc.settings().primaryColor" style="width:130px" />
               <span class="hint" style="margin:0">Brand accent used across buttons and highlights.</span>
             </div>
@@ -121,17 +119,17 @@
         </div>
         <div class="card-pad stack">
           <div class="field">
-            <label>Subdomain</label>
+            <label for="store-subdomain">Subdomain</label>
             <div class="domain-row">
-              <input class="input" type="text" [value]="svc.settings().subdomain" style="flex:1" />
+              <input id="store-subdomain" class="input" type="text" [value]="svc.settings().subdomain" style="flex:1" />
               <span class="domain-suffix">.storecraft.io</span>
             </div>
             <span class="hint">Your free StoreCraft URL.</span>
           </div>
           <div class="divider"></div>
           <div class="field">
-            <label>Custom Domain</label>
-            <input class="input" type="text" [value]="svc.settings().customDomain" placeholder="shop.mybrand.com" />
+            <label for="store-custom-domain">Custom Domain</label>
+            <input id="store-custom-domain" class="input" type="text" [value]="svc.settings().customDomain" placeholder="shop.mybrand.com" />
             <span class="hint">Point a CNAME record to <span class="mono">cname.storecraft.io</span> before saving.</span>
           </div>
           <button class="btn btn-secondary" style="align-self:flex-start">
@@ -198,7 +196,7 @@
 
           <div class="notif-row">
             <div>
-              <div class="notif-row__label">Marketing & product updates</div>
+              <div class="notif-row__label">Marketing &amp; product updates</div>
               <div class="notif-row__hint">News about new StoreCraft features and tips.</div>
             </div>
             <button
@@ -216,7 +214,7 @@
       <div class="danger-box">
         <div class="hstack" style="gap:var(--sp-3);margin-bottom:var(--sp-4)">
           <admin-icon name="warning" [size]="18" style="color:var(--color-danger)" />
-          <h3 style="margin:0;font-size:15px;font-weight:700;color:var(--color-danger)">Danger Zone</h3>
+          <h3 class="danger-box__title">Danger Zone</h3>
         </div>
 
         <div class="danger-row">

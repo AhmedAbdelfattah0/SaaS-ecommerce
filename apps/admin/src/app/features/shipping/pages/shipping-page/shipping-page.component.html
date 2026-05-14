@@ -1,19 +1,15 @@
 <div class="page">
 
   <!-- Page header -->
-  <div class="page-head">
-    <div>
-      <h1 class="page-title">
-        <admin-icon name="truck" [size]="22" />
-        {{ i18n.t('nav.shipping', 'Shipping') }}
-      </h1>
-      <p class="page-sub">Define shipping zones, rates, and carrier integrations.</p>
-    </div>
+  <sc-page-header
+    [title]="i18n.t('nav.shipping', 'Shipping')"
+    subtitle="Define shipping zones, rates, and carrier integrations."
+  >
     <button class="btn btn-primary">
       <admin-icon name="plus" [size]="15" />
       Add Zone
     </button>
-  </div>
+  </sc-page-header>
 
   <!-- Shipping Zones -->
   <div class="card" style="margin-bottom: var(--sp-6)">
@@ -72,11 +68,9 @@
 
   <!-- Carriers -->
   <div style="margin-bottom: var(--sp-6)">
-    <div class="page-head" style="margin-bottom:var(--sp-4)">
-      <div>
-        <h2 class="section-title" style="margin:0">Carrier Integrations</h2>
-        <p class="page-sub" style="margin:4px 0 0">Connect a courier to get live rates and auto-print labels.</p>
-      </div>
+    <div class="section-head">
+      <h2 class="section-title">Carrier Integrations</h2>
+      <p class="muted" style="font-size:13.5px;margin:4px 0 0">Connect a courier to get live rates and auto-print labels.</p>
     </div>
     <div class="carriers-grid">
       @for (carrier of svc.carriers(); track carrier.id) {
@@ -126,13 +120,13 @@
       </p>
       <div class="row">
         <div class="field">
-          <label>Fallback Rate (EGP)</label>
-          <input class="input" type="number" value="50" min="0" />
+          <label for="fallback-rate">Fallback Rate (EGP)</label>
+          <input id="fallback-rate" class="input" type="number" value="50" min="0" />
           <span class="hint">Enter 0 for free shipping fallback.</span>
         </div>
         <div class="field">
-          <label>Free-shipping threshold (EGP)</label>
-          <input class="input" type="number" value="0" min="0" />
+          <label for="free-shipping-threshold">Free-shipping threshold (EGP)</label>
+          <input id="free-shipping-threshold" class="input" type="number" value="0" min="0" />
           <span class="hint">Orders above this amount ship free. Set 0 to disable.</span>
         </div>
       </div>

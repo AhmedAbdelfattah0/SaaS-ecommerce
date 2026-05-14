@@ -1,0 +1,175 @@
+// =========================================================
+// Integrations Page — scoped layout styles
+// Global card / .page / .muted utilities from styles.scss available.
+// =========================================================
+
+:host {
+  display: block;
+}
+
+// ─── Integration grid ─────────────────────────────────────
+.int-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--sp-4);
+}
+
+// ─── Section label ────────────────────────────────────────
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin: 0 0 var(--sp-3);
+}
+
+// ─── Integration card chrome ──────────────────────────────
+// TODO(stage-9): int-card chrome duplicated with shipping-page;
+// consider sc-integration-card or shared _integration-card.scss partial.
+.int-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-card);
+  padding: var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  transition: box-shadow 0.15s;
+
+  &:hover {
+    box-shadow: var(--sh-card-hover);
+  }
+
+  &.enabled {
+    border-color: var(--color-primary);
+    background: var(--color-primary-light);
+  }
+}
+
+.int-head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+}
+
+.int-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-md);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 13px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.int-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.int-desc {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+.int-foot {
+  display: flex;
+  gap: var(--sp-2);
+  padding-block-start: var(--sp-3);
+  border-block-start: 1px solid var(--color-border);
+}
+
+// ─── Local button family ──────────────────────────────────
+// TODO(stage-9): extract shared .btn mixin — duplicated across feature pages.
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  font-family: inherit;
+  font-weight: 500;
+  border-radius: var(--r-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  white-space: nowrap;
+
+  &.btn-sm {
+    height: 32px;
+    padding-inline: var(--sp-3);
+    font-size: 12.5px;
+  }
+
+  &.btn-primary {
+    background: var(--color-primary);
+    color: #fff;
+
+    &:hover:not(:disabled) {
+      background: var(--color-primary-hover);
+    }
+  }
+
+  &.btn-danger-outline {
+    background: transparent;
+    border-color: var(--color-danger);
+    color: var(--color-danger);
+
+    &:hover:not(:disabled) {
+      background: var(--color-danger-light);
+    }
+  }
+
+  &.btn-ghost {
+    background: transparent;
+    border-color: transparent;
+    color: var(--color-text-muted);
+
+    &:hover:not(:disabled) {
+      background: var(--color-bg);
+      color: var(--color-text);
+    }
+  }
+}
+
+// ─── Local badge family ───────────────────────────────────
+// TODO(stage-9): consolidate badge variants across feature pages.
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  padding-block: 3px;
+  padding-inline: 8px;
+  border-radius: var(--r-pill);
+  white-space: nowrap;
+}
+
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.badge-green {
+  background: var(--color-success-light);
+  color: var(--color-success);
+}
+
+// ─── Mobile responsive ────────────────────────────────────
+@media (max-width: 640px) {
+  .int-grid {
+    grid-template-columns: 1fr;
+  }
+}

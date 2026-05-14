@@ -1,7 +1,8 @@
 <div class="field">
-  <label>{{ label() }}</label>
+  <label [for]="inputId()">{{ label() }}</label>
   <div class="colorpick">
     <input
+      [id]="inputId()"
       type="color"
       [value]="value()"
       (input)="onColorInput($event)"

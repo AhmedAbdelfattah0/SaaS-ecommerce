@@ -1,12 +1,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   input,
   output,
   signal,
 } from '@angular/core';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
+
+let _colorPickerIdx = 0;
 
 @Component({
   selector: 'admin-color-picker',
@@ -21,6 +24,10 @@ export class ColorPickerComponent {
   /** Current hex value, e.g. "#2563EB" */
   readonly value = input<string>('#000000');
   readonly valueChange = output<string>();
+
+  /** Unique id for label–input association. */
+  private readonly _uid = ++_colorPickerIdx;
+  readonly inputId = computed(() => `color-picker-${this._uid}`);
 
   readonly hexControl = new FormControl<string>('', { nonNullable: true });
 

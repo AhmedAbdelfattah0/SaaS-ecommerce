@@ -91,7 +91,15 @@ const SAMPLE: NotificationItem[] = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './admin-notifications-panel.component.scss',
   template: `
-    <div class="notif-backdrop" (click)="close.emit()"></div>
+    <div
+      class="notif-backdrop"
+      role="button"
+      tabindex="0"
+      aria-label="Close notifications"
+      (click)="panelClose.emit()"
+      (keydown.enter)="panelClose.emit()"
+      (keydown.escape)="panelClose.emit()"
+    ></div>
     <div class="notif-panel" role="dialog" aria-label="Notifications">
       <div class="notif-head">
         <h3>Notifications</h3>
@@ -135,7 +143,7 @@ const SAMPLE: NotificationItem[] = [
   `,
 })
 export class AdminNotificationsPanelComponent {
-  readonly close = output<void>();
+  readonly panelClose = output<void>();
 
   readonly tabs: Tab[] = ['all', 'orders', 'stock', 'system'];
   readonly activeTab = signal<Tab>('all');

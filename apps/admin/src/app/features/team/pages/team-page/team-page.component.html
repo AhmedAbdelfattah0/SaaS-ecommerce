@@ -1,20 +1,16 @@
 <div class="page">
 
   <!-- Page header -->
-  <div class="page-head">
-    <div>
-      <h1 class="page-title">
-        <admin-icon name="users" [size]="22" />
-        {{ i18n.t('nav.team', 'Team & Roles') }}
-        <span class="page-count">{{ svc.members().length }}</span>
-      </h1>
-      <p class="page-sub">Manage team members and control what each person can access.</p>
-    </div>
+  <sc-page-header
+    [title]="i18n.t('nav.team', 'Team & Roles')"
+    [count]="svc.members().length"
+    subtitle="Manage team members and control what each person can access."
+  >
     <button class="btn btn-primary">
       <admin-icon name="userplus" [size]="15" />
       Invite Member
     </button>
-  </div>
+  </sc-page-header>
 
   <!-- Team members table -->
   <div class="card" style="margin-bottom: var(--sp-6)">
