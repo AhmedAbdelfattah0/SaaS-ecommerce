@@ -1,0 +1,90 @@
+// =========================================================
+// Color Picker — local form-field + colorpick chrome
+// TODO(stage-9): .field / .input / .hint are duplicated from
+// product-form and other features. Promote to shared mixin
+// or sc-field component in Stage 9 cleanup pass.
+// =========================================================
+
+:host {
+  display: block;
+}
+
+// ─── Field — label + control + hint ──────────────────────
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--color-text);
+  text-align: start;
+}
+
+// ─── Color-pick row (native input + hex text + swatch) ───
+.colorpick {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+// Native <input type="color"> swatch
+.colorpick > input[type='color'] {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  background: none;
+  padding: 0;
+  flex-shrink: 0;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+// Hex text input
+.input {
+  width: 100%;
+  height: 36px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-md);
+  padding-block: 0;
+  padding-inline: var(--sp-3);
+  font-size: 13px;
+  font-family: var(--font-mono);
+  color: var(--color-text);
+  outline: none;
+  transition: border-color 0.12s, box-shadow 0.12s;
+
+  &:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  }
+
+  &::placeholder {
+    color: var(--color-text-subtle);
+  }
+}
+
+// Preview swatch (read-only color chip)
+.swatch {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-sm);
+}
+
+// ─── Hint / validation text ───────────────────────────────
+.hint {
+  display: block;
+  font-size: 11.5px;
+  color: var(--color-text-muted);
+  text-align: start;
+  line-height: 1.4;
+}

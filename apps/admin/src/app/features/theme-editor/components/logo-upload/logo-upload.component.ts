@@ -12,7 +12,7 @@ import {
   selector: 'admin-logo-upload',
   standalone: true,
   templateUrl: './logo-upload.component.html',
-  styleUrl: './logo-upload.component.css',
+  styleUrl: './logo-upload.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LogoUploadComponent {

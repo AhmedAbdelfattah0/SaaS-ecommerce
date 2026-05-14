@@ -5,6 +5,7 @@ import {
   inject,
 } from '@angular/core';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { PageHeaderComponent } from '@storecraft/ui';
 import { AdminI18nService } from '../../../../shared/services/admin-i18n.service';
 import { AdminIconComponent } from '../../../../shared/components/admin-icon/admin-icon.component';
 import { ThemeEditorService } from '../../services/theme-editor.service';
@@ -20,6 +21,7 @@ import type { ThemeUpdateDto } from '@storecraft/models';
   standalone: true,
   imports: [
     ReactiveFormsModule,
+    PageHeaderComponent,
     AdminIconComponent,
     ColorPickerComponent,
     FontSelectorComponent,
@@ -29,7 +31,7 @@ import type { ThemeUpdateDto } from '@storecraft/models';
   ],
   providers: [ThemeEditorService],
   templateUrl: './theme-editor-page.component.html',
-  styleUrl: './theme-editor-page.component.css',
+  styleUrl: './theme-editor-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ThemeEditorPageComponent implements OnInit {

@@ -13,6 +13,7 @@ import { ReactiveFormsModule, FormControl } from '@angular/forms';
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './color-picker.component.html',
+  styleUrl: './color-picker.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ColorPickerComponent {

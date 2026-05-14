@@ -1,16 +1,11 @@
 <div class="page">
 
-  <!-- Page header -->
-  <div class="page-head">
-    <div>
-      <h1 class="page-title">
-        <admin-icon name="palette" [size]="24" />
-        {{ i18n.t('nav.theme', 'Theme Editor') }}
-      </h1>
-      <p class="page-sub">Customize your storefront appearance. Changes are previewed instantly.</p>
-    </div>
-
-    <div class="hstack" style="gap: var(--sp-3); align-items: center;">
+  <!-- Page header with sc-page-header -->
+  <sc-page-header
+    [title]="i18n.t('nav.theme', 'Theme Editor')"
+    subtitle="Customize your storefront appearance. Changes are previewed instantly."
+  >
+    <div class="theme-actions">
       @if (svc.saveError()) {
         <span class="theme-error-msg">
           <admin-icon name="warning" [size]="14" />
@@ -43,7 +38,7 @@
         }
       </button>
     </div>
-  </div>
+  </sc-page-header>
 
   <!-- Loading state -->
   @if (svc.isLoading()) {
@@ -58,7 +53,7 @@
     <div class="theme-layout">
 
       <!-- Left column: controls -->
-      <div class="theme-controls stack">
+      <div class="theme-controls">
 
         <!-- Brand Identity card -->
         <div class="card">

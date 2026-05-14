@@ -1,0 +1,267 @@
+// =========================================================
+// Layout Preview — storefront mockup chrome
+//
+// ARCHITECTURE NOTE:
+// This component renders a scaled-down storefront mockup.
+// Theme color/font values are applied via Angular [ngStyle]
+// data-binding in the template, NOT via CSS custom properties.
+// Do NOT introduce --theme-* or :root variables here.
+// The [ngStyle] pattern is intentional and must be preserved.
+// =========================================================
+
+:host {
+  display: block;
+}
+
+.preview-shell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+// ─── Browser chrome ───────────────────────────────────────
+.browser {
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+.browser-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding-block: var(--sp-2);
+  padding-inline: var(--sp-3);
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+// Traffic-light dots
+.d {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-border-strong);
+  flex-shrink: 0;
+}
+
+// Fake URL pill
+.url {
+  flex: 1;
+  font-size: 11px;
+  padding: 2px var(--sp-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-pill);
+  color: var(--color-text-muted);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// ─── Storefront mockup root ───────────────────────────────
+// Background / font applied inline via [ngStyle]
+.sf-mock {
+  font-size: 10px;
+  overflow: hidden;
+}
+
+// ─── Nav bar ──────────────────────────────────────────────
+// Background / color applied inline via [ngStyle]
+.sf-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  min-height: 30px;
+}
+
+// White-on-primary text is intentional — logo always sits on
+// the user's primary color, so white always contrasts correctly.
+.sf-logo-text {
+  font-weight: 700;
+  font-size: 11px;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+}
+
+.sf-logo-img {
+  height: 20px;
+  width: auto;
+  object-fit: contain;
+  max-width: 80px;
+}
+
+.sf-nav-links {
+  display: flex;
+  gap: 10px;
+}
+
+.sf-nav-link {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+}
+
+// ─── Hero section ─────────────────────────────────────────
+// Background is a tinted version of primaryColor applied inline
+.sf-hero {
+  padding: 16px 12px;
+  text-align: center;
+}
+
+.sf-hero-text {
+  // empty — structural wrapper only
+}
+
+.sf-hero-title {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  line-height: 1.3;
+  // color + font-family applied inline via [ngStyle]
+}
+
+.sf-hero-sub {
+  font-size: 9px;
+  margin-bottom: 8px;
+  // color + opacity applied inline via [ngStyle]
+}
+
+// White text is intentional — button is always primaryColor background
+.sf-hero-btn {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 600;
+  color: white;
+  // background applied inline via [ngStyle]
+}
+
+// ─── Classic layout ───────────────────────────────────────
+.sf-classic-body {
+  display: flex;
+  padding: 8px;
+  gap: 8px;
+}
+
+.sf-sidebar {
+  width: 52px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.sf-sidebar-item {
+  font-size: 8px;
+  padding: 3px 5px;
+  border-radius: 3px;
+  border-inline-start: 2px solid transparent; // was border-left — RTL-safe
+  color: #475569;
+  // active item's border-inline-start-color applied inline via [ngStyle]
+}
+
+// ─── Boutique layout ──────────────────────────────────────
+.sf-boutique-body {
+  display: flex;
+  gap: 6px;
+  padding: 8px;
+}
+
+.sf-boutique-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sf-boutique-img {
+  height: 50px;
+  border-radius: 3px;
+  opacity: 0.7;
+  // background (secondaryColor) applied inline via [ngStyle]
+}
+
+// ─── Shared product grid ──────────────────────────────────
+.sf-product-grid {
+  display: grid;
+  gap: 6px;
+}
+
+.sf-product-grid--2 {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.sf-product-grid--3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.sf-product-card {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.sf-product-img {
+  height: 36px;
+  border-radius: 3px;
+  opacity: 0.6;
+  // background (secondaryColor) applied inline via [ngStyle]
+}
+
+.sf-product-name {
+  font-size: 8px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  // color applied inline via [ngStyle]
+}
+
+.sf-product-name--sm {
+  font-size: 7px;
+}
+
+.sf-product-price {
+  font-size: 8px;
+  font-weight: 700;
+  // color (primaryColor) applied inline via [ngStyle]
+}
+
+// ─── Legend strip ─────────────────────────────────────────
+.preview-legend {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.preview-swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: var(--r-sm);
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+.preview-layout-tag,
+.preview-font-tag {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-pill);
+  padding: 2px 8px;
+  font-weight: 500;
+  text-transform: capitalize;
+}

@@ -11,7 +11,7 @@ import { LAYOUT_OPTIONS, type LayoutOption } from '../../models/theme-editor.mod
   selector: 'admin-layout-selector',
   standalone: true,
   templateUrl: './layout-selector.component.html',
-  styleUrl: './layout-selector.component.css',
+  styleUrl: './layout-selector.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayoutSelectorComponent {

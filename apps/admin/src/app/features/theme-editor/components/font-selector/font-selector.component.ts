@@ -12,7 +12,7 @@ import { FONT_OPTIONS, type FontOption } from '../../models/theme-editor.model';
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './font-selector.component.html',
-  styleUrl: './font-selector.component.css',
+  styleUrl: './font-selector.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FontSelectorComponent {

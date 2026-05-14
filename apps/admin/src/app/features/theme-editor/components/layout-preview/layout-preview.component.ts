@@ -12,7 +12,7 @@ import type { ThemeConfig } from '@storecraft/models';
   standalone: true,
   imports: [NgStyle],
   templateUrl: './layout-preview.component.html',
-  styleUrl: './layout-preview.component.css',
+  styleUrl: './layout-preview.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayoutPreviewComponent {

@@ -1,0 +1,196 @@
+// =========================================================
+// Theme Editor Page — scoped layout + local chrome
+// Global card / page-wrapper rules live in styles.scss.
+// =========================================================
+
+:host {
+  display: block;
+}
+
+// ─── Actions row (projected into sc-page-header slot) ────
+.theme-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+// ─── Two-column layout: controls | preview ───────────────
+.theme-layout {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: var(--sp-6);
+  align-items: start;
+}
+
+@media (max-width: 1100px) {
+  .theme-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ─── Left column (controls stack) ────────────────────────
+.theme-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+// ─── Preview column (sticky right pane) ──────────────────
+.theme-preview-sticky {
+  position: sticky;
+  top: var(--sp-6);
+}
+
+// ─── Loading state ────────────────────────────────────────
+.theme-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: var(--sp-16);
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+// ─── Inline error pill (beside action buttons) ───────────
+.theme-error-msg {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: 12.5px;
+  color: var(--color-danger);
+  font-weight: 500;
+}
+
+// ─── Local form-field chrome (store-name input) ──────────
+// TODO(stage-9): duplicated from product-form. Promote to
+// shared mixin or sc-field component in Stage 9.
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--color-text);
+  text-align: start;
+}
+
+.input {
+  width: 100%;
+  height: 38px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-md);
+  padding-block: 0;
+  padding-inline: var(--sp-3);
+  font-size: 13.5px;
+  color: var(--color-text);
+  outline: none;
+  transition: border-color 0.12s, box-shadow 0.12s;
+
+  &:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  }
+
+  &::placeholder {
+    color: var(--color-text-subtle);
+  }
+}
+
+// ─── Vertical stack helper (used inside card-pad) ─────────
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+// ─── Badge (local copy for Live Preview card) ─────────────
+// TODO(stage-9): Nth copy of badge family — consolidate across
+// order-status-badge, layout-selector, theme-editor-page etc.
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+  padding-block: 3px;
+  padding-inline: 8px;
+  border-radius: var(--r-pill);
+  white-space: nowrap;
+}
+
+.badge-amber {
+  background: var(--color-warning-light);
+  color: var(--color-warning);
+}
+
+.badge-green {
+  background: var(--color-success-light);
+  color: var(--color-success);
+}
+
+// ─── Button family ────────────────────────────────────────
+// TODO(stage-9): Nth copy of .btn family across dashboard,
+// products, logo-upload, theme-editor-page. Promote to
+// sc-button or shared mixin in Stage 9.
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  height: 36px;
+  padding-inline: var(--sp-4);
+  border-radius: var(--r-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  white-space: nowrap;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+
+  &:hover:not(:disabled) {
+    background: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+  }
+}
+
+.btn-secondary {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text);
+
+  &:hover:not(:disabled) {
+    background: var(--color-bg);
+    border-color: var(--color-border-strong);
+  }
+}
+
+// ─── Mobile adjustments ──────────────────────────────────
+@media (max-width: 640px) {
+  .theme-actions {
+    gap: var(--sp-2);
+  }
+
+  .btn {
+    height: 34px;
+    padding-inline: var(--sp-3);
+    font-size: 13px;
+  }
+}
