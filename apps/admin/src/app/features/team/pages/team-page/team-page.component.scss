@@ -105,9 +105,8 @@
 }
 
 .role-badge--owner {
-  // TODO(stage-9): use semantic role-color token once defined
-  background: #0F172A;
-  color: white;
+  background: var(--color-sidebar-bg);
+  color: var(--color-sidebar-text-active);
 }
 
 .role-badge--admin {
@@ -121,9 +120,8 @@
 }
 
 .role-badge--viewer {
-  // TODO(stage-9): use semantic role-color token once defined
-  background: #F1F5F9;
-  color: #475569;
+  background: var(--color-bg);
+  color: var(--color-text-muted);
 }
 
 // ─── Permission list ──────────────────────────────────────
