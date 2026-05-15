@@ -23,6 +23,24 @@
   flex-wrap: wrap;
 }
 
+// Active-range readout — same visual chrome as the prior date button
+// (border + neutral surface) minus the cursor/hover so it's clear this
+// is a display rather than a clickable control.
+.dashboard-range-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  block-size: 32px;
+  padding-block: 0;
+  padding-inline: var(--sp-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+
 // =========================================================
 // KPI grid — 4 cols → 2 cols at ≤900px → 1 col at ≤600px
 // =========================================================

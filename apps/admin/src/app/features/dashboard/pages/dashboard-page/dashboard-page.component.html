@@ -13,10 +13,14 @@
         [active]="svc.range()"
         (activeChange)="setRange($event)"
       />
-      <button class="btn btn-sm btn-secondary" type="button">
+      <!-- Reflects the active 7D/30D/90D range. A real custom-range picker is
+           a Stage 10 deliverable (see .specs/stage-10/plan.md §C1); for now
+           this is a read-only display so users can confirm what window the
+           KPIs cover. -->
+      <span class="dashboard-range-label" aria-live="polite">
         <admin-icon name="calendar" [size]="14" />
-        Apr 26, 2026
-      </button>
+        {{ svc.dateRangeLabel() }}
+      </span>
     </div>
   </sc-page-header>
 

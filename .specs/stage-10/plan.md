@@ -159,6 +159,25 @@ reuse the existing Supabase client.
 
 ---
 
+### §C1 — Custom date-range picker on dashboard 🔴
+
+The Wave-3 polish pass shipped:
+- 7D/30D/90D pill toggle (was already wired via sc-tabs)
+- KPI mock numbers now scale per active range so the toggle visibly changes
+  the page (deterministic — see `scaleForRange()` in dashboard.service.ts)
+- Active range surfaces as a read-only date label ("Apr 19 – Apr 26, 2026")
+  next to the pills
+
+Remaining for a fully-featured experience:
+- Custom date-range picker (replace the read-only label with a clickable
+  date-range control). Native `<input type="date">` range is acceptable;
+  a richer Flatpickr-style picker is a Stage 11 nice-to-have.
+- Real `/api/analytics/dashboard?range=…` endpoint feeding revenue chart,
+  donut segments, top products, low stock. Currently those are static mocks
+  that don't change with range — only KPI numbers do.
+- Persist last-used range in localStorage so a returning user sees their
+  preferred window.
+
 ## 4. Real-usage UX items surfaced 🟡
 
 Caught during the recent end-to-end test:

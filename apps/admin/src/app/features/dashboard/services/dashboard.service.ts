@@ -64,20 +64,33 @@ export const STATUS_MAP: Record<string, { label: string; cls: string }> = {
   deleted:    { label: 'Deleted',    cls: 'badge badge-red' },
 };
 
-// ─── Mock data (KPIs, charts — no analytics endpoint) ────────────────────────
+// ─── Mock data (KPIs, charts — no analytics endpoint yet) ───────────────────
+// TODO(stage-10): replace with real /api/analytics/dashboard?range=... once
+// the analytics endpoint exists. Numbers below are deterministic per range so
+// users can verify the date-range toggle has an effect; multipliers approximate
+// what 7-day vs 30-day vs 90-day periods would look like.
+
+const RANGE_DAYS: Record<DashboardRange, number> = { '7d': 7, '30d': 30, '90d': 90 };
 
 const MOCK_SPARK_REVENUE = [4200, 3800, 5100, 4700, 6200, 5800, 7100];
 const MOCK_SPARK_ORDERS  = [18, 14, 22, 19, 27, 24, 31];
 const MOCK_SPARK_CUST    = [3, 5, 2, 7, 4, 6, 8];
 const MOCK_SPARK_AOV     = [210, 195, 230, 220, 245, 238, 260];
 
-function buildKpis(): Kpi[] {
+function scaleForRange(range: DashboardRange): number {
+  // 7d = 1×, 30d ≈ 4×, 90d ≈ 12× — revenue / orders / new-customers scale
+  // roughly linearly with the time window.
+  return RANGE_DAYS[range] / 7;
+}
+
+function buildKpis(range: DashboardRange): Kpi[] {
+  const scale = scaleForRange(range);
   return [
     {
       id: 'revenue',
       label: 'Total Revenue',
-      value: fmtMoney(84_230),
-      delta: '+12.5%',
+      value: fmtMoney(Math.round(84_230 * scale)),
+      delta: range === '7d' ? '+12.5%' : range === '30d' ? '+8.2%' : '+5.4%',
       up: true,
       color: 'var(--color-primary)',
       bg: 'var(--color-primary-light)',
@@ -87,8 +100,8 @@ function buildKpis(): Kpi[] {
     {
       id: 'orders',
       label: 'Total Orders',
-      value: fmt(1_284),
-      delta: '+8.2%',
+      value: fmt(Math.round(1_284 * scale)),
+      delta: range === '7d' ? '+8.2%' : range === '30d' ? '+6.4%' : '+4.1%',
       up: true,
       color: 'var(--color-purple)',
       bg: 'var(--color-purple-light)',
@@ -98,8 +111,8 @@ function buildKpis(): Kpi[] {
     {
       id: 'customers',
       label: 'New Customers',
-      value: fmt(342),
-      delta: '+5.1%',
+      value: fmt(Math.round(342 * scale)),
+      delta: range === '7d' ? '+5.1%' : range === '30d' ? '+9.7%' : '+11.2%',
       up: true,
       color: 'var(--color-success)',
       bg: 'var(--color-success-light)',
@@ -107,10 +120,11 @@ function buildKpis(): Kpi[] {
       spark: MOCK_SPARK_CUST,
     },
     {
+      // AOV is a per-order average — doesn't scale with window; mock drift
       id: 'aov',
       label: 'Avg. Order Value',
-      value: fmtMoney(246),
-      delta: '-2.3%',
+      value: fmtMoney(range === '7d' ? 246 : range === '30d' ? 238 : 232),
+      delta: range === '7d' ? '-2.3%' : range === '30d' ? '-3.1%' : '-4.0%',
       up: false,
       color: 'var(--color-warning)',
       bg: 'var(--color-warning-light)',
@@ -199,7 +213,7 @@ export class DashboardService {
   private readonly _isLoading   = signal(false);
   private readonly _error       = signal<string | null>(null);
   private readonly _range       = signal<DashboardRange>('30d');
-  private readonly _kpis        = signal<Kpi[]>(buildKpis());
+  private readonly _kpis        = signal<Kpi[]>(buildKpis('30d'));
   private readonly _revenuePts  = signal<RevenuePoint[]>(buildRevenuePoints());
   private readonly _donutSegs   = signal<DonutSegment[]>(buildDonutSegments());
   private readonly _topProducts = signal<TopProduct[]>(buildTopProducts());
@@ -224,8 +238,27 @@ export class DashboardService {
     this._donutSegs().reduce((s, d) => s + d.value, 0),
   );
 
+  /**
+   * Human-readable date range label, e.g. "Apr 19 – Apr 26, 2026" for 7d.
+   * Shown next to the pill toggle so users see what range is active.
+   * Recomputes whenever _range changes (signal dependency).
+   */
+  readonly dateRangeLabel = computed(() => {
+    const days = RANGE_DAYS[this._range()];
+    const end = new Date();
+    const start = new Date(end.getTime() - (days - 1) * 86_400_000);
+    const fmt = (d: Date): string =>
+      d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const endYear = end.getFullYear();
+    return `${fmt(start)} – ${fmt(end)}, ${endYear}`;
+  });
+
   setRange(r: DashboardRange): void {
+    if (r === this._range()) return;
     this._range.set(r);
+    // Rebuild range-sensitive KPIs. (Revenue/donut/top/low-stock are not yet
+    // range-sensitive — see TODO above buildKpis.)
+    this._kpis.set(buildKpis(r));
   }
 
   load(): void {
