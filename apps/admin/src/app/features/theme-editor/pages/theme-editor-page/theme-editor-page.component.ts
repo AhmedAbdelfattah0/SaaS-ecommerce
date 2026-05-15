@@ -4,8 +4,8 @@ import {
   OnInit,
   inject,
 } from '@angular/core';
-import { ReactiveFormsModule, FormControl } from '@angular/forms';
-import { PageHeaderComponent } from '@storecraft/ui';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FieldErrorComponent, PageHeaderComponent } from '@storecraft/ui';
 import { AdminI18nService } from '../../../../shared/services/admin-i18n.service';
 import { AdminIconComponent } from '../../../../shared/components/admin-icon/admin-icon.component';
 import { ThemeEditorService } from '../../services/theme-editor.service';
@@ -22,6 +22,7 @@ import type { ThemeUpdateDto } from '@storecraft/models';
   imports: [
     ReactiveFormsModule,
     PageHeaderComponent,
+    FieldErrorComponent,
     AdminIconComponent,
     ColorPickerComponent,
     FontSelectorComponent,
@@ -38,7 +39,15 @@ export class ThemeEditorPageComponent implements OnInit {
   protected readonly svc = inject(ThemeEditorService);
   protected readonly i18n = inject(AdminI18nService);
 
-  readonly storeNameControl = new FormControl<string>('', { nonNullable: true });
+  readonly storeNameControl = new FormControl<string>('', {
+    nonNullable: true,
+    validators: [Validators.required, Validators.minLength(2)],
+  });
+
+  readonly storeNameMessages = {
+    required: 'Store name is required',
+    minlength: 'Store name must be at least 2 characters',
+  };
 
   ngOnInit(): void {
     this.svc.load();
@@ -47,7 +56,13 @@ export class ThemeEditorPageComponent implements OnInit {
 
   onStoreNameInput(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
-    this.svc.update({ storeName: value });
+    this.storeNameControl.setValue(value, { emitEvent: false });
+    this.storeNameControl.markAsTouched();
+    // Only push to service when the local validation passes so we don't
+    // overwrite saved state with a value the user is mid-correcting.
+    if (this.storeNameControl.valid) {
+      this.svc.update({ storeName: value });
+    }
   }
 
   onColorChange(field: keyof Pick<ThemeUpdateDto, 'primaryColor' | 'secondaryColor' | 'backgroundColor' | 'textColor'>, value: string): void {

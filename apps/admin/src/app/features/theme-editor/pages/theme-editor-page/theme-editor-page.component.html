@@ -75,10 +75,13 @@
                 id="store-name"
                 type="text"
                 class="input"
+                [class.is-invalid]="storeNameControl.touched && storeNameControl.invalid"
                 [value]="svc.theme()!.storeName"
                 placeholder="My Store"
                 (input)="onStoreNameInput($event)"
+                [attr.aria-invalid]="storeNameControl.touched && storeNameControl.invalid"
               />
+              <sc-field-error [control]="storeNameControl" [messages]="storeNameMessages" />
             </div>
           </div>
         </div>

@@ -11,13 +11,14 @@
     <input
       type="text"
       class="input"
+      [class.is-invalid]="hexControl.touched && hexControl.invalid"
       style="flex: 1;"
       [formControl]="hexControl"
       maxlength="7"
       placeholder="#000000"
       (input)="onHexInput($event)"
       [attr.aria-label]="label() + ' hex value'"
-      [style.border-color]="isValidHex() ? '' : 'var(--color-danger)'"
+      [attr.aria-invalid]="hexControl.touched && hexControl.invalid"
     />
     <span
       class="swatch"
@@ -25,7 +26,5 @@
       [attr.aria-hidden]="true"
     ></span>
   </div>
-  @if (!isValidHex()) {
-    <span class="hint" style="color: var(--color-danger);">Enter a valid hex color (e.g. #2563EB)</span>
-  }
+  <sc-field-error [control]="hexControl" [messages]="hexMessages" />
 </div>

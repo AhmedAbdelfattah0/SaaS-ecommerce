@@ -41,9 +41,20 @@
   <input
     #fileInput
     type="file"
-    accept="image/*"
+    accept="image/png,image/jpeg,image/svg+xml,image/webp"
     style="display: none;"
     (change)="onFileChange($event)"
     aria-hidden="true"
   />
+
+  @if (uploadError(); as err) {
+    <sc-banner
+      variant="error"
+      [dismissible]="true"
+      style="margin-block-start: var(--sp-2); display: block;"
+      (dismiss)="dismissError()"
+    >
+      {{ err }}
+    </sc-banner>
+  }
 </div>

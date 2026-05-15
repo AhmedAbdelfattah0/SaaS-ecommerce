@@ -5,16 +5,18 @@ import {
   effect,
   input,
   output,
-  signal,
 } from '@angular/core';
-import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FieldErrorComponent } from '@storecraft/ui';
 
 let _colorPickerIdx = 0;
+
+const HEX_PATTERN = /^#[0-9A-Fa-f]{6}$/;
 
 @Component({
   selector: 'admin-color-picker',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, FieldErrorComponent],
   templateUrl: './color-picker.component.html',
   styleUrl: './color-picker.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,10 +31,21 @@ export class ColorPickerComponent {
   private readonly _uid = ++_colorPickerIdx;
   readonly inputId = computed(() => `color-picker-${this._uid}`);
 
-  readonly hexControl = new FormControl<string>('', { nonNullable: true });
+  /**
+   * Validation is on the FormControl itself — Validators.pattern matches a
+   * 6-digit hex prefixed with `#`. sc-field-error renders the inline message
+   * once the control is touched + invalid (consistent with login / product
+   * forms). Manual _isValidHex signal pattern removed.
+   */
+  readonly hexControl = new FormControl<string>('', {
+    nonNullable: true,
+    validators: [Validators.required, Validators.pattern(HEX_PATTERN)],
+  });
 
-  private readonly _isValidHex = signal(true);
-  readonly isValidHex = this._isValidHex.asReadonly();
+  readonly hexMessages = {
+    required: 'Enter a hex color',
+    pattern: 'Enter a valid hex color (e.g. #2563EB)',
+  };
 
   constructor() {
     // Sync incoming value → form control
@@ -54,9 +67,9 @@ export class ColorPickerComponent {
     const input = event.target as HTMLInputElement;
     const raw = input.value.trim();
     const normalized = raw.startsWith('#') ? raw : `#${raw}`;
-    const valid = /^#[0-9A-Fa-f]{6}$/.test(normalized);
-    this._isValidHex.set(valid);
-    if (valid) {
+    this.hexControl.setValue(normalized, { emitEvent: false });
+    this.hexControl.markAsTouched();
+    if (HEX_PATTERN.test(normalized)) {
       this.emit(normalized);
     }
   }
