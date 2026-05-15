@@ -26,7 +26,29 @@ CREATE POLICY "Service role manages tenants" ON tenants
   USING (false);
 
 -- ========================
--- 2. THEMES
+-- 2. ADMIN USERS
+-- Must be declared before themes / categories / products / orders policies
+-- because every tenant-scoped policy resolves the caller's tenant via
+--   (SELECT tenant_id FROM admin_users WHERE id = auth.uid())
+-- ========================
+CREATE TABLE IF NOT EXISTS admin_users (
+  id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  tenant_id uuid REFERENCES tenants(id) ON DELETE CASCADE NOT NULL,
+  email text NOT NULL,
+  role text NOT NULL DEFAULT 'admin' CHECK (role IN ('admin', 'superadmin')),
+  created_at timestamptz DEFAULT now()
+);
+
+ALTER TABLE admin_users ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Admin can read own record" ON admin_users
+  FOR SELECT
+  USING (id = auth.uid());
+
+CREATE INDEX idx_admin_users_tenant_id ON admin_users(tenant_id);
+
+-- ========================
+-- 3. THEMES
 -- ========================
 CREATE TABLE IF NOT EXISTS themes (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -59,7 +81,7 @@ CREATE POLICY "Admin can update own theme" ON themes
   );
 
 -- ========================
--- 3. CATEGORIES
+-- 4. CATEGORIES
 -- ========================
 CREATE TABLE IF NOT EXISTS categories (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -81,7 +103,7 @@ CREATE POLICY "Tenant members can access categories" ON categories
 CREATE INDEX idx_categories_tenant_id ON categories(tenant_id);
 
 -- ========================
--- 4. PRODUCTS
+-- 5. PRODUCTS
 -- ========================
 CREATE TABLE IF NOT EXISTS products (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -118,7 +140,7 @@ CREATE INDEX idx_products_tenant_id ON products(tenant_id);
 CREATE INDEX idx_products_status ON products(status);
 
 -- ========================
--- 5. PRODUCT VARIANTS
+-- 6. PRODUCT VARIANTS
 -- ========================
 CREATE TABLE IF NOT EXISTS product_variants (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -142,7 +164,7 @@ CREATE INDEX idx_product_variants_tenant_id ON product_variants(tenant_id);
 CREATE INDEX idx_product_variants_product_id ON product_variants(product_id);
 
 -- ========================
--- 6. CUSTOMERS
+-- 7. CUSTOMERS
 -- ========================
 CREATE TABLE IF NOT EXISTS customers (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -171,7 +193,7 @@ CREATE INDEX idx_customers_tenant_id ON customers(tenant_id);
 CREATE INDEX idx_customers_email ON customers(tenant_id, email);
 
 -- ========================
--- 7. ORDERS
+-- 8. ORDERS
 -- ========================
 CREATE TABLE IF NOT EXISTS orders (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -202,7 +224,7 @@ CREATE INDEX idx_orders_tenant_id ON orders(tenant_id);
 CREATE INDEX idx_orders_status ON orders(status);
 
 -- ========================
--- 8. ORDER ITEMS
+-- 9. ORDER ITEMS
 -- ========================
 CREATE TABLE IF NOT EXISTS order_items (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -231,7 +253,7 @@ CREATE INDEX idx_order_items_tenant_id ON order_items(tenant_id);
 CREATE INDEX idx_order_items_order_id ON order_items(order_id);
 
 -- ========================
--- 9. ORDER STATUS HISTORY
+-- 10. ORDER STATUS HISTORY
 -- ========================
 CREATE TABLE IF NOT EXISTS order_status_history (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -256,25 +278,6 @@ CREATE POLICY "Allow insert for status changes" ON order_status_history
 
 CREATE INDEX idx_order_status_history_tenant_id ON order_status_history(tenant_id);
 CREATE INDEX idx_order_status_history_order_id ON order_status_history(order_id);
-
--- ========================
--- 10. ADMIN USERS
--- ========================
-CREATE TABLE IF NOT EXISTS admin_users (
-  id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
-  tenant_id uuid REFERENCES tenants(id) ON DELETE CASCADE NOT NULL,
-  email text NOT NULL,
-  role text NOT NULL DEFAULT 'admin' CHECK (role IN ('admin', 'superadmin')),
-  created_at timestamptz DEFAULT now()
-);
-
-ALTER TABLE admin_users ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Admin can read own record" ON admin_users
-  FOR SELECT
-  USING (id = auth.uid());
-
-CREATE INDEX idx_admin_users_tenant_id ON admin_users(tenant_id);
 
 -- ========================
 -- SEED DATA

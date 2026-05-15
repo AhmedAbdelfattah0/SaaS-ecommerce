@@ -28,7 +28,29 @@ CREATE POLICY "Service role manages tenants" ON tenants
   USING (false);
 
 -- ========================
--- 2. THEMES
+-- 2. ADMIN USERS
+-- Must be declared before themes / categories / products / orders policies
+-- because every tenant-scoped policy resolves the caller's tenant via
+--   (SELECT tenant_id FROM admin_users WHERE id = auth.uid())
+-- ========================
+CREATE TABLE IF NOT EXISTS admin_users (
+  id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  tenant_id uuid REFERENCES tenants(id) ON DELETE CASCADE NOT NULL,
+  email text NOT NULL,
+  role text NOT NULL DEFAULT 'admin' CHECK (role IN ('admin', 'superadmin')),
+  created_at timestamptz DEFAULT now()
+);
+
+ALTER TABLE admin_users ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Admin can read own record" ON admin_users
+  FOR SELECT
+  USING (id = auth.uid());
+
+CREATE INDEX IF NOT EXISTS idx_admin_users_tenant_id ON admin_users(tenant_id);
+
+-- ========================
+-- 3. THEMES
 -- ========================
 CREATE TABLE IF NOT EXISTS themes (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -59,25 +81,6 @@ CREATE POLICY "Admin can update own theme" ON themes
       SELECT tenant_id FROM admin_users WHERE id = auth.uid()
     )
   );
-
--- ========================
--- 3. ADMIN USERS (declared early — referenced by themes and other policies)
--- ========================
-CREATE TABLE IF NOT EXISTS admin_users (
-  id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
-  tenant_id uuid REFERENCES tenants(id) ON DELETE CASCADE NOT NULL,
-  email text NOT NULL,
-  role text NOT NULL DEFAULT 'admin' CHECK (role IN ('admin', 'superadmin')),
-  created_at timestamptz DEFAULT now()
-);
-
-ALTER TABLE admin_users ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Admin can read own record" ON admin_users
-  FOR SELECT
-  USING (id = auth.uid());
-
-CREATE INDEX IF NOT EXISTS idx_admin_users_tenant_id ON admin_users(tenant_id);
 
 -- ========================
 -- 4. CATEGORIES
