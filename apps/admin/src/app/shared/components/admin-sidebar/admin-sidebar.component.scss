@@ -28,8 +28,24 @@ a.sb-item {
 
 // ---- Top: store switcher ----
 .sb-top {
-  padding: var(--sp-5) var(--sp-5) var(--sp-4);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-block: var(--sp-5) var(--sp-4);
+  padding-inline: var(--sp-5);
+  border-block-end: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+// sc-dropdown-menu defaults to :host { display: inline-block } — correct
+// for the topbar flex row but in the sidebar block flow it collapses the
+// wrapped trigger to its content width, so the .sb-store / .sb-user cards
+// no longer fill the column. Force block display + inline-size: 100% on
+// the inner button triggers so they extend to the sidebar's padding edges
+// like the original <div>s did.
+sc-dropdown-menu {
+  display: block;
+}
+
+button.sb-store,
+button.sb-user {
+  inline-size: 100%;
 }
 
 .sb-store {
