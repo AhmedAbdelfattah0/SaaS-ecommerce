@@ -18,11 +18,21 @@ a.sb-item {
   }
 }
 
+// The Angular host element defaults to display: inline, which leaves the
+// inner .sidebar at content height regardless of the 100dvh grid cell.
+// Force the host to be a block that fills its cell, then .sidebar fills
+// the host — so the dark background extends to the bottom of the viewport.
+:host {
+  display: block;
+  block-size: 100%;
+}
+
 .sidebar {
   background: var(--color-sidebar-bg);
   color: var(--color-sidebar-text);
   display: flex;
   flex-direction: column;
+  block-size: 100%;
   border-inline-end: 1px solid #1E293B;
 }
 
