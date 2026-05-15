@@ -24,7 +24,11 @@ export const tenantMiddleware = createMiddleware<{
   const isLoopback = rawDomain === 'localhost' || rawDomain === '127.0.0.1';
   const domain = isLoopback && c.env.DEV_TENANT_DOMAIN ? c.env.DEV_TENANT_DOMAIN : rawDomain;
 
-  const supabase = createClient(c.env.SUPABASE_URL, c.env.SUPABASE_ANON_KEY);
+  // Use the service role key — anon is blocked from reading `tenants` by RLS
+  // ("Service role manages tenants" USING (false)). Tenant resolution from
+  // the Host header is a backend infrastructure read that must succeed for
+  // every authenticated request, so this query bypasses RLS by design.
+  const supabase = createClient(c.env.SUPABASE_URL, c.env.SUPABASE_SERVICE_ROLE_KEY);
 
   const { data: tenant, error } = await supabase
     .from('tenants')
