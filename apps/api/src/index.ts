@@ -18,6 +18,11 @@ export type Env = {
   // Admin app URL used as the redirect target for invite + reset emails.
   // Dev: http://localhost:4200 | Prod: https://admin.<your-domain>
   ADMIN_URL: string;
+  // Dev-only: tenants.custom_domain to resolve when the request host is a
+  // loopback address. Lets `nx serve admin` (localhost:4200) reach the API
+  // without the seeded production-style custom_domain matching. Leave unset
+  // in production so localhost requests never resolve to any tenant.
+  DEV_TENANT_DOMAIN?: string;
   // TODO(Task 26): Sentry runtime monitoring
   // Install @sentry/cloudflare when Workers support stabilises.
   // Initialize with: Sentry.init({ dsn: c.env.SENTRY_DSN, ... })

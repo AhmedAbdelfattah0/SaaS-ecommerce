@@ -15,7 +15,14 @@ export const tenantMiddleware = createMiddleware<{
 
   const host = c.req.header('host') ?? '';
   // Strip port if present
-  const domain = host.split(':')[0];
+  const rawDomain = host.split(':')[0];
+
+  // Dev-mode tenant fallback — when the request arrives on a loopback
+  // hostname, resolve to a designated dev tenant via DEV_TENANT_DOMAIN
+  // env var. Without this, every /api/* call from `nx serve admin` would
+  // 404 because no tenant has custom_domain = 'localhost'.
+  const isLoopback = rawDomain === 'localhost' || rawDomain === '127.0.0.1';
+  const domain = isLoopback && c.env.DEV_TENANT_DOMAIN ? c.env.DEV_TENANT_DOMAIN : rawDomain;
 
   const supabase = createClient(c.env.SUPABASE_URL, c.env.SUPABASE_ANON_KEY);
 

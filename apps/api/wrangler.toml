@@ -10,6 +10,12 @@ compatibility_flags = ["nodejs_compat"]
 # `wrangler secret put ADMIN_URL` or the Cloudflare dashboard.
 ADMIN_URL = "http://localhost:4200"
 
+# DEV_TENANT_DOMAIN: the tenants.custom_domain value to resolve when a
+# request arrives on a loopback hostname (localhost, 127.0.0.1). Lets
+# the admin dev server reach the API without needing custom_domain set
+# to "localhost" in the DB. Leave unset in production.
+DEV_TENANT_DOMAIN = "fashionstore.demo.storecraft.app"
+
 # Production routes — used by `wrangler deploy`, not by `wrangler dev`
 # Uncomment before deploying:
 # [[routes]]
