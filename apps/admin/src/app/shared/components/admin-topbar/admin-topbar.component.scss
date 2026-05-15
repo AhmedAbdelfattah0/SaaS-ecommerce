@@ -23,10 +23,11 @@ input[type='search']::-webkit-search-cancel-button {
   display: flex;
   align-items: center;
   gap: var(--sp-6);
-  padding: 0 var(--sp-8);
+  padding-block: 0;
+  padding-inline: var(--sp-8);
   background: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
-  height: var(--topbar-h);
+  border-block-end: 1px solid var(--color-border);
+  block-size: var(--topbar-h);
   z-index: 10;
 }
 
@@ -62,9 +63,11 @@ input[type='search']::-webkit-search-cancel-button {
   position: relative;
 
   input {
-    width: 100%;
-    height: 38px;
-    padding: 0 var(--sp-3) 0 38px;
+    inline-size: 100%;
+    block-size: 38px;
+    padding-block: 0;
+    padding-inline-start: 38px;
+    padding-inline-end: var(--sp-3);
     background: var(--color-bg);
     border: 1px solid var(--color-border);
     border-radius: var(--r-md);
@@ -81,18 +84,18 @@ input[type='search']::-webkit-search-cancel-button {
 
   .icon {
     position: absolute;
-    left: 12px;
-    top: 50%;
+    inset-inline-start: 12px;
+    inset-block-start: 50%;
     transform: translateY(-50%);
     color: var(--color-text-subtle);
-    width: 16px;
-    height: 16px;
+    inline-size: 16px;
+    block-size: 16px;
   }
 
   .kbd {
     position: absolute;
-    right: 10px;
-    top: 50%;
+    inset-inline-end: 10px;
+    inset-block-start: 50%;
     transform: translateY(-50%);
     font-family: var(--font-mono);
     font-size: 10.5px;
@@ -100,13 +103,14 @@ input[type='search']::-webkit-search-cancel-button {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--r-sm);
-    padding: 2px 6px;
+    padding-block: 2px;
+    padding-inline: 6px;
   }
 }
 
-// ---- Right cluster ----
+// ---- Right cluster (visually trailing edge in either direction) ----
 .tb-right {
-  margin-left: auto;
+  margin-inline-start: auto;
   display: flex;
   align-items: center;
   gap: var(--sp-3);
@@ -162,11 +166,12 @@ input[type='search']::-webkit-search-cancel-button {
 
   .badge {
     position: absolute;
-    top: 6px;
-    right: 6px;
-    min-width: 16px;
-    height: 16px;
-    padding: 0 4px;
+    inset-block-start: 6px;
+    inset-inline-end: 6px;
+    min-inline-size: 16px;
+    block-size: 16px;
+    padding-block: 0;
+    padding-inline: 4px;
     border-radius: var(--r-pill);
     background: var(--color-danger);
     color: white;
@@ -183,7 +188,9 @@ input[type='search']::-webkit-search-cancel-button {
   display: flex;
   align-items: center;
   gap: var(--sp-2);
-  padding: 6px 10px 6px 6px;
+  padding-block: 6px;
+  padding-inline-start: 6px;
+  padding-inline-end: 10px;
   border-radius: var(--r-md);
   border: 1px solid var(--color-border);
   background: white;
