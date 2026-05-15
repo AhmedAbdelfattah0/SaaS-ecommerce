@@ -107,10 +107,6 @@ export class AdminTopbarComponent {
     return this.i18n.t(key, fallback);
   }
 
-  async signOut(): Promise<void> {
-    await this.auth.logout();
-  }
-
   private detectSegment(): string {
     const url = this.router.url.split('?')[0].split('#')[0];
     const parts = url.split('/').filter(Boolean);

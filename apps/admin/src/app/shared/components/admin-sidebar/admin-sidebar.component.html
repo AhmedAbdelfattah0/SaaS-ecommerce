@@ -66,13 +66,31 @@
       </div>
       <span class="sb-plan-cta">Upgrade →</span>
     </div>
-    <div class="sb-user">
-      <div class="sb-avatar">{{ userInitials() }}</div>
-      <div class="sb-user-info">
-        <div class="sb-user-name">{{ user()?.fullName || user()?.email || 'Admin' }}</div>
-        <div class="sb-user-sub">{{ t('common.viewStore', 'View store') }} ↗</div>
-      </div>
-      <admin-icon name="chevrondown" [size]="14" />
-    </div>
+    <sc-dropdown-menu placement="top-start" #userMenu>
+      <button
+        trigger
+        type="button"
+        class="sb-user"
+        aria-haspopup="menu"
+        [attr.aria-expanded]="userMenu.isOpen()"
+        [attr.title]="user()?.email"
+      >
+        <div class="sb-avatar">{{ userInitials() }}</div>
+        <div class="sb-user-info">
+          <div class="sb-user-name">{{ user()?.fullName || user()?.email || 'Admin' }}</div>
+          <div class="sb-user-sub">{{ t('common.viewStore', 'View store') }} ↗</div>
+        </div>
+        <admin-icon name="chevrondown" [size]="14" />
+      </button>
+
+      <sc-dropdown-item (select)="menu.accountSettings()">
+        <admin-icon name="users" [size]="14" />
+        <span>{{ t('menu.accountSettings', 'Account settings') }}</span>
+      </sc-dropdown-item>
+      <sc-dropdown-divider />
+      <sc-dropdown-item variant="danger" (select)="menu.signOut()">
+        <span>{{ t('common.signout', 'Sign out') }}</span>
+      </sc-dropdown-item>
+    </sc-dropdown-menu>
   </div>
 </aside>

@@ -82,8 +82,26 @@
       }
     </div>
 
-    <button type="button" class="tb-avatar-btn" (click)="signOut()" title="Sign out">
-      {{ userInitials() }}
-    </button>
+    <sc-dropdown-menu placement="bottom-end" #userMenu>
+      <button
+        trigger
+        type="button"
+        class="tb-avatar-btn"
+        aria-haspopup="menu"
+        [attr.aria-expanded]="userMenu.isOpen()"
+        [attr.title]="user()?.email"
+      >
+        {{ userInitials() }}
+      </button>
+
+      <sc-dropdown-item (select)="menu.accountSettings()">
+        <admin-icon name="users" [size]="14" />
+        <span>{{ t('menu.accountSettings', 'Account settings') }}</span>
+      </sc-dropdown-item>
+      <sc-dropdown-divider />
+      <sc-dropdown-item variant="danger" (select)="menu.signOut()">
+        <span>{{ t('common.signout', 'Sign out') }}</span>
+      </sc-dropdown-item>
+    </sc-dropdown-menu>
   </div>
 </header>
