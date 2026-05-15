@@ -5,6 +5,10 @@ compatibility_flags = ["nodejs_compat"]
 
 [vars]
 # Override locally in .dev.vars — NEVER commit secrets
+# ADMIN_URL: the Admin app's URL — used as the redirectTo for invite +
+# reset-password emails. Dev value below; production sets it via
+# `wrangler secret put ADMIN_URL` or the Cloudflare dashboard.
+ADMIN_URL = "http://localhost:4200"
 
 # Production routes — used by `wrangler deploy`, not by `wrangler dev`
 # Uncomment before deploying:

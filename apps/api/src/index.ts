@@ -6,6 +6,7 @@ import { productsRouter } from './routes/products.routes';
 import { ordersRouter } from './routes/orders.routes';
 import { authRouter } from './routes/auth.routes';
 import { billingRouter } from './routes/billing.routes';
+import { teamRouter } from './routes/team.routes';
 import { tenantMiddleware } from './middleware/tenant.middleware';
 
 export type Env = {
@@ -14,6 +15,9 @@ export type Env = {
   SUPABASE_SERVICE_ROLE_KEY: string;
   LEMONSQUEEZY_API_KEY: string;
   LEMONSQUEEZY_WEBHOOK_SECRET: string;
+  // Admin app URL used as the redirect target for invite + reset emails.
+  // Dev: http://localhost:4200 | Prod: https://admin.<your-domain>
+  ADMIN_URL: string;
   // TODO(Task 26): Sentry runtime monitoring
   // Install @sentry/cloudflare when Workers support stabilises.
   // Initialize with: Sentry.init({ dsn: c.env.SENTRY_DSN, ... })
@@ -63,6 +67,7 @@ app.route('/api/products', productsRouter);
 app.route('/api/categories', productsRouter); // categories sub-routes handled inside productsRouter
 app.route('/api/orders', ordersRouter);
 app.route('/api/customers', ordersRouter); // customers sub-routes handled inside ordersRouter
+app.route('/api/team', teamRouter);
 
 // ============================================================
 // Health check
