@@ -12,7 +12,9 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: '/api',
+  // Point directly at the local wrangler dev server. CORS is wide-open
+  // there (apps/api/src/index.ts uses `app.use('*', cors())`).
+  apiBaseUrl: 'http://localhost:8787/api',
   supabaseUrl: 'https://YOUR_PROJECT.supabase.co',
   supabaseAnonKey: 'YOUR_ANON_KEY_HERE',
 };
