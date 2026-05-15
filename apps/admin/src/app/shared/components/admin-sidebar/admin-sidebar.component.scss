@@ -212,9 +212,15 @@ button.sb-user {
 }
 
 // ---- Bottom: plan + user row ----
+// flex-shrink: 0 belt-and-braces with the min-block-size:0 on .sb-nav above.
+// In Arabic the nav labels are slightly taller (Cairo font + RTL glyphs),
+// pushing the total content height over the LTR baseline — without an
+// explicit shrink-pin, the bottom cards can get clipped at the same
+// viewport height that worked in LTR.
 .sb-bottom {
+  flex-shrink: 0;
   padding: var(--sp-3);
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-block-start: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;
   flex-direction: column;
   gap: var(--sp-2);
