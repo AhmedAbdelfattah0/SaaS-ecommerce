@@ -11,6 +11,23 @@ export const appRoutes: Route[] = [
       ),
   },
   {
+    path: 'forgot-password',
+    canMatch: [guestOnlyGuard],
+    loadComponent: () =>
+      import(
+        './features/auth/pages/forgot-password-page/forgot-password-page.component'
+      ).then((m) => m.ForgotPasswordPageComponent),
+  },
+  {
+    // No guard — Supabase establishes a recovery session via the URL fragment
+    // when the user arrives from the password-reset email link.
+    path: 'reset-password',
+    loadComponent: () =>
+      import(
+        './features/auth/pages/reset-password-page/reset-password-page.component'
+      ).then((m) => m.ResetPasswordPageComponent),
+  },
+  {
     path: '',
     canMatch: [authGuard],
     loadComponent: () =>

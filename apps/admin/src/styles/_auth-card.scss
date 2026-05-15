@@ -1,0 +1,293 @@
+// =========================================================
+// _auth-card.scss — shared chrome for centered auth pages
+// (forgot-password, reset-password, future signup, etc.)
+//
+// @use this partial in component .scss files:
+//   @use '../../../../../styles/auth-card' as *;
+//
+// All themeable values come from var(--token).
+// Logical CSS used throughout for RTL.
+// =========================================================
+
+// ─── Page shell — centers the card vertically ────────────
+.auth-page-shell {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 24px;
+  background: var(--color-bg);
+}
+
+.auth-frame {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 360px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-lg);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 8px 24px rgba(15, 23, 42, 0.06);
+  padding-block: 28px 20px;
+  padding-inline: 24px;
+}
+
+// ─── Brand row (logo + wordmark) ──────────────────────────
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.auth-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-md);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-purple));
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  font-family: var(--font-sans);
+  flex-shrink: 0;
+}
+
+.auth-brand-text {
+  line-height: 1.15;
+}
+
+.auth-wordmark {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+.auth-admin-label {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+// ─── Heading + sub ────────────────────────────────────────
+.auth-heading-wrap {
+  margin-block: 22px;
+}
+
+.auth-heading {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+.auth-sub {
+  color: var(--color-text-muted);
+  font-size: 13px;
+  margin: 6px 0 0;
+  line-height: 1.5;
+}
+
+// ─── Inline banner spacing ───────────────────────────────
+.auth-banner {
+  display: block;
+  margin-block-end: var(--sp-4);
+}
+
+// ─── Field — label + input wrap ──────────────────────────
+.auth-field {
+  margin-block-end: 14px;
+}
+
+.auth-field label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--color-text);
+  margin-block-end: 6px;
+  text-align: start;
+}
+
+// ─── Inputs with leading icon (and optional trailing eye) ─
+.auth-input-wrap {
+  position: relative;
+}
+
+.auth-input-icon {
+  position: absolute;
+  inset-inline-start: 12px;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-subtle);
+  pointer-events: none;
+}
+
+// Inputs are dir="ltr" forced so values render LTR even in RTL UI.
+// Use :host-context to flip padding when the host is rendered inside RTL.
+.auth-input {
+  width: 100%;
+  height: 42px;
+  font-size: 14px;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-md);
+  outline: none;
+  padding-block: 0;
+  padding-inline-start: 38px;
+  padding-inline-end: 12px;
+  transition: border-color 0.12s, box-shadow 0.12s;
+
+  &:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  }
+
+  &::placeholder {
+    color: var(--color-text-subtle);
+  }
+
+  &:disabled {
+    background: var(--color-bg);
+    cursor: not-allowed;
+  }
+
+  &.is-invalid {
+    border-color: var(--color-danger);
+
+    &:focus {
+      border-color: var(--color-danger);
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+    }
+  }
+}
+
+// Variant: input with trailing eye toggle (password fields)
+.auth-input--pw {
+  padding-inline-end: 40px;
+}
+
+:host-context([dir='rtl']) .auth-input {
+  padding-inline-start: 12px;
+  padding-inline-end: 38px;
+}
+:host-context([dir='rtl']) .auth-input--pw {
+  padding-inline-start: 40px;
+  padding-inline-end: 38px;
+}
+
+// Eye toggle button — trailing edge
+.auth-eye {
+  position: absolute;
+  inset-inline-end: 8px;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  border: 0;
+  background: transparent;
+  border-radius: var(--r-sm);
+  display: grid;
+  place-items: center;
+  color: var(--color-text-muted);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-text);
+    background: var(--color-bg);
+  }
+}
+
+// ─── Submit button (also styled link variant) ────────────
+.auth-submit {
+  width: 100%;
+  min-height: 44px;
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--color-primary);
+  color: #fff;
+  border: 0;
+  border-radius: var(--r-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.12s, opacity 0.12s;
+  margin-block-start: var(--sp-2);
+
+  &:hover:not(:disabled) {
+    background: var(--color-primary-hover);
+  }
+
+  &:disabled,
+  &.loading {
+    opacity: 0.85;
+    cursor: not-allowed;
+  }
+}
+
+// Link styled as primary submit (e.g. "Back to sign in" CTA on success state)
+.auth-submit--link {
+  text-decoration: none;
+}
+
+// Secondary text-link button (e.g. "Use a different email")
+.auth-link-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-1);
+  background: transparent;
+  border: 0;
+  width: 100%;
+  padding-block: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  text-decoration: none;
+  margin-block-start: var(--sp-2);
+
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+
+// ─── Spinner ─────────────────────────────────────────────
+.auth-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: auth-spin 0.7s linear infinite;
+  display: inline-block;
+}
+
+@keyframes auth-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ─── Divider + footer ────────────────────────────────────
+.auth-divider {
+  height: 1px;
+  background: var(--color-border);
+  margin-block: 22px 14px;
+}
+
+.auth-footer {
+  text-align: center;
+  font-size: 11px;
+  color: var(--color-text-subtle);
+  margin-top: 12px;
+}

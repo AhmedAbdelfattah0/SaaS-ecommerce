@@ -80,7 +80,7 @@
         </span>
         <span>{{ t('login.remember', 'Remember me') }}</span>
       </label>
-      <a class="login-forgot" href="#" (click)="$event.preventDefault()">
+      <a class="login-forgot" routerLink="/forgot-password">
         {{ t('login.forgot', 'Forgot password?') }}
       </a>
     </div>

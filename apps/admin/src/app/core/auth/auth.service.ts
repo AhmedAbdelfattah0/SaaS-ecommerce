@@ -45,12 +45,27 @@ export class AuthService {
   private readonly _isAuthenticating = signal<boolean>(false);
   private readonly _error = signal<AuthError | null>(null);
 
+  // ─── Password reset flow ─────────────────────────────────
+  private readonly _isRequestingReset = signal<boolean>(false);
+  private readonly _resetEmailSent = signal<boolean>(false);
+  private readonly _resetError = signal<string | null>(null);
+
+  // ─── Password update flow (after recovery link) ──────────
+  private readonly _isUpdatingPassword = signal<boolean>(false);
+  private readonly _passwordUpdateError = signal<string | null>(null);
+
   readonly user = this._user.asReadonly();
   readonly accessToken = this._accessToken.asReadonly();
   readonly isInitializing = this._isInitializing.asReadonly();
   readonly isAuthenticating = this._isAuthenticating.asReadonly();
   readonly error = this._error.asReadonly();
   readonly isAuthenticated = computed(() => this._user() !== null);
+
+  readonly isRequestingReset = this._isRequestingReset.asReadonly();
+  readonly resetEmailSent = this._resetEmailSent.asReadonly();
+  readonly resetError = this._resetError.asReadonly();
+  readonly isUpdatingPassword = this._isUpdatingPassword.asReadonly();
+  readonly passwordUpdateError = this._passwordUpdateError.asReadonly();
 
   private readonly supabase: SupabaseClient | null;
 
@@ -123,6 +138,62 @@ export class AuthService {
 
   clearError(): void {
     this._error.set(null);
+  }
+
+  /**
+   * Send a password-reset email via Supabase Auth. The user clicks the link
+   * in the email which lands on /reset-password — Supabase auto-establishes
+   * a recovery session there, after which the user can call updatePassword().
+   */
+  async requestPasswordReset(email: string): Promise<void> {
+    if (!this.supabase) return;
+    this._isRequestingReset.set(true);
+    this._resetEmailSent.set(false);
+    this._resetError.set(null);
+    try {
+      const redirectTo = isPlatformBrowser(this.platformId)
+        ? `${window.location.origin}/reset-password`
+        : undefined;
+      const { error } = await this.supabase.auth.resetPasswordForEmail(email, { redirectTo });
+      if (error) {
+        this._resetError.set(error.message);
+        return;
+      }
+      this._resetEmailSent.set(true);
+    } catch (err) {
+      this._resetError.set(err instanceof Error ? err.message : 'Unknown error');
+    } finally {
+      this._isRequestingReset.set(false);
+    }
+  }
+
+  /**
+   * Update the current user's password. Requires an active session — typically
+   * the recovery session established by clicking the email link, or the user's
+   * normal logged-in session.
+   */
+  async updatePassword(newPassword: string): Promise<void> {
+    if (!this.supabase) return;
+    this._isUpdatingPassword.set(true);
+    this._passwordUpdateError.set(null);
+    try {
+      const { error } = await this.supabase.auth.updateUser({ password: newPassword });
+      if (error) {
+        this._passwordUpdateError.set(error.message);
+        return;
+      }
+      await this.router.navigate(['/dashboard']);
+    } catch (err) {
+      this._passwordUpdateError.set(err instanceof Error ? err.message : 'Unknown error');
+    } finally {
+      this._isUpdatingPassword.set(false);
+    }
+  }
+
+  clearResetState(): void {
+    this._resetEmailSent.set(false);
+    this._resetError.set(null);
+    this._passwordUpdateError.set(null);
   }
 
   private async bootstrap(): Promise<void> {
