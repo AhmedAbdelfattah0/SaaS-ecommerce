@@ -28,6 +28,16 @@ export const appRoutes: Route[] = [
       ).then((m) => m.ResetPasswordPageComponent),
   },
   {
+    // No guard — invited users arrive with a Supabase-issued session via the
+    // URL fragment. The page itself checks isAuthenticated() and renders an
+    // "expired link" state when no session is present.
+    path: 'accept-invite',
+    loadComponent: () =>
+      import(
+        './features/auth/pages/accept-invite-page/accept-invite-page.component'
+      ).then((m) => m.AcceptInvitePageComponent),
+  },
+  {
     path: '',
     canMatch: [authGuard],
     loadComponent: () =>

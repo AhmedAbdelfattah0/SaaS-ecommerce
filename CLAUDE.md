@@ -51,5 +51,18 @@ auth surfaces:
 
 - `/login` — done
 - `/forgot-password` + `/reset-password` — done
-- `/accept-invite` — spec ready, build deferred until `/team` invites are wired
-  - See `docs/auth-invite-flow.spec.md` for the full implementation plan
+- `/accept-invite` — done; reached via email link from `/team` invites
+  - Spec: `docs/auth-invite-flow.spec.md`
+
+## Supabase config required for invite + reset flows
+
+In the Supabase dashboard:
+
+- **Auth → URL Configuration → Redirect URLs** — add for each environment:
+  - `http://localhost:4200/reset-password`
+  - `http://localhost:4200/accept-invite`
+  - Plus the production admin URL counterparts when deployed
+- **Auth → Email Templates → Invite User** — default works; customize subject /
+  body if desired. The invite link calls back to `redirectTo` set by the backend
+  (`{ADMIN_URL}/accept-invite`).
+- **Auth → Email Templates → Reset Password** — default works.

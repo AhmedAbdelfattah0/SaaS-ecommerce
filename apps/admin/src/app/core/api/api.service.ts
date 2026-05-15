@@ -44,6 +44,25 @@ export interface AdminUser {
   tenantId: string;
 }
 
+export type InviteRole = 'admin' | 'staff' | 'viewer';
+
+export interface InviteTeamMemberDto {
+  email: string;
+  role: InviteRole;
+}
+
+export interface InviteTeamMemberResult {
+  inviteId: string;
+  email: string;
+}
+
+export interface AcceptInviteResult {
+  id: string;
+  tenantId: string;
+  role: string;
+  alreadyAccepted: boolean;
+}
+
 /**
  * Single central HTTP client for the Admin app.
  *
@@ -58,6 +77,26 @@ export class ApiService {
   // ─── Auth ─────────────────────────────────────────────
   getCurrentAdmin(): Observable<AdminUser> {
     return this.unwrap(this.http.get<ApiResponse<AdminUser>>(`${this.base}/auth/me`));
+  }
+
+  // ─── Team / invites ───────────────────────────────────
+  /**
+   * Called from /accept-invite after the invitee has set their password via
+   * supabase.auth.updateUser. The backend reads tenant_id + role from the
+   * authenticated user's user_metadata (set by the invite at issuance time)
+   * and creates the admin_users row idempotently.
+   */
+  acceptInvite(): Observable<AcceptInviteResult> {
+    return this.unwrap(
+      this.http.post<ApiResponse<AcceptInviteResult>>(`${this.base}/team/accept-invite`, {}),
+    );
+  }
+
+  /** Caller (a tenant admin) invites a new team member by email. */
+  inviteTeamMember(dto: InviteTeamMemberDto): Observable<InviteTeamMemberResult> {
+    return this.unwrap(
+      this.http.post<ApiResponse<InviteTeamMemberResult>>(`${this.base}/team/invite`, dto),
+    );
   }
 
   // ─── Products ─────────────────────────────────────────

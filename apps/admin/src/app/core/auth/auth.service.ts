@@ -196,6 +196,46 @@ export class AuthService {
     this._passwordUpdateError.set(null);
   }
 
+  /**
+   * Apply the invitee's chosen password + full name during the /accept-invite
+   * flow. Does NOT navigate or call the backend — the caller (form service)
+   * chains the backend `acceptInvite` call before navigating.
+   *
+   * Returns { ok: true } on success or { ok: false, error } on failure.
+   */
+  async applyInviteUpdate(
+    name: string,
+    password: string,
+  ): Promise<{ ok: true } | { ok: false; error: string }> {
+    if (!this.supabase) return { ok: false, error: 'Supabase client not initialized' };
+    try {
+      const { error } = await this.supabase.auth.updateUser({
+        password,
+        data: { full_name: name },
+      });
+      if (error) return { ok: false, error: error.message };
+      return { ok: true };
+    } catch (err) {
+      return {
+        ok: false,
+        error: err instanceof Error ? err.message : 'Unknown error',
+      };
+    }
+  }
+
+  /**
+   * Re-read the current session and refresh the local profile signal.
+   * Called from /accept-invite after the backend creates the admin_users
+   * row so the in-memory profile picks up the new role + tenant.
+   */
+  async refreshSession(): Promise<void> {
+    if (!this.supabase) return;
+    const { data } = await this.supabase.auth.getSession();
+    if (data.session) {
+      await this.applySession(data.session);
+    }
+  }
+
   private async bootstrap(): Promise<void> {
     if (!this.supabase) {
       this._isInitializing.set(false);
