@@ -3,6 +3,7 @@ export * from './lib/badge/badge.component';
 export * from './lib/loading-spinner/loading-spinner.component';
 export * from './lib/page-header/page-header.component';
 export * from './lib/empty-state/empty-state.component';
+export * from './lib/field-error/field-error.component';
 export * from './lib/data-table/data-table.types';
 export * from './lib/data-table/data-column.component';
 export * from './lib/data-table/data-table.component';

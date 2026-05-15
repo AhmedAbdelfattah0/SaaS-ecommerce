@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { BannerComponent } from '@storecraft/ui';
+import { BannerComponent, FieldErrorComponent } from '@storecraft/ui';
 import { LoginFormService } from '../../services/login-form.service';
 import { AdminI18nService } from '../../../../shared/services/admin-i18n.service';
 import { AdminIconComponent } from '../../../../shared/components/admin-icon/admin-icon.component';
@@ -8,7 +8,7 @@ import { AdminIconComponent } from '../../../../shared/components/admin-icon/adm
 @Component({
   selector: 'admin-login-form',
   standalone: true,
-  imports: [ReactiveFormsModule, AdminIconComponent, BannerComponent],
+  imports: [ReactiveFormsModule, AdminIconComponent, BannerComponent, FieldErrorComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss',
@@ -25,6 +25,17 @@ export class LoginFormComponent {
 
   readonly hasError = computed(() => this.authError() !== null);
 
+  // Pre-translated validator messages for sc-field-error. Recomputed when the
+  // i18n language changes (currentLang is a signal).
+  readonly emailMessages = computed(() => ({
+    required: this.t('login.email.required', 'Email is required'),
+    email: this.t('login.email.invalid', 'Please enter a valid email address'),
+  }));
+  readonly passwordMessages = computed(() => ({
+    required: this.t('login.password.required', 'Password is required'),
+    minlength: this.t('login.password.minlength', 'Password must be at least 8 characters'),
+  }));
+
   togglePassword(): void {
     this.vm.togglePassword();
   }
@@ -35,5 +46,10 @@ export class LoginFormComponent {
 
   t(key: string, fallback?: string): string {
     return this.i18n.t(key, fallback);
+  }
+
+  fieldInvalid(name: 'email' | 'password'): boolean {
+    const c = this.form.controls[name];
+    return c.touched && c.invalid;
   }
 }

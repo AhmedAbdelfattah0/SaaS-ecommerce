@@ -9,6 +9,7 @@ import {
   signal,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FieldErrorComponent } from '@storecraft/ui';
 import { AdminIconComponent } from '../../../../shared/components/admin-icon/admin-icon.component';
 import { ProductImageGridComponent } from '../product-image-grid/product-image-grid.component';
 import type { Category, Product, ProductCreateDto, ProductUpdateDto } from '../../models/product.model';
@@ -19,7 +20,7 @@ export type ProductFormValue = ProductCreateDto | ProductUpdateDto;
   selector: 'admin-product-form',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, AdminIconComponent, ProductImageGridComponent],
+  imports: [ReactiveFormsModule, AdminIconComponent, ProductImageGridComponent, FieldErrorComponent],
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss',
 })

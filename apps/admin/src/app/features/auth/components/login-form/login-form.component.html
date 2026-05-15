@@ -27,13 +27,16 @@
           id="login-email"
           type="email"
           class="login-input"
+          [class.is-invalid]="fieldInvalid('email')"
           formControlName="email"
           [placeholder]="t('login.emailPh', 'you@store.com')"
           [disabled]="isLoading()"
           autocomplete="email"
           dir="ltr"
+          [attr.aria-invalid]="fieldInvalid('email')"
         />
       </div>
+      <sc-field-error [control]="form.controls.email" fieldLabel="Email" [messages]="emailMessages()" />
     </div>
 
     <div class="login-field">
@@ -44,11 +47,13 @@
           id="login-password"
           [type]="showPassword() ? 'text' : 'password'"
           class="login-input login-input-pw"
+          [class.is-invalid]="fieldInvalid('password')"
           formControlName="password"
           [placeholder]="t('login.passwordPh', 'Enter your password')"
           [disabled]="isLoading()"
           autocomplete="current-password"
           dir="ltr"
+          [attr.aria-invalid]="fieldInvalid('password')"
         />
         <button
           type="button"
@@ -60,6 +65,11 @@
           <admin-icon [name]="showPassword() ? 'eyeoff' : 'eye'" [size]="15" />
         </button>
       </div>
+      <sc-field-error
+        [control]="form.controls.password"
+        fieldLabel="Password"
+        [messages]="passwordMessages()"
+      />
     </div>
 
     <div class="login-row">
@@ -79,7 +89,6 @@
       type="submit"
       class="login-submit"
       [class.loading]="isLoading()"
-      [disabled]="isLoading()"
     >
       @if (isLoading()) {
         <span class="login-spinner" aria-hidden="true"></span>

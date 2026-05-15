@@ -14,12 +14,11 @@
           formControlName="name"
           type="text"
           class="input"
-          [class.input-error]="hasError('name')"
+          [class.is-invalid]="hasError('name')"
+          [attr.aria-invalid]="hasError('name')"
           placeholder="e.g. Premium T-Shirt"
         />
-        @if (hasError('name')) {
-          <span class="hint" style="color: var(--color-danger);">Name is required (min 2 chars)</span>
-        }
+        <sc-field-error [control]="form.controls.name" fieldLabel="Name" />
       </div>
 
       <div class="field">
@@ -29,13 +28,12 @@
           formControlName="slug"
           type="text"
           class="input"
-          [class.input-error]="hasError('slug')"
+          [class.is-invalid]="hasError('slug')"
+          [attr.aria-invalid]="hasError('slug')"
           placeholder="premium-t-shirt"
         />
         <span class="hint">Used in product URLs. Auto-generated from name.</span>
-        @if (hasError('slug')) {
-          <span class="hint" style="color: var(--color-danger);">Slug is required</span>
-        }
+        <sc-field-error [control]="form.controls.slug" fieldLabel="Slug" />
       </div>
 
       <div class="field">
@@ -65,14 +63,17 @@
             formControlName="price"
             type="number"
             class="input"
-            [class.input-error]="hasError('price')"
+            [class.is-invalid]="hasError('price')"
+            [attr.aria-invalid]="hasError('price')"
             placeholder="0.00"
             min="0"
             step="0.01"
           />
-          @if (hasError('price')) {
-            <span class="hint" style="color: var(--color-danger);">Price must be 0 or more</span>
-          }
+          <sc-field-error
+            [control]="form.controls.price"
+            fieldLabel="Price"
+            [messages]="{ min: 'Price must be 0 or more' }"
+          />
         </div>
 
         <div class="field">
@@ -105,13 +106,16 @@
           formControlName="stock"
           type="number"
           class="input"
-          [class.input-error]="hasError('stock')"
+          [class.is-invalid]="hasError('stock')"
+          [attr.aria-invalid]="hasError('stock')"
           placeholder="0"
           min="0"
         />
-        @if (hasError('stock')) {
-          <span class="hint" style="color: var(--color-danger);">Stock must be 0 or more</span>
-        }
+        <sc-field-error
+          [control]="form.controls.stock"
+          fieldLabel="Stock"
+          [messages]="{ min: 'Stock must be 0 or more' }"
+        />
       </div>
     </div>
   </div>

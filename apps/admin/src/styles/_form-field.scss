@@ -110,10 +110,19 @@
 }
 
 // ─── Error state ─────────────────────────────────────────
+// Canonical name: .is-invalid (paired with <sc-field-error>).
+// .input-error kept as an alias for legacy callers.
 
+.input.is-invalid,
+.select.is-invalid,
+.textarea.is-invalid,
 .input-error {
-  border-color: var(--color-danger) !important;
-  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12) !important;
+  border-color: var(--color-danger);
+
+  &:focus {
+    border-color: var(--color-danger);
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+  }
 }
 
 // ─── Hint text ───────────────────────────────────────────

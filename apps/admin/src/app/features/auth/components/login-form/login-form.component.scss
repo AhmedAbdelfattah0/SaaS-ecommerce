@@ -166,6 +166,18 @@
   padding-inline-end: 40px;
 }
 
+// Invalid state — red border + ring, matches the focus-ring shape so it
+// reads as an attention cue rather than an unrelated outline.
+// (The inline error message itself is rendered by <sc-field-error>.)
+.login-input.is-invalid {
+  border-color: var(--color-danger);
+
+  &:focus {
+    border-color: var(--color-danger);
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+  }
+}
+
 :host-context([dir='rtl']) .login-input {
   padding-inline-start: 12px;
   padding-inline-end: 38px;
