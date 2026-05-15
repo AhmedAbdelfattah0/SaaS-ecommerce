@@ -195,3 +195,127 @@ teamRouter.post('/invite', zValidator('json', inviteSchema), async (c) => {
     201,
   );
 });
+
+/**
+ * POST /api/team/accept-invite
+ *
+ * Called from /accept-invite AFTER the invitee has set their password via
+ * supabase.auth.updateUser. The user's session is now established under
+ * their normal credentials (not the recovery flow); user_metadata holds
+ * `tenant_id`, `role`, and `invited_by` set by the inviter at invite time.
+ *
+ * This endpoint INSERTs the admin_users row using service-role (RLS would
+ * block a direct client write) and is idempotent: re-running it for an
+ * already-accepted user returns 200 with { alreadyAccepted: true } instead
+ * of failing on the primary-key conflict.
+ */
+teamRouter.post('/accept-invite', async (c) => {
+  const authHeader = c.req.header('Authorization');
+  const ipAddress = getClientIp(c.req.raw);
+  const userAgent = c.req.header('User-Agent') ?? '';
+
+  if (!authHeader?.startsWith('Bearer ')) {
+    return c.json({ data: null, error: 'Unauthorized' }, 401);
+  }
+  const token = authHeader.slice(7);
+
+  const anon = createClient(c.env.SUPABASE_URL, c.env.SUPABASE_ANON_KEY);
+  const { data: { user }, error: authError } = await anon.auth.getUser(token);
+
+  if (authError || !user) {
+    return c.json({ data: null, error: 'Invalid or expired session' }, 401);
+  }
+
+  // Pull tenant_id + role from user_metadata (set by the inviter)
+  const meta = (user.user_metadata ?? {}) as {
+    tenant_id?: string;
+    role?: string;
+    invited_by?: string;
+    full_name?: string;
+  };
+
+  if (!meta.tenant_id || !meta.role) {
+    return c.json(
+      {
+        data: null,
+        error:
+          'Invite metadata missing. Ask your tenant admin to resend the invite.',
+      },
+      400,
+    );
+  }
+
+  const service = serviceClient(c.env);
+
+  // Idempotency: if the admin_users row already exists, return success
+  // without retrying the insert.
+  const { data: existing } = await service
+    .from('admin_users')
+    .select('id, tenant_id, role')
+    .eq('id', user.id)
+    .single();
+
+  if (existing) {
+    return c.json({
+      data: {
+        id: existing.id,
+        tenantId: existing.tenant_id,
+        role: existing.role,
+        alreadyAccepted: true,
+      },
+      error: null,
+    });
+  }
+
+  // First-time accept — create the admin_users row
+  const { data: inserted, error: insertError } = await service
+    .from('admin_users')
+    .insert({
+      id: user.id,
+      tenant_id: meta.tenant_id,
+      email: user.email ?? '',
+      role: meta.role,
+    })
+    .select('id, tenant_id, role')
+    .single();
+
+  if (insertError || !inserted) {
+    await writeAuditLog(c.env, {
+      tenantId: meta.tenant_id,
+      actorType: 'admin',
+      actorId: user.id,
+      actorEmail: user.email ?? null,
+      action: 'team.invite.accept.failed',
+      ipAddress,
+      userAgent,
+      severity: 'error',
+      metadata: { reason: insertError?.message ?? 'unknown', role: meta.role },
+    });
+    return c.json(
+      { data: null, error: insertError?.message ?? 'Failed to finalize invite' },
+      500,
+    );
+  }
+
+  await writeAuditLog(c.env, {
+    tenantId: meta.tenant_id,
+    actorType: 'admin',
+    actorId: user.id,
+    actorEmail: user.email ?? null,
+    action: 'team.invite.accepted',
+    ipAddress,
+    userAgent,
+    severity: 'info',
+    metadata: { role: meta.role, invitedBy: meta.invited_by ?? null },
+  });
+
+  return c.json({
+    data: {
+      id: inserted.id,
+      tenantId: inserted.tenant_id,
+      role: inserted.role,
+      alreadyAccepted: false,
+    },
+    error: null,
+  });
+});

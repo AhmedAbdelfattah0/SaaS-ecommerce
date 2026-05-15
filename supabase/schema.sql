@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS admin_users (
   id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   tenant_id uuid REFERENCES tenants(id) ON DELETE CASCADE NOT NULL,
   email text NOT NULL,
-  role text NOT NULL DEFAULT 'admin' CHECK (role IN ('admin', 'superadmin')),
+  role text NOT NULL DEFAULT 'admin' CHECK (role IN ('owner', 'admin', 'staff', 'viewer', 'superadmin')),
   created_at timestamptz DEFAULT now()
 );
 
