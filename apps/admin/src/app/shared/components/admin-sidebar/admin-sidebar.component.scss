@@ -127,8 +127,14 @@ button.sb-user {
 }
 
 // ---- Navigation ----
+// `min-block-size: 0` is required for flex: 1 to actually shrink below the
+// nav's intrinsic content height — without it, flex items default to
+// `min-block-size: auto` (content-sized) and the long nav list pushes the
+// .sb-bottom plan + user cards off the bottom of the viewport instead of
+// triggering overflow-y: auto.
 .sb-nav {
   flex: 1;
+  min-block-size: 0;
   padding: var(--sp-3);
   overflow-y: auto;
   display: flex;
