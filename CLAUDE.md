@@ -22,6 +22,26 @@
 
 <!-- nx configuration end-->
 
+# Local dev setup — first-time clone
+
+The Admin app uses Angular `fileReplacements` to swap a per-developer
+environment file at build time.
+
+1. Copy the template:
+   ```
+   cp apps/admin/src/environments/environment.local.example.ts \
+      apps/admin/src/environments/environment.local.ts
+   ```
+2. Fill in your real `supabaseUrl` + publishable anon key from
+   Supabase → Project Settings → API.
+3. `nx serve admin` (development config) now uses `environment.local.ts`.
+4. `nx build admin --configuration=production` uses `environment.prod.ts`
+   (still a placeholder — wire real prod values at deploy time via your
+   CI/CD secrets, NOT by committing them).
+
+`environment.local.ts` is gitignored. Never commit real keys to
+`environment.ts` or `environment.prod.ts`.
+
 # Admin Auth Model
 
 The Admin app uses an **invite-only signup model**. Do NOT add a `/signup`

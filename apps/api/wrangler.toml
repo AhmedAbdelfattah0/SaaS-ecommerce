@@ -5,12 +5,14 @@ compatibility_flags = ["nodejs_compat"]
 
 [vars]
 # Override locally in .dev.vars — NEVER commit secrets
-# SENTRY_DSN = "https://your-dsn@sentry.io/project-id"  # TODO(Task 26): add when Sentry Workers support stabilises
-# ENVIRONMENT = "production"
 
-# Cloudflare Pages custom domains route all traffic here
-# Each tenant points their domain CNAME to *.pages.dev
+# Production routes — used by `wrangler deploy`, not by `wrangler dev`
+# Uncomment before deploying:
+# [[routes]]
+# pattern = "*/api/*"
+# zone_name = ""
 
-[[routes]]
-pattern = "*/api/*"
-zone_name = ""
+[dev]
+ip = "127.0.0.1"
+port = 8787
+local_protocol = "http"

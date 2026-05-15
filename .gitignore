@@ -53,3 +53,11 @@ __screenshots__/
 test-output
 
 vitest.config.*.timestamp*
+.dev.vars
+
+# Per-developer local env (real Supabase URL + anon key)
+# Copy environment.local.example.ts → environment.local.ts and fill in real values
+apps/admin/src/environments/environment.local.ts
+
+# Supabase CLI cache (linked project, pooler URL, versions, etc.)
+supabase/.temp/
