@@ -100,6 +100,16 @@
   margin-block-end: var(--sp-4);
 }
 
+// ─── Proactive field hint (rules user might not guess) ───
+// Renders below the input as a quiet helper. sc-field-error sits
+// below this when the control becomes invalid.
+.auth-field-hint {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+}
+
 // ─── Field — label + input wrap ──────────────────────────
 .auth-field {
   margin-block-end: 14px;

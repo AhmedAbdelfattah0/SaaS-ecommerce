@@ -65,6 +65,7 @@
           <admin-icon [name]="showPassword() ? 'eyeoff' : 'eye'" [size]="15" />
         </button>
       </div>
+      <p class="auth-field-hint">{{ t('login.password.hint', '8 or more characters') }}</p>
       <sc-field-error
         [control]="form.controls.password"
         fieldLabel="Password"

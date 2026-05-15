@@ -178,6 +178,16 @@
   }
 }
 
+// Proactive field hint — appears below the input as a quiet helper for
+// rules the user might not guess (e.g. "8 or more characters"). The
+// validation error from <sc-field-error> sits below this when invalid.
+.auth-field-hint {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+}
+
 :host-context([dir='rtl']) .login-input {
   padding-inline-start: 12px;
   padding-inline-end: 38px;
