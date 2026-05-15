@@ -12,7 +12,10 @@
 .app {
   display: grid;
   grid-template-columns: var(--sidebar-w) 1fr;
-  height: 100vh;
+  // 100dvh = dynamic viewport height. Handles the mobile URL-bar
+  // collapse correctly and avoids the bottom strip that 100vh leaves
+  // when the actual visible viewport is taller than the static value.
+  block-size: 100dvh;
   overflow: hidden;
 }
 
