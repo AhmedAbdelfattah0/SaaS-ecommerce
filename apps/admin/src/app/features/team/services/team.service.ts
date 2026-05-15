@@ -1,4 +1,6 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
+import { ApiService, type InviteTeamMemberDto } from '../../../core/api/api.service';
 import type { TeamMember, Role } from '../models/team-member.model';
 
 const MOCK_MEMBERS: TeamMember[] = [
@@ -77,13 +79,52 @@ const MOCK_ROLES: Role[] = [
 
 @Injectable()
 export class TeamService {
+  private readonly api = inject(ApiService);
+
   private readonly _members = signal<TeamMember[]>(MOCK_MEMBERS);
   private readonly _roles = signal<Role[]>(MOCK_ROLES);
 
   readonly members = this._members.asReadonly();
   readonly roles = this._roles.asReadonly();
 
+  // ─── Invite flow state ───────────────────────────────────
+  private readonly _isInviting = signal(false);
+  private readonly _inviteError = signal<string | null>(null);
+  private readonly _lastInvitedEmail = signal<string | null>(null);
+
+  readonly isInviting = this._isInviting.asReadonly();
+  readonly inviteError = this._inviteError.asReadonly();
+  readonly lastInvitedEmail = this._lastInvitedEmail.asReadonly();
+
   removeMember(id: string): void {
     this._members.update((list) => list.filter((m) => m.id !== id));
+  }
+
+  /**
+   * Send an invite via POST /api/team/invite. On success, surfaces the
+   * invited email via `lastInvitedEmail` so the page can render an
+   * inline success banner.
+   */
+  async inviteMember(dto: InviteTeamMemberDto): Promise<{ ok: boolean }> {
+    this._isInviting.set(true);
+    this._inviteError.set(null);
+    try {
+      await firstValueFrom(this.api.inviteTeamMember(dto));
+      this._lastInvitedEmail.set(dto.email);
+      return { ok: true };
+    } catch (err) {
+      this._inviteError.set(err instanceof Error ? err.message : 'Invite failed');
+      return { ok: false };
+    } finally {
+      this._isInviting.set(false);
+    }
+  }
+
+  dismissInviteSuccess(): void {
+    this._lastInvitedEmail.set(null);
+  }
+
+  dismissInviteError(): void {
+    this._inviteError.set(null);
   }
 }

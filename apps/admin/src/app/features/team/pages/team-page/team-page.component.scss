@@ -6,6 +6,14 @@
 
 @use '../../../../../styles/badge' as *;
 @use '../../../../../styles/button' as *;
+@use '../../../../../styles/form-field' as *;
+
+// ─── Invite modal footer action row ───────────────────────
+.modal-actions {
+  display: flex;
+  gap: var(--sp-2);
+  justify-content: flex-end;
+}
 
 :host {
   display: block;

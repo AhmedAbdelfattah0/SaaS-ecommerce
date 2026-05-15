@@ -6,11 +6,23 @@
     [count]="svc.members().length"
     subtitle="Manage team members and control what each person can access."
   >
-    <button class="btn btn-primary">
+    <button class="btn btn-primary" type="button" (click)="openInviteModal()">
       <admin-icon name="userplus" [size]="15" />
       Invite Member
     </button>
   </sc-page-header>
+
+  <!-- Invite success banner — auto-shown after a successful invite -->
+  @if (svc.lastInvitedEmail(); as invitedEmail) {
+    <sc-banner
+      variant="success"
+      [dismissible]="true"
+      style="margin-block-end: var(--sp-4); display: block;"
+      (dismiss)="svc.dismissInviteSuccess()"
+    >
+      Invite sent to <strong>{{ invitedEmail }}</strong>. They'll appear here once they accept.
+    </sc-banner>
+  }
 
   <!-- Team members table -->
   <div class="card" style="margin-bottom: var(--sp-6)">
@@ -75,6 +87,88 @@
       </tbody>
     </table>
   </div>
+
+  <!-- Invite Member modal -->
+  @if (inviteModalOpen()) {
+    <sc-modal
+      title="Invite team member"
+      size="sm"
+      [closeOnBackdrop]="!svc.isInviting()"
+      [closeOnEscape]="!svc.isInviting()"
+      [dismissible]="!svc.isInviting()"
+      (close)="closeInviteModal()"
+    >
+      <form [formGroup]="form" (ngSubmit)="submitInvite()" novalidate>
+        @if (svc.inviteError(); as err) {
+          <sc-banner variant="error" style="margin-block-end: var(--sp-3); display: block;">
+            {{ err }}
+          </sc-banner>
+        }
+
+        <div class="field">
+          <label for="invite-email">Email</label>
+          <input
+            id="invite-email"
+            type="email"
+            class="input"
+            [class.is-invalid]="fieldInvalid('email')"
+            formControlName="email"
+            placeholder="teammate@yourcompany.com"
+            [disabled]="svc.isInviting()"
+            autocomplete="off"
+            [attr.aria-invalid]="fieldInvalid('email')"
+          />
+          <sc-field-error
+            [control]="form.controls.email"
+            fieldLabel="Email"
+            [messages]="emailMessages()"
+          />
+        </div>
+
+        <div class="field" style="margin-block-start: var(--sp-3);">
+          <label for="invite-role">Role</label>
+          <select
+            id="invite-role"
+            class="select"
+            formControlName="role"
+            [disabled]="svc.isInviting()"
+          >
+            @for (option of inviteRoles; track option.value) {
+              <option [value]="option.value">{{ option.label }}</option>
+            }
+          </select>
+          <p class="muted" style="font-size: 12px; margin: 6px 0 0;">
+            Role can be changed later. See Role Definitions below for what each role can do.
+          </p>
+        </div>
+      </form>
+
+      <div modal-footer class="modal-actions">
+        <button
+          type="button"
+          class="btn btn-secondary btn-sm"
+          [disabled]="svc.isInviting()"
+          (click)="closeInviteModal()"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary btn-sm"
+          [disabled]="svc.isInviting() || form.invalid"
+          (click)="submitInvite()"
+        >
+          @if (svc.isInviting()) {
+            <admin-icon name="refresh" [size]="13" />
+            Sending...
+          } @else {
+            <admin-icon name="mail" [size]="13" />
+            Send invite
+          }
+        </button>
+      </div>
+    </sc-modal>
+  }
 
   <!-- Roles reference -->
   <div>
