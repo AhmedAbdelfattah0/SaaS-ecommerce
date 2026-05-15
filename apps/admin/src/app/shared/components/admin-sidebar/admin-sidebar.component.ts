@@ -1,7 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import {
+  DropdownDividerComponent,
+  DropdownItemComponent,
+  DropdownMenuComponent,
+} from '@storecraft/ui';
 import { AuthService } from '../../../core/auth/auth.service';
 import { AdminI18nService } from '../../services/admin-i18n.service';
+import { ShellMenuActionsService } from '../../services/shell-menu-actions.service';
 import { AdminIconComponent, type IconName } from '../admin-icon/admin-icon.component';
 
 interface NavGroup {
@@ -113,7 +119,14 @@ const NAV_GROUPS: NavGroup[] = [
 @Component({
   selector: 'admin-sidebar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, AdminIconComponent],
+  imports: [
+    RouterLink,
+    RouterLinkActive,
+    AdminIconComponent,
+    DropdownMenuComponent,
+    DropdownItemComponent,
+    DropdownDividerComponent,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './admin-sidebar.component.html',
   styleUrl: './admin-sidebar.component.scss',
@@ -121,6 +134,7 @@ const NAV_GROUPS: NavGroup[] = [
 export class AdminSidebarComponent {
   private readonly i18n = inject(AdminI18nService);
   private readonly auth = inject(AuthService);
+  protected readonly menu = inject(ShellMenuActionsService);
 
   readonly navGroups = NAV_GROUPS;
   readonly user = this.auth.user;

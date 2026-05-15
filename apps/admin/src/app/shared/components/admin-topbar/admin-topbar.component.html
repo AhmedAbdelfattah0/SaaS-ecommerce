@@ -37,11 +37,32 @@
       <span [class.on]="currentLang() === 'ar'" style="font-family: 'Cairo', sans-serif">ع</span>
     </button>
 
-    <button type="button" class="tb-store-switch">
-      <div class="sw-logo">S</div>
-      <span class="truncate" style="max-width: 110px">{{ storeName() }}</span>
-      <admin-icon name="chevrondown" [size]="13" />
-    </button>
+    <sc-dropdown-menu placement="bottom-end" #workspaceMenu>
+      <button
+        trigger
+        type="button"
+        class="tb-store-switch"
+        aria-haspopup="menu"
+        [attr.aria-expanded]="workspaceMenu.isOpen()"
+      >
+        <div class="sw-logo">S</div>
+        <span class="truncate" style="max-width: 110px">{{ storeName() }}</span>
+        <admin-icon name="chevrondown" [size]="13" />
+      </button>
+
+      <sc-dropdown-item (select)="menu.workspaceSettings()">
+        <admin-icon name="settings" [size]="14" />
+        <span>{{ t('menu.workspaceSettings', 'Workspace settings') }}</span>
+      </sc-dropdown-item>
+      <sc-dropdown-item (select)="menu.viewStore()">
+        <admin-icon name="link" [size]="14" />
+        <span>{{ t('menu.viewStore', 'View store ↗') }}</span>
+      </sc-dropdown-item>
+      <sc-dropdown-divider />
+      <sc-dropdown-item variant="danger" (select)="menu.signOut()">
+        <span>{{ t('common.signout', 'Sign out') }}</span>
+      </sc-dropdown-item>
+    </sc-dropdown-menu>
 
     <div class="tb-notif-wrap">
       <button

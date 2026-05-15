@@ -2,8 +2,14 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { NavigationEnd, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map, startWith } from 'rxjs';
+import {
+  DropdownDividerComponent,
+  DropdownItemComponent,
+  DropdownMenuComponent,
+} from '@storecraft/ui';
 import { AuthService } from '../../../core/auth/auth.service';
 import { AdminI18nService } from '../../services/admin-i18n.service';
+import { ShellMenuActionsService } from '../../services/shell-menu-actions.service';
 import { AdminIconComponent } from '../admin-icon/admin-icon.component';
 import { AdminNotificationsPanelComponent } from '../admin-notifications-panel/admin-notifications-panel.component';
 
@@ -28,7 +34,13 @@ const PAGE_TITLES: Record<string, PageMeta> = {
 @Component({
   selector: 'admin-topbar',
   standalone: true,
-  imports: [AdminIconComponent, AdminNotificationsPanelComponent],
+  imports: [
+    AdminIconComponent,
+    AdminNotificationsPanelComponent,
+    DropdownMenuComponent,
+    DropdownItemComponent,
+    DropdownDividerComponent,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './admin-topbar.component.html',
   styleUrl: './admin-topbar.component.scss',
@@ -37,6 +49,7 @@ export class AdminTopbarComponent {
   private readonly router = inject(Router);
   private readonly i18n = inject(AdminI18nService);
   private readonly auth = inject(AuthService);
+  protected readonly menu = inject(ShellMenuActionsService);
 
   readonly currentLang = this.i18n.currentLang;
   readonly user = this.auth.user;

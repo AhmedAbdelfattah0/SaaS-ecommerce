@@ -1,18 +1,39 @@
 <aside class="sidebar">
   <div class="sb-top">
-    <div class="sb-store">
-      <div class="sb-logo">S</div>
-      <div class="sb-store-info">
-        <div class="sb-store-name truncate">{{ storeName() }}</div>
-        <div class="sb-store-sub">
-          <span class="live-dot"></span>
-          <span>{{ t('common.online', 'Online') }}</span>
-          <span style="color: #475569">·</span>
-          <span class="ltr-input" dir="ltr">{{ storeDomain() }}</span>
+    <sc-dropdown-menu placement="bottom-start" #workspaceMenu>
+      <button
+        trigger
+        type="button"
+        class="sb-store"
+        aria-haspopup="menu"
+        [attr.aria-expanded]="workspaceMenu.isOpen()"
+      >
+        <div class="sb-logo">S</div>
+        <div class="sb-store-info">
+          <div class="sb-store-name truncate">{{ storeName() }}</div>
+          <div class="sb-store-sub">
+            <span class="live-dot"></span>
+            <span>{{ t('common.online', 'Online') }}</span>
+            <span style="color: #475569">·</span>
+            <span class="ltr-input" dir="ltr">{{ storeDomain() }}</span>
+          </div>
         </div>
-      </div>
-      <admin-icon name="chevrondown" [size]="14" />
-    </div>
+        <admin-icon name="chevrondown" [size]="14" />
+      </button>
+
+      <sc-dropdown-item (select)="menu.workspaceSettings()">
+        <admin-icon name="settings" [size]="14" />
+        <span>{{ t('menu.workspaceSettings', 'Workspace settings') }}</span>
+      </sc-dropdown-item>
+      <sc-dropdown-item (select)="menu.viewStore()">
+        <admin-icon name="link" [size]="14" />
+        <span>{{ t('menu.viewStore', 'View store ↗') }}</span>
+      </sc-dropdown-item>
+      <sc-dropdown-divider />
+      <sc-dropdown-item variant="danger" (select)="menu.signOut()">
+        <span>{{ t('common.signout', 'Sign out') }}</span>
+      </sc-dropdown-item>
+    </sc-dropdown-menu>
   </div>
 
   <nav class="sb-nav" aria-label="Primary">
