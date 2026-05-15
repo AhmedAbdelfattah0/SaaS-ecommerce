@@ -57,15 +57,19 @@
   </nav>
 
   <div class="sb-bottom">
-    <div class="sb-plan">
+    <a
+      class="sb-plan"
+      routerLink="/settings/billing"
+      [attr.aria-label]="t('plan.upgradeAria', 'Pro Plan — manage billing')"
+    >
       <div>
         <div class="sb-plan-label">Pro Plan</div>
         <div style="font-size: 10.5px; color: #94A3B8; margin-top: 2px">
           Renews May 18
         </div>
       </div>
-      <span class="sb-plan-cta">Upgrade →</span>
-    </div>
+      <span class="sb-plan-cta">{{ t('plan.upgrade', 'Upgrade →') }}</span>
+    </a>
     <sc-dropdown-menu placement="top-start" #userMenu>
       <button
         trigger

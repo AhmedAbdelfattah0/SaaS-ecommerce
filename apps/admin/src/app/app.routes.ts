@@ -131,6 +131,15 @@ export const appRoutes: Route[] = [
           ),
       },
       {
+        // Temporary redirect — the real /settings/billing page is Wave 4
+        // work (Lemon Squeezy plan management). Until then the sidebar's
+        // "Upgrade" card points here and falls through to the Settings
+        // tab so users land on a sensible page.
+        path: 'settings/billing',
+        redirectTo: 'settings',
+        pathMatch: 'full',
+      },
+      {
         path: 'settings',
         loadComponent: () =>
           import('./features/settings/pages/settings-page/settings-page.component').then(
