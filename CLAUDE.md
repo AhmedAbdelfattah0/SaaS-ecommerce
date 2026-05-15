@@ -21,3 +21,15 @@
 - The `nx-generate` skill handles generator discovery internally - don't call nx_docs just to look up generator syntax
 
 <!-- nx configuration end-->
+
+# Admin Auth Model
+
+The Admin app uses an **invite-only signup model**. Do NOT add a `/signup`
+page to `apps/admin/` — tenant-owner self-signup belongs on the future
+marketing site (alongside Lemon Squeezy checkout). Admin handles three
+auth surfaces:
+
+- `/login` — done
+- `/forgot-password` + `/reset-password` — done
+- `/accept-invite` — spec ready, build deferred until `/team` invites are wired
+  - See `docs/auth-invite-flow.spec.md` for the full implementation plan
