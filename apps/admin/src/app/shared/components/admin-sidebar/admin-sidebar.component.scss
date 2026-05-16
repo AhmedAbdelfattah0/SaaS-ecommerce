@@ -18,13 +18,16 @@ a.sb-item {
   }
 }
 
-// The Angular host element defaults to display: inline, which leaves the
-// inner .sidebar at content height regardless of the 100dvh grid cell.
-// Force the host to be a block that fills its cell, then .sidebar fills
-// the host — so the dark background extends to the bottom of the viewport.
+// Use explicit 100dvh (not percentage cascade) so the height is rock-solid
+// regardless of how the parent grid resolves its cell sizes. Some browser
+// versions don't propagate percentage heights through grid items reliably
+// when the row track is auto-sized.
 :host {
-  display: block;
-  block-size: 100%;
+  display: flex;
+  flex-direction: column;
+  block-size: 100dvh;
+  min-block-size: 0;
+  overflow: hidden;
 }
 
 .sidebar {
@@ -32,7 +35,8 @@ a.sb-item {
   color: var(--color-sidebar-text);
   display: flex;
   flex-direction: column;
-  block-size: 100%;
+  flex: 1;
+  min-block-size: 0;
   border-inline-end: 1px solid #1E293B;
 }
 
